@@ -2,70 +2,88 @@
 const SHEET_ID = '1ZOYjsFRC-6GSidh079--svkoPKumaFN7Q6FdoXVp13w'; // Thay thế bằng ID của Google Sheet của bạn
 const SHEET_NAME = 'DT_KHAO_SAT';
 
+// Biến để kiểm tra trạng thái khởi tạo
+let isGoogleApiInitialized = false;
+
 // Hàm khởi tạo
 document.addEventListener('DOMContentLoaded', function() {
     // Khởi tạo Google Sheets API
     gapi.load('client', function() {
-        initClient();
-        
-        // Xử lý form khảo sát
-        const khaoSatForm = document.getElementById('khaoSatForm');
-        if (khaoSatForm) {
-            khaoSatForm.addEventListener('submit', handleFormSubmit);
-        }
-        
-        // Cập nhật dashboard nếu đang ở trang chủ
-        if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-            updateDashboard();
-        }
+        initClient().then(() => {
+            isGoogleApiInitialized = true;
+            
+            // Xử lý form khảo sát
+            const khaoSatForm = document.getElementById('khaoSatForm');
+            if (khaoSatForm) {
+                khaoSatForm.addEventListener('submit', handleFormSubmit);
+            }
+            
+            // Cập nhật dashboard nếu đang ở trang chủ
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                updateDashboard();
+            }
+        }).catch(error => {
+            console.error('Lỗi khởi tạo:', error);
+        });
     });
 });
 
 // Khởi tạo Google Sheets API client
-function initClient() {
-    gapi.client.init({
-        apiKey: 'AIzaSyDEHHOQZUMGWAvBRF9WtFMkwK1Ys9ytfl4', // Thay thế bằng API key của bạn
-        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-    }).then(function() {
+async function initClient() {
+    try {
+        await gapi.client.init({
+            apiKey: 'AIzaSyDEHHOQZUMGWAvBRF9WtFMkwK1Ys9ytfl4', // Thay thế bằng API key của bạn
+            discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+        });
         console.log('Google Sheets API đã được khởi tạo');
-    }).catch(function(error) {
+    } catch (error) {
         console.error('Lỗi khởi tạo Google Sheets API:', error);
-    });
+        throw error;
+    }
+}
+
+// Kiểm tra và đợi Google API được khởi tạo
+async function waitForGoogleApi() {
+    while (!isGoogleApiInitialized) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
 }
 
 // Xử lý submit form
 async function handleFormSubmit(event) {
     event.preventDefault();
     
-    // Lấy dữ liệu từ form
-    const formData = {
-        hoTen: document.getElementById('hoTen').value,
-        dienThoai: document.getElementById('dienThoai').value,
-        viTri: document.getElementById('viTri').value,
-        diaChi: document.getElementById('diaChi').value,
-        nguoiLon: document.getElementById('nguoiLon').value,
-        treEm: document.getElementById('treEm').value,
-        loaiNhaO: document.getElementById('loaiNhaO').value,
-        chiPhiNhaO: document.getElementById('chiPhiNhaO').value,
-        gao: document.getElementById('gao').value,
-        thit: document.getElementById('thit').value,
-        ca: document.getElementById('ca').value,
-        rauCu: document.getElementById('rauCu').value,
-        sua: document.getElementById('sua').value,
-        giaVi: document.getElementById('giaVi').value,
-        hocPhi: document.getElementById('hocPhi').value,
-        sachVo: document.getElementById('sachVo').value,
-        dongPhuc: document.getElementById('dongPhuc').value,
-        khacGiaoDuc: document.getElementById('khacGiaoDuc').value,
-        dienNuoc: document.getElementById('dienNuoc').value,
-        internet: document.getElementById('internet').value,
-        rac: document.getElementById('rac').value,
-        thuNhapChinh: document.getElementById('thuNhapChinh').value,
-        thuNhapPhu: document.getElementById('thuNhapPhu').value,
-        ghiChu: document.getElementById('ghiChu').value
-    };
-
     try {
+        await waitForGoogleApi();
+        
+        // Lấy dữ liệu từ form
+        const formData = {
+            hoTen: document.getElementById('hoTen').value,
+            dienThoai: document.getElementById('dienThoai').value,
+            viTri: document.getElementById('viTri').value,
+            diaChi: document.getElementById('diaChi').value,
+            nguoiLon: document.getElementById('nguoiLon').value,
+            treEm: document.getElementById('treEm').value,
+            loaiNhaO: document.getElementById('loaiNhaO').value,
+            chiPhiNhaO: document.getElementById('chiPhiNhaO').value,
+            gao: document.getElementById('gao').value,
+            thit: document.getElementById('thit').value,
+            ca: document.getElementById('ca').value,
+            rauCu: document.getElementById('rauCu').value,
+            sua: document.getElementById('sua').value,
+            giaVi: document.getElementById('giaVi').value,
+            hocPhi: document.getElementById('hocPhi').value,
+            sachVo: document.getElementById('sachVo').value,
+            dongPhuc: document.getElementById('dongPhuc').value,
+            khacGiaoDuc: document.getElementById('khacGiaoDuc').value,
+            dienNuoc: document.getElementById('dienNuoc').value,
+            internet: document.getElementById('internet').value,
+            rac: document.getElementById('rac').value,
+            thuNhapChinh: document.getElementById('thuNhapChinh').value,
+            thuNhapPhu: document.getElementById('thuNhapPhu').value,
+            ghiChu: document.getElementById('ghiChu').value
+        };
+
         // Thêm dữ liệu vào Google Sheet
         await appendToSheet(formData);
         alert('Gửi khảo sát thành công!');
@@ -141,6 +159,8 @@ async function appendToSheet(data) {
 // Cập nhật dashboard
 async function updateDashboard() {
     try {
+        await waitForGoogleApi();
+        
         const response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
             range: SHEET_NAME
