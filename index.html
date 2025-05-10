@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; connect-src 'self' https://sheets.googleapis.com https://*.googleapis.com https://*.google.com https://script.google.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:;">
-    <title>Khảo sát - Hệ thống Khảo sát</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; connect-src 'self' https://sheets.googleapis.com https://*.googleapis.com https://*.google.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:;">
+    <title>Hệ thống Khảo sát</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -21,10 +21,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Dashboard</a>
+                        <a class="nav-link active" href="index.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="khaosat.html">Khảo sát</a>
+                        <a class="nav-link" href="khaosat.html">Khảo sát</a>
                     </li>
                 </ul>
             </div>
@@ -33,138 +33,45 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
-        <h2>Form Khảo sát</h2>
-        <form id="khaoSatForm" class="mt-4">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="hoTen" class="form-label">Họ và tên</label>
-                    <input type="text" class="form-control" id="hoTen" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="dienThoai" class="form-label">Điện thoại</label>
-                    <input type="tel" class="form-control" id="dienThoai" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="viTri" class="form-label">Vị trí</label>
-                    <input type="text" class="form-control" id="viTri" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="diaChi" class="form-label">Địa chỉ</label>
-                    <input type="text" class="form-control" id="diaChi" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="nguoiLon" class="form-label">Số người lớn</label>
-                    <input type="number" class="form-control" id="nguoiLon" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="treEm" class="form-label">Số trẻ em</label>
-                    <input type="number" class="form-control" id="treEm" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="loaiNhaO" class="form-label">Loại nhà ở</label>
-                    <select class="form-select" id="loaiNhaO" required>
-                        <option value="">Chọn loại nhà ở</option>
-                        <option value="Nha rieng">Nhà riêng</option>
-                        <option value="Thue nha Nguyen can">Thuê nhà Nguyên căn</option>
-                        <option value="Nha tro">Nhà trọ</option>
-                    </select>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Dashboard</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Tổng số khảo sát</h5>
+                                <p class="card-text" id="tongKhaoSat">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Tổng thành viên</h5>
+                                <p class="card-text" id="tongThanhVien">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Tổng chi phí</h5>
+                                <p class="card-text" id="tongChiPhi">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Tổng thu nhập</h5>
+                                <p class="card-text" id="tongThuNhap">0</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <h4 class="mt-4">Chi phí sinh hoạt</h4>
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="chiPhiNhaO" class="form-label">Chi phí nhà ở</label>
-                    <input type="number" class="form-control" id="chiPhiNhaO" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="gao" class="form-label">Gạo</label>
-                    <input type="number" class="form-control" id="gao" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="thit" class="form-label">Thịt</label>
-                    <input type="number" class="form-control" id="thit" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="ca" class="form-label">Cá</label>
-                    <input type="number" class="form-control" id="ca" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="rauCu" class="form-label">Rau củ</label>
-                    <input type="number" class="form-control" id="rauCu" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="sua" class="form-label">Sữa</label>
-                    <input type="number" class="form-control" id="sua" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="giaVi" class="form-label">Gia vị</label>
-                    <input type="number" class="form-control" id="giaVi" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="hocPhi" class="form-label">Học phí</label>
-                    <input type="number" class="form-control" id="hocPhi" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="sachVo" class="form-label">Sách vở</label>
-                    <input type="number" class="form-control" id="sachVo" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="dongPhuc" class="form-label">Đồng phục</label>
-                    <input type="number" class="form-control" id="dongPhuc" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="khacGiaoDuc" class="form-label">Khác (Giáo dục)</label>
-                    <input type="number" class="form-control" id="khacGiaoDuc" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="dienNuoc" class="form-label">Điện nước</label>
-                    <input type="number" class="form-control" id="dienNuoc" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="internet" class="form-label">Internet</label>
-                    <input type="number" class="form-control" id="internet" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="rac" class="form-label">Rác</label>
-                    <input type="number" class="form-control" id="rac" required>
-                </div>
-            </div>
-
-            <h4 class="mt-4">Thu nhập</h4>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="thuNhapChinh" class="form-label">Thu nhập chính</label>
-                    <input type="number" class="form-control" id="thuNhapChinh" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="thuNhapPhu" class="form-label">Thu nhập phụ</label>
-                    <input type="number" class="form-control" id="thuNhapPhu" required>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="ghiChu" class="form-label">Ghi chú</label>
-                <textarea class="form-control" id="ghiChu" rows="3"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Gửi khảo sát</button>
-        </form>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
