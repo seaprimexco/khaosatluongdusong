@@ -80,6 +80,82 @@ fetch('https://script.google.com/macros/s/AKfycbyIfABkyH2K8RnIB4_aOl-AUXmauvPcq-
           }
         }
       });
+
+      // Vẽ biểu đồ chi phí theo loại
+      const chiPhiPieCtx = document.getElementById('chiPhiPieChart').getContext('2d');
+      const chiPhiPieChart = new Chart(chiPhiPieCtx, {
+        type: 'pie',
+        data: {
+          labels: [
+            'Nhà ở', 'Gạo', 'Thịt', 'Cá', 'Rau củ', 
+            'Sữa', 'Gia vị', 'Giáo dục', 'Tiện ích'
+          ],
+          datasets: [{
+            data: [
+              result.data.chiPhiTheoLoai.nhaO,
+              result.data.chiPhiTheoLoai.gao,
+              result.data.chiPhiTheoLoai.thit,
+              result.data.chiPhiTheoLoai.ca,
+              result.data.chiPhiTheoLoai.rauCu,
+              result.data.chiPhiTheoLoai.sua,
+              result.data.chiPhiTheoLoai.giaVi,
+              result.data.chiPhiTheoLoai.giaoDuc,
+              result.data.chiPhiTheoLoai.tienIch
+            ],
+            backgroundColor: [
+              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+              '#FF9F40', '#FF6384', '#36A2EB', '#FFCE56'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right'
+            },
+            title: {
+              display: true,
+              text: 'Tỷ trọng chi phí theo loại'
+            }
+          }
+        }
+      });
+
+      // Vẽ biểu đồ xu hướng mức lương đủ sống
+      const luongDuSongCtx = document.getElementById('luongDuSongChart').getContext('2d');
+      const luongDuSongChart = new Chart(luongDuSongCtx, {
+        type: 'line',
+        data: {
+          labels: Object.keys(result.data.luongDuSong),
+          datasets: [{
+            label: 'Mức lương đủ sống (VND)',
+            data: Object.values(result.data.luongDuSong),
+            borderColor: '#4BC0C0',
+            tension: 0.1,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Xu hướng mức lương đủ sống theo Anker'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toLocaleString('vi-VN') + ' VND';
+                }
+              }
+            }
+          }
+        }
+      });
     } else {
       alert('Lỗi: ' + result.message);
     }
