@@ -5,18 +5,20 @@ const SHEET_NAME = 'DT_KHAO_SAT';
 // Hàm khởi tạo
 document.addEventListener('DOMContentLoaded', function() {
     // Khởi tạo Google Sheets API
-    gapi.load('client', initClient);
-    
-    // Xử lý form khảo sát
-    const khaoSatForm = document.getElementById('khaoSatForm');
-    if (khaoSatForm) {
-        khaoSatForm.addEventListener('submit', handleFormSubmit);
-    }
-    
-    // Cập nhật dashboard nếu đang ở trang chủ
-    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-        updateDashboard();
-    }
+    gapi.load('client', function() {
+        initClient();
+        
+        // Xử lý form khảo sát
+        const khaoSatForm = document.getElementById('khaoSatForm');
+        if (khaoSatForm) {
+            khaoSatForm.addEventListener('submit', handleFormSubmit);
+        }
+        
+        // Cập nhật dashboard nếu đang ở trang chủ
+        if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+            updateDashboard();
+        }
+    });
 });
 
 // Khởi tạo Google Sheets API client
