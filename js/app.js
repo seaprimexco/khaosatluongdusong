@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }).catch(error => {
             console.error('Lỗi khởi tạo:', error);
+            alert('Có lỗi xảy ra khi khởi tạo ứng dụng. Vui lòng kiểm tra console để biết thêm chi tiết.');
         });
     });
 });
@@ -90,7 +91,11 @@ async function handleFormSubmit(event) {
         event.target.reset();
     } catch (error) {
         console.error('Lỗi khi gửi khảo sát:', error);
-        alert('Có lỗi xảy ra khi gửi khảo sát. Vui lòng thử lại sau.');
+        if (error.status === 403) {
+            alert('Không có quyền truy cập vào Google Sheet. Vui lòng kiểm tra lại cấu hình quyền truy cập.');
+        } else {
+            alert('Có lỗi xảy ra khi gửi khảo sát. Vui lòng thử lại sau.');
+        }
     }
 }
 
@@ -193,5 +198,10 @@ async function updateDashboard() {
 
     } catch (error) {
         console.error('Lỗi khi cập nhật dashboard:', error);
+        if (error.status === 403) {
+            alert('Không có quyền truy cập vào Google Sheet. Vui lòng kiểm tra lại cấu hình quyền truy cập.');
+        } else {
+            alert('Có lỗi xảy ra khi cập nhật dashboard. Vui lòng thử lại sau.');
+        }
     }
 } 
