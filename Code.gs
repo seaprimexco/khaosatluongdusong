@@ -86,4 +86,32 @@ function updateData() {
   }
   
   SpreadsheetApp.getUi().alert('Dữ liệu đã được cập nhật thành công!');
+}
+
+function getDanhMuc() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('DANH_MUC');
+    if (!sheet) {
+      return ContentService.createTextOutput(JSON.stringify({status: 'error', message: 'Không tìm thấy sheet DANH_MUC'})).setMimeType(ContentService.MimeType.JSON);
+    }
+    const data = sheet.getDataRange().getValues();
+    const headers = data[0];
+    const rows = data.slice(1);
+    const danhMuc = {};
+    // Lọc các mục có Trang_Thai = 1
+    const activeRows = rows.filter(row => String(row[headers.indexOf('Trang_Thai')]).trim() === '1');
+    // Gom nhóm
+    activeRows.forEach(row => {
+      const id = String(row[headers.indexOf('ID')]).trim();
+      const ten = String(row[headers.indexOf('Ten')]).trim();
+      const giaTri = String(row[headers.indexOf('Gia_Tri')]).trim();
+      // Gom nhóm đơn giản
+      if (!danhMuc[id]) danhMuc[id] = [];
+      danhMuc[id].push(giaTri);
+    });
+    return ContentService.createTextOutput(JSON.stringify({status: 'success', data: danhMuc})).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({status: 'error', message: error.toString()})).setMimeType(ContentService.MimeType.JSON);
+  }
 } 
