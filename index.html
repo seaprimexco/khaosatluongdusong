@@ -400,52 +400,36 @@
             });
         }
 
-        // Hàm tính toán thống kê cho một năm
-        function calculateYearStats(data, year) {
-            const yearData = data.filter(item => item.year === year);
-            if (yearData.length === 0) return null;
-
-            const tongKhaoSat = yearData.length;
-            const tongThanhVien = yearData.reduce((sum, item) => sum + item.tongThanhVien, 0);
-            const tongChiPhi = yearData.reduce((sum, item) => sum + item.tongChiPhi, 0);
-            const tongThuNhap = yearData.reduce((sum, item) => sum + item.tongThuNhap, 0);
-            
-            return {
-                tongKhaoSat,
-                tongThanhVien,
-                tongChiPhi,
-                tongThuNhap,
-                chiPhiTB: tongChiPhi / tongKhaoSat,
-                thuNhapTB: tongThuNhap / tongKhaoSat,
-                chiPhiTheoLoai: yearData[0].chiPhiTheoLoai // Lấy chi phí theo loại từ bản ghi đầu tiên
-            };
-        }
-
         // Hàm cập nhật hiển thị
         function updateDisplay(processedData) {
             // Tìm năm lớn nhất
             const latestYear = Math.max(...processedData.map(item => item.year));
-            
+            // Lọc dữ liệu của năm lớn nhất
+            const yearData = processedData.filter(item => item.year === latestYear);
+
             // Tính toán thống kê cho năm lớn nhất
-            const latestYearStats = calculateYearStats(processedData, latestYear);
-            
-            if (latestYearStats) {
-                // Cập nhật năm cho tất cả các phần tử
-                document.querySelectorAll('[id^="year"]').forEach(element => {
-                    element.textContent = `Năm ${latestYear}`;
-                });
+            const tongKhaoSat = yearData.length;
+            const tongThanhVien = yearData.reduce((sum, item) => sum + item.tongThanhVien, 0);
+            const tongChiPhi = yearData.reduce((sum, item) => sum + item.tongChiPhi, 0);
+            const tongThuNhap = yearData.reduce((sum, item) => sum + item.tongThuNhap, 0);
+            const chiPhiTB = tongKhaoSat ? tongChiPhi / tongKhaoSat : 0;
+            const thuNhapTB = tongKhaoSat ? tongThuNhap / tongKhaoSat : 0;
 
-                // Cập nhật các giá trị thống kê
-                document.getElementById('tongKhaoSat').textContent = latestYearStats.tongKhaoSat.toLocaleString('vi-VN');
-                document.getElementById('tongThanhVien').textContent = latestYearStats.tongThanhVien.toLocaleString('vi-VN');
-                document.getElementById('tongChiPhi').textContent = latestYearStats.tongChiPhi.toLocaleString('vi-VN') + ' đ';
-                document.getElementById('tongThuNhap').textContent = latestYearStats.tongThuNhap.toLocaleString('vi-VN') + ' đ';
-                document.getElementById('chiPhiTB').textContent = Math.round(latestYearStats.chiPhiTB).toLocaleString('vi-VN') + ' đ';
-                document.getElementById('thuNhapTB').textContent = Math.round(latestYearStats.thuNhapTB).toLocaleString('vi-VN') + ' đ';
+            // Cập nhật năm cho tất cả các phần tử
+            document.querySelectorAll('[id^="year"]').forEach(element => {
+                element.textContent = `Năm ${latestYear}`;
+            });
 
-                // Cập nhật biểu đồ
-                updateCharts(processedData, latestYear);
-            }
+            // Cập nhật các giá trị thống kê
+            document.getElementById('tongKhaoSat').textContent = tongKhaoSat.toLocaleString('vi-VN');
+            document.getElementById('tongThanhVien').textContent = tongThanhVien.toLocaleString('vi-VN');
+            document.getElementById('tongChiPhi').textContent = tongChiPhi.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('tongThuNhap').textContent = tongThuNhap.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('chiPhiTB').textContent = Math.round(chiPhiTB).toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('thuNhapTB').textContent = Math.round(thuNhapTB).toLocaleString('vi-VN') + ' VNĐ';
+
+            // Cập nhật biểu đồ
+            updateCharts(processedData, latestYear);
         }
 
         // Hàm cập nhật biểu đồ
