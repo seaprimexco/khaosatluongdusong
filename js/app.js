@@ -495,4 +495,53 @@ function updateComparisonChart(comparisonData) {
             }
         }
     });
+}
+
+function updatePieChart(chiPhiTheoLoai) {
+    const ctx = document.getElementById('chiPhiPieChart').getContext('2d');
+    // Xóa chart cũ nếu có
+    if (window.chiPhiPieChart) {
+        window.chiPhiPieChart.destroy();
+    }
+    window.chiPhiPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Nhà ở', 'Gạo', 'Thịt', 'Cá', 'Rau củ', 'Sữa', 'Gia vị', 'Học phí', 'Sách vở', 'Đồng phục', 'Khác GD', 'Điện', 'Nước', 'Internet', 'Rác'
+            ],
+            datasets: [{
+                data: [
+                    chiPhiTheoLoai.nhaO || 0,
+                    chiPhiTheoLoai.gao || 0,
+                    chiPhiTheoLoai.thit || 0,
+                    chiPhiTheoLoai.ca || 0,
+                    chiPhiTheoLoai.rauCu || 0,
+                    chiPhiTheoLoai.sua || 0,
+                    chiPhiTheoLoai.giaVi || 0,
+                    chiPhiTheoLoai.hocPhi || 0,
+                    chiPhiTheoLoai.sachVo || 0,
+                    chiPhiTheoLoai.dongPhuc || 0,
+                    chiPhiTheoLoai.khacGiaoDuc || 0,
+                    chiPhiTheoLoai.dien || 0,
+                    chiPhiTheoLoai.nuoc || 0,
+                    chiPhiTheoLoai.internet || 0,
+                    chiPhiTheoLoai.rac || 0
+                ],
+                backgroundColor: [
+                    '#0d6efd', '#198754', '#dc3545', '#ffc107', '#0dcaf0',
+                    '#6f42c1', '#fd7e14', '#20c997', '#6610f2', '#e83e8c',
+                    '#6c757d', '#343a40', '#adb5bd', '#f8f9fa', '#212529'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'right' },
+                title: {
+                    display: false
+                }
+            }
+        }
+    });
 } 
