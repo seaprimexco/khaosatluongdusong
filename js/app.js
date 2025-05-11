@@ -385,4 +385,82 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Lỗi khi tải dữ liệu:', error);
       alert('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.');
     });
-}); 
+});
+
+function processData(apiData) {
+    // Bỏ qua hàng đầu tiên (header)
+    const data = apiData.data.slice(1);
+    
+    // Hàm helper để xử lý số
+    const parseNumber = (value) => {
+        try {
+            // Kiểm tra và log giá trị đầu vào
+            console.log('Giá trị đầu vào:', value, 'Kiểu dữ liệu:', typeof value);
+            
+            if (value === undefined || value === null) return 0;
+            if (typeof value === 'number') return value;
+            if (typeof value === 'string') {
+                // Kiểm tra nếu chuỗi rỗng
+                if (value.trim() === '') return 0;
+                // Thử chuyển đổi trực tiếp
+                const num = parseFloat(value);
+                if (!isNaN(num)) return num;
+                // Nếu không được, thử xử lý định dạng số Việt Nam
+                return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+            }
+            return 0;
+        } catch (error) {
+            console.error('Lỗi khi xử lý số:', error, 'Giá trị:', value);
+            return 0;
+        }
+    };
+
+    // Chuyển đổi dữ liệu thành định dạng dễ xử lý
+    return data.map((row, index) => {
+        try {
+            // Log dữ liệu của mỗi hàng để debug
+            console.log(`Xử lý hàng ${index}:`, row);
+            
+            const date = new Date(row[1]); // Thoi_Gian_Tao
+            
+            return {
+                year: date.getFullYear(),
+                tongThanhVien: parseInt(row[12]) || 0, // Tong_Thanh_Vien
+                tongChiPhi: parseNumber(row[29]), // Tong_Chi_Phi
+                tongThuNhap: parseNumber(row[32]), // Tong_Thu_Nhap
+                chiPhiTheoLoai: {
+                    nhaO: parseNumber(row[13]),
+                    gao: parseNumber(row[14]),
+                    thit: parseNumber(row[15]),
+                    ca: parseNumber(row[16]),
+                    rauCu: parseNumber(row[17]),
+                    sua: parseNumber(row[18]),
+                    giaVi: parseNumber(row[19]),
+                    hocPhi: parseNumber(row[20]),
+                    sachVo: parseNumber(row[21]),
+                    dongPhuc: parseNumber(row[22]),
+                    khacGiaoDuc: parseNumber(row[23]),
+                    dien: parseNumber(row[24]),
+                    nuoc: parseNumber(row[25]),
+                    internet: parseNumber(row[26]),
+                    rac: parseNumber(row[27])
+                }
+            };
+        } catch (error) {
+            console.error(`Lỗi khi xử lý hàng ${index}:`, error);
+            // Trả về object mặc định nếu có lỗi
+            return {
+                year: new Date().getFullYear(),
+                tongThanhVien: 0,
+                tongChiPhi: 0,
+                tongThuNhap: 0,
+                chiPhiTheoLoai: {
+                    nhaO: 0, gao: 0, thit: 0, ca: 0, rauCu: 0,
+                    sua: 0, giaVi: 0, hocPhi: 0, sachVo: 0,
+                    dongPhuc: 0, khacGiaoDuc: 0, dien: 0,
+                    nuoc: 0, internet: 0, rac: 0
+                }
+            };
+        }
+    });
+} 
