@@ -84,7 +84,7 @@
             gap: 0.5rem;
         }
 
-        .navbar-menu a {
+        .navbar-menu a, .navbar-menu .dropdown-toggle {
             color: #fff;
             font-size: 1.05rem;
             font-weight: 500;
@@ -97,14 +97,62 @@
             background: rgba(255,255,255,0.08);
             transition: background 0.2s, color 0.2s, box-shadow 0.2s;
             box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            cursor: pointer;
+            position: relative;
         }
 
-        .navbar-menu a.active, .navbar-menu a:hover {
+        .navbar-menu a.active, .navbar-menu a:hover, .navbar-menu .dropdown-toggle:hover {
             background: #fff;
             color: var(--primary-gradient);
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            min-width: 180px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+            z-index: 2000;
+            padding: 0.5rem 0.2rem;
+            flex-direction: column;
+            margin-top: 0.2rem;
+        }
+        .dropdown-menu a {
+            color: #222;
+            background: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            box-shadow: none;
+        }
+        .dropdown-menu a:hover {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        .dropdown.open .dropdown-menu {
+            display: flex;
+        }
+        .dropdown-toggle:after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-left: 0.4em;
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+        .dropdown.open .dropdown-toggle:after {
+            transform: rotate(180deg);
+        }
         /* Responsive menu */
         @media (max-width: 991.98px) {
             .navbar-content {
@@ -118,7 +166,7 @@
                 background: var(--primary-gradient);
                 border-radius: 12px;
                 flex-direction: column;
-                min-width: 160px;
+                min-width: 180px;
                 box-shadow: 0 4px 16px rgba(0,0,0,0.12);
                 z-index: 1000;
                 padding: 0.5rem 0.2rem;
@@ -129,11 +177,17 @@
             .navbar-toggler {
                 display: block;
             }
+            .dropdown-menu {
+                position: static;
+                min-width: 100%;
+                box-shadow: none;
+                margin-top: 0.2rem;
+            }
         }
         @media (max-width: 768px) {
             .navbar-title-text { font-size: 1rem; }
             .navbar-logo { height: 26px; }
-            .navbar-menu a { font-size: 0.95rem; padding: 0.3rem 0.7rem; }
+            .navbar-menu a, .navbar-menu .dropdown-toggle { font-size: 0.95rem; padding: 0.3rem 0.7rem; }
         }
 
         .container {
@@ -243,6 +297,14 @@
             margin: 0;
         }
 
+        .stat-year {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            color: #fff;
+            font-style: italic;
+            margin-top: 0.1rem;
+        }
+
         .chart-container {
             position: relative;
             height: 280px;
@@ -291,7 +353,148 @@
             if (menu && toggler && !menu.contains(e.target) && !toggler.contains(e.target)) {
                 menu.classList.remove('show');
             }
+            // Đóng dropdown nếu click ra ngoài
+            var dropdown = document.querySelector('.dropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
         });
+        // Toggle dropdown
+        function toggleDropdown(e) {
+            e.stopPropagation();
+            var dropdown = e.currentTarget.parentElement;
+            dropdown.classList.toggle('open');
+        }
+
+        // Hàm xử lý dữ liệu từ API
+        function processData(apiData) {
+            // Bỏ qua hàng đầu tiên (header)
+            const data = apiData.data.slice(1);
+            
+            // Chuyển đổi dữ liệu thành định dạng dễ xử lý
+            return data.map(row => {
+                const date = new Date(row[1]); // Thoi_Gian_Tao
+                return {
+                    year: date.getFullYear(),
+                    tongThanhVien: parseInt(row[12]) || 0, // Tong_Thanh_Vien
+                    tongChiPhi: parseFloat(row[29].replace(/\./g, '').replace(',', '.')) || 0, // Tong_Chi_Phi
+                    tongThuNhap: parseFloat(row[32].replace(/\./g, '').replace(',', '.')) || 0, // Tong_Thu_Nhap
+                    chiPhiTheoLoai: {
+                        nhaO: parseFloat(row[13].replace(/\./g, '').replace(',', '.')) || 0,
+                        gao: parseFloat(row[14].replace(/\./g, '').replace(',', '.')) || 0,
+                        thit: parseFloat(row[15].replace(/\./g, '').replace(',', '.')) || 0,
+                        ca: parseFloat(row[16].replace(/\./g, '').replace(',', '.')) || 0,
+                        rauCu: parseFloat(row[17].replace(/\./g, '').replace(',', '.')) || 0,
+                        sua: parseFloat(row[18].replace(/\./g, '').replace(',', '.')) || 0,
+                        giaVi: parseFloat(row[19].replace(/\./g, '').replace(',', '.')) || 0,
+                        hocPhi: parseFloat(row[20].replace(/\./g, '').replace(',', '.')) || 0,
+                        sachVo: parseFloat(row[21].replace(/\./g, '').replace(',', '.')) || 0,
+                        dongPhuc: parseFloat(row[22].replace(/\./g, '').replace(',', '.')) || 0,
+                        khacGiaoDuc: parseFloat(row[23].replace(/\./g, '').replace(',', '.')) || 0,
+                        dien: parseFloat(row[24].replace(/\./g, '').replace(',', '.')) || 0,
+                        nuoc: parseFloat(row[25].replace(/\./g, '').replace(',', '.')) || 0,
+                        internet: parseFloat(row[26].replace(/\./g, '').replace(',', '.')) || 0,
+                        rac: parseFloat(row[27].replace(/\./g, '').replace(',', '.')) || 0
+                    }
+                };
+            });
+        }
+
+        // Hàm tính toán thống kê cho một năm
+        function calculateYearStats(data, year) {
+            const yearData = data.filter(item => item.year === year);
+            if (yearData.length === 0) return null;
+
+            const tongKhaoSat = yearData.length;
+            const tongThanhVien = yearData.reduce((sum, item) => sum + item.tongThanhVien, 0);
+            const tongChiPhi = yearData.reduce((sum, item) => sum + item.tongChiPhi, 0);
+            const tongThuNhap = yearData.reduce((sum, item) => sum + item.tongThuNhap, 0);
+            
+            return {
+                tongKhaoSat,
+                tongThanhVien,
+                tongChiPhi,
+                tongThuNhap,
+                chiPhiTB: tongChiPhi / tongKhaoSat,
+                thuNhapTB: tongThuNhap / tongKhaoSat,
+                chiPhiTheoLoai: yearData[0].chiPhiTheoLoai // Lấy chi phí theo loại từ bản ghi đầu tiên
+            };
+        }
+
+        // Hàm cập nhật hiển thị
+        function updateDisplay(processedData) {
+            // Tìm năm lớn nhất
+            const latestYear = Math.max(...processedData.map(item => item.year));
+            
+            // Tính toán thống kê cho năm lớn nhất
+            const latestYearStats = calculateYearStats(processedData, latestYear);
+            
+            if (latestYearStats) {
+                // Cập nhật năm cho tất cả các phần tử
+                document.querySelectorAll('[id^="year"]').forEach(element => {
+                    element.textContent = `Năm ${latestYear}`;
+                });
+
+                // Cập nhật các giá trị thống kê
+                document.getElementById('tongKhaoSat').textContent = latestYearStats.tongKhaoSat.toLocaleString('vi-VN');
+                document.getElementById('tongThanhVien').textContent = latestYearStats.tongThanhVien.toLocaleString('vi-VN');
+                document.getElementById('tongChiPhi').textContent = latestYearStats.tongChiPhi.toLocaleString('vi-VN') + ' đ';
+                document.getElementById('tongThuNhap').textContent = latestYearStats.tongThuNhap.toLocaleString('vi-VN') + ' đ';
+                document.getElementById('chiPhiTB').textContent = Math.round(latestYearStats.chiPhiTB).toLocaleString('vi-VN') + ' đ';
+                document.getElementById('thuNhapTB').textContent = Math.round(latestYearStats.thuNhapTB).toLocaleString('vi-VN') + ' đ';
+
+                // Cập nhật biểu đồ
+                updateCharts(processedData, latestYear);
+            }
+        }
+
+        // Hàm cập nhật biểu đồ
+        function updateCharts(data, latestYear) {
+            // Lấy 5 năm gần nhất cho biểu đồ so sánh
+            const recentYears = [...new Set(data.map(item => item.year))]
+                .sort((a, b) => b - a)
+                .slice(0, 5)
+                .reverse();
+
+            // Lọc dữ liệu cho biểu đồ so sánh
+            const comparisonData = recentYears.map(year => {
+                const yearData = data.find(item => item.year === year);
+                return {
+                    year: year,
+                    chiPhi: yearData?.tongChiPhi || 0,
+                    thuNhap: yearData?.tongThuNhap || 0
+                };
+            });
+
+            // Cập nhật biểu đồ so sánh
+            updateComparisonChart(comparisonData);
+
+            // Lấy dữ liệu chi phí theo loại của năm lớn nhất
+            const latestYearData = data.find(item => item.year === latestYear);
+            if (latestYearData) {
+                updatePieChart(latestYearData.chiPhiTheoLoai || {});
+            }
+        }
+
+        // Hàm load dữ liệu
+        async function loadData() {
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbyIfABkyH2K8RnIB4_aOl-AUXmauvPcq-uKtoGSRUFfdkvRPa8jWAf1TDT6UcXTtUl_qQ/exec');
+                const apiData = await response.json();
+                
+                if (apiData.status === 'success') {
+                    const processedData = processData(apiData);
+                    updateDisplay(processedData);
+                } else {
+                    console.error('Lỗi khi tải dữ liệu:', apiData);
+                }
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu:', error);
+            }
+        }
+
+        // Gọi hàm load dữ liệu khi trang đã tải xong
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </head>
 <body>
@@ -306,7 +509,14 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="navbar-menu" id="navbarMenu">
-                <a href="index.html" class="active"><i class="fas fa-chart-pie"></i> Báo cáo</a>
+                <div class="dropdown">
+                    <span class="dropdown-toggle" onclick="toggleDropdown(event)"><i class="fas fa-chart-pie"></i> Báo cáo</span>
+                    <div class="dropdown-menu">
+                        <a href="index.html" class="active">Tổng quan</a>
+                        <a href="#">Báo cáo chi tiết</a>
+                        <a href="#">Báo cáo theo năm</a>
+                    </div>
+                </div>
                 <a href="khaosat.html"><i class="fas fa-clipboard-list"></i> Khảo sát</a>
             </div>
         </div>
@@ -332,6 +542,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="tongKhaoSat">0</div>
                             <div class="stat-title">Tổng số khảo sát</div>
+                            <div class="stat-year" id="yearKhaoSat"></div>
                         </div>
                     </div>
                 </div>
@@ -345,6 +556,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="tongThanhVien">0</div>
                             <div class="stat-title">Tổng thành viên</div>
+                            <div class="stat-year" id="yearThanhVien"></div>
                         </div>
                     </div>
                 </div>
@@ -358,6 +570,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="tongChiPhi">0</div>
                             <div class="stat-title">Tổng chi phí</div>
+                            <div class="stat-year" id="yearChiPhi"></div>
                         </div>
                     </div>
                 </div>
@@ -371,6 +584,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="tongThuNhap">0</div>
                             <div class="stat-title">Tổng thu nhập</div>
+                            <div class="stat-year" id="yearThuNhap"></div>
                         </div>
                     </div>
                 </div>
@@ -388,6 +602,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="chiPhiTB">0</div>
                             <div class="stat-title">Chi phí TB/hộ</div>
+                            <div class="stat-year" id="yearChiPhiTB"></div>
                         </div>
                     </div>
                 </div>
@@ -401,6 +616,7 @@
                         <div class="stat-info">
                             <div class="stat-value" id="thuNhapTB">0</div>
                             <div class="stat-title">Thu nhập TB/hộ</div>
+                            <div class="stat-year" id="yearThuNhapTB"></div>
                         </div>
                     </div>
                 </div>
@@ -439,7 +655,7 @@
                 <div class="card chart-card">
                     <div class="card-title">
                         <i class="fas fa-chart-line"></i>
-                        So sánh thu nhập & chi phí hàng năm
+                        So sánh thu nhập & chi phí 5 năm gần nhất
                     </div>
                     <div class="chart-container">
                         <canvas id="chartThuNhapChiPhi"></canvas>
@@ -450,7 +666,7 @@
                 <div class="card chart-card">
                     <div class="card-title">
                         <i class="fas fa-chart-pie"></i>
-                        Chi phí theo loại
+                        Chi phí theo loại (<span id="yearChiPhiPie"></span>)
                     </div>
                     <div class="chart-container">
                         <canvas id="chiPhiPieChart"></canvas>
