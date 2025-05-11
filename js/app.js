@@ -546,4 +546,54 @@ function updatePieChart(chiPhiTheoLoai) {
             }
         }
     });
+}
+
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('DT_KHAO_SAT');
+    // Lấy dữ liệu từ e.parameter
+    const data = e.parameter;
+    sheet.appendRow([
+      new Date(),
+      new Date(),
+      Session.getActiveUser().getEmail(),
+      Session.getActiveUser().getEmail(),
+      'Mới tạo',
+      data.hoTen,
+      data.dienThoai,
+      data.viTri,
+      data.diaChi,
+      data.nguoiLon,
+      data.treEm,
+      parseInt(data.nguoiLon) + parseInt(data.treEm),
+      data.loaiNhaO,
+      data.chiPhiNhaO,
+      data.gao,
+      data.thit,
+      data.ca,
+      data.rauCu,
+      data.sua,
+      data.giaVi,
+      data.hocPhi,
+      data.sachVo,
+      data.dongPhuc,
+      data.khacGiaoDuc,
+      data.dienNuoc,
+      data.internet,
+      data.rac,
+      // Tổng chi phí
+      parseInt(data.chiPhiNhaO) + parseInt(data.gao) + parseInt(data.thit) +
+      parseInt(data.ca) + parseInt(data.rauCu) + parseInt(data.sua) +
+      parseInt(data.giaVi) + parseInt(data.hocPhi) + parseInt(data.sachVo) +
+      parseInt(data.dongPhuc) + parseInt(data.khacGiaoDuc) + parseInt(data.dienNuoc) +
+      parseInt(data.internet) + parseInt(data.rac),
+      data.thuNhapChinh,
+      data.thuNhapPhu,
+      parseInt(data.thuNhapChinh) + parseInt(data.thuNhapPhu),
+      data.ghiChu
+    ]);
+    return ContentService.createTextOutput("OK");
+  } catch (error) {
+    return ContentService.createTextOutput("ERROR: " + error);
+  }
 } 
