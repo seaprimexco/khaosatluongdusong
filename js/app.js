@@ -505,7 +505,7 @@ function updateComparisonChart(comparisonData) {
 
 function updatePieChart(chiPhiTheoLoai) {
     const ctx = document.getElementById('chiPhiPieChart').getContext('2d');
-    // Xóa chart cũ nếu có
+    // Chỉ destroy nếu đúng là Chart object
     if (window.chiPhiPieChart && typeof window.chiPhiPieChart.destroy === 'function') {
         window.chiPhiPieChart.destroy();
     }
