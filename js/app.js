@@ -87,8 +87,7 @@ function xuLyDuLieu(data) {
       giaoDuc: filtered.reduce((sum, row) =>
         sum + (parseInt((row[20] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
         + (parseInt((row[21] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
-        + (parseInt((row[22] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
-        + (parseInt((row[23] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+        + (parseInt((row[22] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
       tienIch: filtered.reduce((sum, row) =>
         sum + (parseInt((row[24] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
         + (parseInt((row[25] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
@@ -373,7 +372,7 @@ function hienThiDuLieu(data) {
 
 // Gọi API và xử lý dữ liệu
 document.addEventListener('DOMContentLoaded', function() {
-  fetch('https://script.google.com/macros/s/AKfycbyIfABkyH2K8RnIB4_aOl-AUXmauvPcq-uKtoGSRUFfdkvRPa8jWAf1TDT6UcXTtUl_qQ/exec')
+  fetch('https://script.google.com/macros/s/AKfycbxVjXAiM3-W3bxNUnmrx-BfZe1sIHAV9h3qhp7T2Y4IB4aEGalvvch6-l5qimz7u7jdsA/exec')
     .then(res => res.json())
     .then(result => {
       if (result && result.status === 'success' && result.data) {
