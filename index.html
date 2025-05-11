@@ -11,45 +11,110 @@
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+        }
+        .navbar-brand {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
         .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
             height: 100%;
-            transition: transform 0.2s;
+            background: white;
         }
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .stat-card {
-            min-height: 150px;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 1rem;
         }
         .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
         }
         .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0.3rem 0;
+            color: #fff;
         }
         .stat-title {
-            font-size: 1.1rem;
-            opacity: 0.8;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: #fff;
+            font-weight: 500;
         }
         .chart-container {
             position: relative;
-            height: 400px;
-            margin-bottom: 2rem;
+            height: 350px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
         }
         .card-title {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
         }
         .card-title i {
+            font-size: 1.2rem;
+            color: #0d6efd;
+        }
+        .container {
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+        }
+        h2 {
             font-size: 1.5rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1.5rem;
+        }
+        .row {
+            margin-bottom: 1.5rem;
+        }
+        .bg-primary { background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important; }
+        .bg-success { background: linear-gradient(135deg, #198754 0%, #146c43 100%) !important; }
+        .bg-info { background: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%) !important; }
+        .bg-warning { background: linear-gradient(135deg, #ffc107 0%, #cc9a06 100%) !important; }
+        .bg-danger { background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important; }
+        .bg-secondary { background: linear-gradient(135deg, #6c757d 0%, #565e64 100%) !important; }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stat-card {
+                min-height: 100px;
+            }
+            .stat-icon {
+                font-size: 1.5rem;
+            }
+            .stat-value {
+                font-size: 1.2rem;
+            }
+            .stat-title {
+                font-size: 0.8rem;
+            }
+            .chart-container {
+                height: 300px;
+            }
         }
     </style>
 </head>
