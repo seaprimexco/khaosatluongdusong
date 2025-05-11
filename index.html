@@ -374,27 +374,38 @@
             // Chuyển đổi dữ liệu thành định dạng dễ xử lý
             return data.map(row => {
                 const date = new Date(row[1]); // Thoi_Gian_Tao
+                
+                // Hàm helper để xử lý số
+                const parseNumber = (value) => {
+                    if (value === undefined || value === null) return 0;
+                    if (typeof value === 'number') return value;
+                    if (typeof value === 'string') {
+                        return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+                    }
+                    return 0;
+                };
+
                 return {
                     year: date.getFullYear(),
                     tongThanhVien: parseInt(row[12]) || 0, // Tong_Thanh_Vien
-                    tongChiPhi: parseFloat(row[29].replace(/\./g, '').replace(',', '.')) || 0, // Tong_Chi_Phi
-                    tongThuNhap: parseFloat(row[32].replace(/\./g, '').replace(',', '.')) || 0, // Tong_Thu_Nhap
+                    tongChiPhi: parseNumber(row[29]), // Tong_Chi_Phi
+                    tongThuNhap: parseNumber(row[32]), // Tong_Thu_Nhap
                     chiPhiTheoLoai: {
-                        nhaO: parseFloat(row[13].replace(/\./g, '').replace(',', '.')) || 0,
-                        gao: parseFloat(row[14].replace(/\./g, '').replace(',', '.')) || 0,
-                        thit: parseFloat(row[15].replace(/\./g, '').replace(',', '.')) || 0,
-                        ca: parseFloat(row[16].replace(/\./g, '').replace(',', '.')) || 0,
-                        rauCu: parseFloat(row[17].replace(/\./g, '').replace(',', '.')) || 0,
-                        sua: parseFloat(row[18].replace(/\./g, '').replace(',', '.')) || 0,
-                        giaVi: parseFloat(row[19].replace(/\./g, '').replace(',', '.')) || 0,
-                        hocPhi: parseFloat(row[20].replace(/\./g, '').replace(',', '.')) || 0,
-                        sachVo: parseFloat(row[21].replace(/\./g, '').replace(',', '.')) || 0,
-                        dongPhuc: parseFloat(row[22].replace(/\./g, '').replace(',', '.')) || 0,
-                        khacGiaoDuc: parseFloat(row[23].replace(/\./g, '').replace(',', '.')) || 0,
-                        dien: parseFloat(row[24].replace(/\./g, '').replace(',', '.')) || 0,
-                        nuoc: parseFloat(row[25].replace(/\./g, '').replace(',', '.')) || 0,
-                        internet: parseFloat(row[26].replace(/\./g, '').replace(',', '.')) || 0,
-                        rac: parseFloat(row[27].replace(/\./g, '').replace(',', '.')) || 0
+                        nhaO: parseNumber(row[13]),
+                        gao: parseNumber(row[14]),
+                        thit: parseNumber(row[15]),
+                        ca: parseNumber(row[16]),
+                        rauCu: parseNumber(row[17]),
+                        sua: parseNumber(row[18]),
+                        giaVi: parseNumber(row[19]),
+                        hocPhi: parseNumber(row[20]),
+                        sachVo: parseNumber(row[21]),
+                        dongPhuc: parseNumber(row[22]),
+                        khacGiaoDuc: parseNumber(row[23]),
+                        dien: parseNumber(row[24]),
+                        nuoc: parseNumber(row[25]),
+                        internet: parseNumber(row[26]),
+                        rac: parseNumber(row[27])
                     }
                 };
             });
