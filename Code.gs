@@ -2,22 +2,21 @@
 function doPost(e) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('DT_KHAO_SAT');
-    const data = JSON.parse(e.postData.contents);
-    
-    // Thêm dữ liệu mới vào sheet
+    // Lấy dữ liệu từ e.parameter (dạng form)
+    const data = e.parameter;
     sheet.appendRow([
-      new Date(), // Thời gian tạo
-      new Date(), // Thời gian cập nhật
-      Session.getActiveUser().getEmail(), // Người tạo
-      Session.getActiveUser().getEmail(), // Người cập nhật
-      'Mới tạo', // Trạng thái
+      new Date(),
+      new Date(),
+      Session.getActiveUser().getEmail(),
+      Session.getActiveUser().getEmail(),
+      'Mới tạo',
       data.hoTen,
       data.dienThoai,
       data.viTri,
       data.diaChi,
       data.nguoiLon,
       data.treEm,
-      parseInt(data.nguoiLon) + parseInt(data.treEm), // Tổng thành viên
+      parseInt(data.nguoiLon) + parseInt(data.treEm),
       data.loaiNhaO,
       data.chiPhiNhaO,
       data.gao,
@@ -33,27 +32,20 @@ function doPost(e) {
       data.dienNuoc,
       data.internet,
       data.rac,
-      // Tính tổng chi phí
-      parseInt(data.chiPhiNhaO) + parseInt(data.gao) + parseInt(data.thit) + 
-      parseInt(data.ca) + parseInt(data.rauCu) + parseInt(data.sua) + 
-      parseInt(data.giaVi) + parseInt(data.hocPhi) + parseInt(data.sachVo) + 
-      parseInt(data.dongPhuc) + parseInt(data.khacGiaoDuc) + parseInt(data.dienNuoc) + 
+      // Tổng chi phí
+      parseInt(data.chiPhiNhaO) + parseInt(data.gao) + parseInt(data.thit) +
+      parseInt(data.ca) + parseInt(data.rauCu) + parseInt(data.sua) +
+      parseInt(data.giaVi) + parseInt(data.hocPhi) + parseInt(data.sachVo) +
+      parseInt(data.dongPhuc) + parseInt(data.khacGiaoDuc) + parseInt(data.dienNuoc) +
       parseInt(data.internet) + parseInt(data.rac),
       data.thuNhapChinh,
       data.thuNhapPhu,
-      parseInt(data.thuNhapChinh) + parseInt(data.thuNhapPhu), // Tổng thu nhập
+      parseInt(data.thuNhapChinh) + parseInt(data.thuNhapPhu),
       data.ghiChu
     ]);
-
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'success',
-      'message': 'Dữ liệu đã được lưu thành công'
-    })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput("OK");
   } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'error',
-      'message': error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput("ERROR: " + error);
   }
 }
 
