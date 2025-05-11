@@ -25,78 +25,74 @@ function xuLyDuLieu(data) {
           2021: 6000000,
           2022: 6500000,
           2023: 7000000
-        }
+        },
+        latestYear: null
       };
     }
 
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    
-    // Chuẩn bị dữ liệu 5 năm gần nhất
-    let yearStats = {};
-    for (let i = 0; i < 5; i++) {
-      const year = currentYear - i;
-      yearStats[year] = { thuNhap: 0, chiPhi: 0, count: 0 };
-    }
+    // Lấy danh sách năm từ cột thời gian tạo
+    const years = data.slice(1).map(row => {
+      const date = new Date(row[1]);
+      return date.getFullYear();
+    });
+    const latestYear = Math.max(...years);
 
-    // Duyệt qua từng dòng dữ liệu (bỏ qua header)
+    // Lọc chỉ lấy các dòng của năm lớn nhất
+    const filtered = data.slice(1).filter(row => {
+      const date = new Date(row[1]);
+      return date.getFullYear() === latestYear;
+    });
+
+    // Chuẩn bị dữ liệu 5 năm gần nhất cho biểu đồ
+    let yearStats = {};
+    years.forEach(y => { yearStats[y] = { thuNhap: 0, chiPhi: 0, count: 0 }; });
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
-      if (!row || !row[1]) continue; // Bỏ qua dòng không hợp lệ
-      
-      try {
-        const date = new Date(row[1]); // Cột B: Thời gian tạo
-        if (isNaN(date.getTime())) continue; // Bỏ qua nếu ngày không hợp lệ
-        
-        const year = date.getFullYear();
-        if (yearStats[year] !== undefined) {
-          const thuNhap = parseInt(row[32] || 0) || 0;
-          const chiPhi = parseInt(row[29] || 0) || 0;
-          yearStats[year].thuNhap += thuNhap;
-          yearStats[year].chiPhi += chiPhi;
-          yearStats[year].count += 1;
-        }
-      } catch (error) {
-        console.error('Lỗi xử lý dòng dữ liệu:', error);
-        continue;
-      }
+      if (!row || !row[1]) continue;
+      const date = new Date(row[1]);
+      if (isNaN(date.getTime())) continue;
+      const year = date.getFullYear();
+      if (!yearStats[year]) yearStats[year] = { thuNhap: 0, chiPhi: 0, count: 0 };
+      const thuNhap = parseInt(row[32] || 0) || 0;
+      const chiPhi = parseInt(row[29] || 0) || 0;
+      yearStats[year].thuNhap += thuNhap;
+      yearStats[year].chiPhi += chiPhi;
+      yearStats[year].count += 1;
     }
-
-    // Chuyển dữ liệu sang mảng cho biểu đồ
-    const years = Object.keys(yearStats).sort();
-    const chartData = years.map(year => ({
+    const chartYears = Object.keys(yearStats).sort((a, b) => a - b).slice(-5);
+    const chartData = chartYears.map(year => ({
       year: year,
       thuNhap: yearStats[year].thuNhap || 0,
       chiPhi: yearStats[year].chiPhi || 0,
       count: yearStats[year].count || 0
     }));
 
-    // Tính các chỉ số tổng quan
-    const tongKhaoSat = Math.max(0, data.length - 1);
-    const tongThanhVien = data.slice(1).reduce((sum, row) => sum + (parseInt(row[11] || 0) || 0), 0);
-    const tongChiPhi = data.slice(1).reduce((sum, row) => sum + (parseInt(row[29] || 0) || 0), 0);
-    const tongThuNhap = data.slice(1).reduce((sum, row) => sum + (parseInt(row[32] || 0) || 0), 0);
+    // Tính các chỉ số tổng quan chỉ cho năm lớn nhất
+    const tongKhaoSat = filtered.length;
+    const tongThanhVien = filtered.reduce((sum, row) => sum + (parseInt(row[11] || 0) || 0), 0);
+    const tongChiPhi = filtered.reduce((sum, row) => sum + (parseInt(row[29] || 0) || 0), 0);
+    const tongThuNhap = filtered.reduce((sum, row) => sum + (parseInt(row[32] || 0) || 0), 0);
     const chiPhiTB = tongKhaoSat > 0 ? Math.round(tongChiPhi / tongKhaoSat) : 0;
     const thuNhapTB = tongKhaoSat > 0 ? Math.round(tongThuNhap / tongKhaoSat) : 0;
 
-    // Tính tổng chi phí theo từng loại
+    // Tính tổng chi phí theo từng loại chỉ cho năm lớn nhất
     const chiPhiTheoLoai = {
-      nhaO: data.slice(1).reduce((sum, row) => sum + (parseInt(row[13] || 0) || 0), 0),
-      gao: data.slice(1).reduce((sum, row) => sum + (parseInt(row[14] || 0) || 0), 0),
-      thit: data.slice(1).reduce((sum, row) => sum + (parseInt(row[15] || 0) || 0), 0),
-      ca: data.slice(1).reduce((sum, row) => sum + (parseInt(row[16] || 0) || 0), 0),
-      rauCu: data.slice(1).reduce((sum, row) => sum + (parseInt(row[17] || 0) || 0), 0),
-      sua: data.slice(1).reduce((sum, row) => sum + (parseInt(row[18] || 0) || 0), 0),
-      giaVi: data.slice(1).reduce((sum, row) => sum + (parseInt(row[19] || 0) || 0), 0),
-      giaoDuc: data.slice(1).reduce((sum, row) => 
-        sum + (parseInt(row[20] || 0) || 0) + (parseInt(row[21] || 0) || 0) + 
+      nhaO: filtered.reduce((sum, row) => sum + (parseInt(row[13] || 0) || 0), 0),
+      gao: filtered.reduce((sum, row) => sum + (parseInt(row[14] || 0) || 0), 0),
+      thit: filtered.reduce((sum, row) => sum + (parseInt(row[15] || 0) || 0), 0),
+      ca: filtered.reduce((sum, row) => sum + (parseInt(row[16] || 0) || 0), 0),
+      rauCu: filtered.reduce((sum, row) => sum + (parseInt(row[17] || 0) || 0), 0),
+      sua: filtered.reduce((sum, row) => sum + (parseInt(row[18] || 0) || 0), 0),
+      giaVi: filtered.reduce((sum, row) => sum + (parseInt(row[19] || 0) || 0), 0),
+      giaoDuc: filtered.reduce((sum, row) =>
+        sum + (parseInt(row[20] || 0) || 0) + (parseInt(row[21] || 0) || 0) +
         (parseInt(row[22] || 0) || 0) + (parseInt(row[23] || 0) || 0), 0),
-      tienIch: data.slice(1).reduce((sum, row) => 
-        sum + (parseInt(row[24] || 0) || 0) + (parseInt(row[25] || 0) || 0) + 
+      tienIch: filtered.reduce((sum, row) =>
+        sum + (parseInt(row[24] || 0) || 0) + (parseInt(row[25] || 0) || 0) +
         (parseInt(row[26] || 0) || 0), 0)
     };
 
-    // Mức lương đủ sống theo Anker
+    // Mức lương đủ sống theo Anker (giữ nguyên)
     const luongDuSong = {
       2019: 5000000,
       2020: 5500000,
@@ -105,11 +101,10 @@ function xuLyDuLieu(data) {
       2023: 7000000
     };
 
-    // Tìm năm có chi phí/thu nhập cao nhất/thấp nhất
+    // Tìm năm có chi phí/thu nhập cao nhất/thấp nhất (giữ nguyên logic cũ)
     let namChiPhiMax = 'N/A', namChiPhiMin = 'N/A', namThuNhapMax = 'N/A', namThuNhapMin = 'N/A';
     let maxChiPhi = -Infinity, minChiPhi = Infinity, maxThuNhap = -Infinity, minThuNhap = Infinity;
-    
-    years.forEach(year => {
+    Object.keys(yearStats).forEach(year => {
       const stats = yearStats[year];
       if (stats.chiPhi > maxChiPhi) {
         maxChiPhi = stats.chiPhi;
@@ -142,7 +137,8 @@ function xuLyDuLieu(data) {
       namThuNhapMax,
       namThuNhapMin,
       chiPhiTheoLoai,
-      luongDuSong
+      luongDuSong,
+      latestYear
     };
   } catch (error) {
     console.error('Lỗi xử lý dữ liệu:', error);
