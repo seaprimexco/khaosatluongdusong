@@ -53,8 +53,8 @@ function xuLyDuLieu(data) {
       if (isNaN(date.getTime())) continue;
       const year = date.getFullYear();
       if (!yearStats[year]) yearStats[year] = { thuNhap: 0, chiPhi: 0, count: 0 };
-      const thuNhap = parseInt(row[32] || 0) || 0;
-      const chiPhi = parseInt(row[29] || 0) || 0;
+      const thuNhap = parseInt((row[32] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0;
+      const chiPhi = parseInt((row[29] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0;
       yearStats[year].thuNhap += thuNhap;
       yearStats[year].chiPhi += chiPhi;
       yearStats[year].count += 1;
@@ -69,27 +69,30 @@ function xuLyDuLieu(data) {
 
     // Tính các chỉ số tổng quan chỉ cho năm lớn nhất
     const tongKhaoSat = filtered.length;
-    const tongThanhVien = filtered.reduce((sum, row) => sum + (parseInt(row[11] || 0) || 0), 0);
-    const tongChiPhi = filtered.reduce((sum, row) => sum + (parseInt(row[29] || 0) || 0), 0);
-    const tongThuNhap = filtered.reduce((sum, row) => sum + (parseInt(row[32] || 0) || 0), 0);
+    const tongThanhVien = filtered.reduce((sum, row) => sum + (parseInt((row[11] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0);
+    const tongChiPhi = filtered.reduce((sum, row) => sum + (parseInt((row[29] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0);
+    const tongThuNhap = filtered.reduce((sum, row) => sum + (parseInt((row[32] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0);
     const chiPhiTB = tongKhaoSat > 0 ? Math.round(tongChiPhi / tongKhaoSat) : 0;
     const thuNhapTB = tongKhaoSat > 0 ? Math.round(tongThuNhap / tongKhaoSat) : 0;
 
     // Tính tổng chi phí theo từng loại chỉ cho năm lớn nhất
     const chiPhiTheoLoai = {
-      nhaO: filtered.reduce((sum, row) => sum + (parseInt(row[13] || 0) || 0), 0),
-      gao: filtered.reduce((sum, row) => sum + (parseInt(row[14] || 0) || 0), 0),
-      thit: filtered.reduce((sum, row) => sum + (parseInt(row[15] || 0) || 0), 0),
-      ca: filtered.reduce((sum, row) => sum + (parseInt(row[16] || 0) || 0), 0),
-      rauCu: filtered.reduce((sum, row) => sum + (parseInt(row[17] || 0) || 0), 0),
-      sua: filtered.reduce((sum, row) => sum + (parseInt(row[18] || 0) || 0), 0),
-      giaVi: filtered.reduce((sum, row) => sum + (parseInt(row[19] || 0) || 0), 0),
+      nhaO: filtered.reduce((sum, row) => sum + (parseInt((row[13] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      gao: filtered.reduce((sum, row) => sum + (parseInt((row[14] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      thit: filtered.reduce((sum, row) => sum + (parseInt((row[15] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      ca: filtered.reduce((sum, row) => sum + (parseInt((row[16] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      rauCu: filtered.reduce((sum, row) => sum + (parseInt((row[17] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      sua: filtered.reduce((sum, row) => sum + (parseInt((row[18] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
+      giaVi: filtered.reduce((sum, row) => sum + (parseInt((row[19] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
       giaoDuc: filtered.reduce((sum, row) =>
-        sum + (parseInt(row[20] || 0) || 0) + (parseInt(row[21] || 0) || 0) +
-        (parseInt(row[22] || 0) || 0) + (parseInt(row[23] || 0) || 0), 0),
+        sum + (parseInt((row[20] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
+        + (parseInt((row[21] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
+        + (parseInt((row[22] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
+        + (parseInt((row[23] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0),
       tienIch: filtered.reduce((sum, row) =>
-        sum + (parseInt(row[24] || 0) || 0) + (parseInt(row[25] || 0) || 0) +
-        (parseInt(row[26] || 0) || 0), 0)
+        sum + (parseInt((row[24] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
+        + (parseInt((row[25] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0)
+        + (parseInt((row[26] || '0').toString().replace(/\./g, '').replace(',', '.')) || 0), 0)
     };
 
     // Mức lương đủ sống theo Anker (giữ nguyên)
@@ -165,6 +168,15 @@ function hienThiDuLieu(data) {
       namChiPhiMax: document.getElementById('namChiPhiMax'),
       namThuNhapMax: document.getElementById('namThuNhapMax')
     };
+
+    // Cập nhật chú thích năm
+    if (document.getElementById('yearKhaoSat')) document.getElementById('yearKhaoSat').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearThanhVien')) document.getElementById('yearThanhVien').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearChiPhi')) document.getElementById('yearChiPhi').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearThuNhap')) document.getElementById('yearThuNhap').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearChiPhiTB')) document.getElementById('yearChiPhiTB').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearThuNhapTB')) document.getElementById('yearThuNhapTB').textContent = `Năm ${data.latestYear}`;
+    if (document.getElementById('yearChiPhiPie')) document.getElementById('yearChiPhiPie').textContent = data.latestYear;
 
     // Kiểm tra và cập nhật từng phần tử
     if (elements.tongKhaoSat) elements.tongKhaoSat.textContent = data.tongKhaoSat || 0;
