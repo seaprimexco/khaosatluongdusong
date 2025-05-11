@@ -191,7 +191,10 @@ function hienThiDuLieu(data) {
     // Vẽ biểu đồ thu nhập & chi phí
     const ctx = document.getElementById('chartThuNhapChiPhi');
     if (ctx) {
-      new Chart(ctx.getContext('2d'), {
+      if (window.comparisonChart) {
+        window.comparisonChart.destroy();
+      }
+      window.comparisonChart = new Chart(ctx.getContext('2d'), {
         type: 'bar',
         data: {
           labels: data.chartData.map(d => d.year),
@@ -264,7 +267,10 @@ function hienThiDuLieu(data) {
     // Vẽ biểu đồ chi phí theo loại
     const chiPhiPieCtx = document.getElementById('chiPhiPieChart');
     if (chiPhiPieCtx) {
-      new Chart(chiPhiPieCtx.getContext('2d'), {
+      if (window.chiPhiPieChart) {
+        window.chiPhiPieChart.destroy();
+      }
+      window.chiPhiPieChart = new Chart(chiPhiPieCtx.getContext('2d'), {
         type: 'pie',
         data: {
           labels: [
@@ -537,10 +543,7 @@ function updatePieChart(chiPhiTheoLoai) {
         options: {
             responsive: true,
             plugins: {
-                legend: { position: 'right' },
-                title: {
-                    display: false
-                }
+                legend: { position: 'right' }
             }
         }
     });
