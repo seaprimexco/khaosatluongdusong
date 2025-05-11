@@ -267,7 +267,7 @@ function hienThiDuLieu(data) {
     // Vẽ biểu đồ chi phí theo loại
     const chiPhiPieCtx = document.getElementById('chiPhiPieChart');
     if (chiPhiPieCtx) {
-      if (window.chiPhiPieChart) {
+      if (window.chiPhiPieChart && typeof window.chiPhiPieChart.destroy === 'function') {
         window.chiPhiPieChart.destroy();
       }
       window.chiPhiPieChart = new Chart(chiPhiPieCtx.getContext('2d'), {
@@ -506,7 +506,7 @@ function updateComparisonChart(comparisonData) {
 function updatePieChart(chiPhiTheoLoai) {
     const ctx = document.getElementById('chiPhiPieChart').getContext('2d');
     // Xóa chart cũ nếu có
-    if (window.chiPhiPieChart) {
+    if (window.chiPhiPieChart && typeof window.chiPhiPieChart.destroy === 'function') {
         window.chiPhiPieChart.destroy();
     }
     window.chiPhiPieChart = new Chart(ctx, {
