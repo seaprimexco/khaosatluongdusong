@@ -34,19 +34,28 @@
             min-height: 54px;
             display: flex;
             align-items: center;
+        }
+
+        .navbar-content {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
+            width: 100%;
+            min-height: 48px;
         }
 
         .navbar-left {
             display: flex;
             align-items: center;
             gap: 0.7rem;
+            height: 48px;
         }
 
         .navbar-logo {
             height: 32px;
             width: auto;
             display: block;
+            object-fit: contain;
         }
 
         .navbar-title-text {
@@ -55,8 +64,18 @@
             color: #fff;
             letter-spacing: 0.5px;
             margin: 0;
-            line-height: 1;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            line-height: 32px;
+            display: flex;
+            align-items: center;
+            height: 32px;
+        }
+
+        .navbar-toggler {
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 1.5rem;
+            display: none;
         }
 
         .navbar-menu {
@@ -70,14 +89,51 @@
             font-size: 1.05rem;
             font-weight: 500;
             padding: 0.35rem 1rem;
-            border-radius: 6px;
+            border-radius: 2rem;
             text-decoration: none;
-            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.08);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
 
         .navbar-menu a.active, .navbar-menu a:hover {
-            background: rgba(255,255,255,0.18);
-            color: #ffe066;
+            background: #fff;
+            color: var(--primary-gradient);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Responsive menu */
+        @media (max-width: 991.98px) {
+            .navbar-content {
+                flex-direction: row;
+            }
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 56px;
+                right: 10px;
+                background: var(--primary-gradient);
+                border-radius: 12px;
+                flex-direction: column;
+                min-width: 160px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+                z-index: 1000;
+                padding: 0.5rem 0.2rem;
+            }
+            .navbar-menu.show {
+                display: flex;
+            }
+            .navbar-toggler {
+                display: block;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar-title-text { font-size: 1rem; }
+            .navbar-logo { height: 26px; }
+            .navbar-menu a { font-size: 0.95rem; padding: 0.3rem 0.7rem; }
         }
 
         .container {
@@ -221,41 +277,38 @@
         .bg-warning { background: var(--warning-gradient) !important; }
         .bg-danger { background: var(--danger-gradient) !important; }
         .bg-secondary { background: var(--secondary-gradient) !important; }
-
-        @media (max-width: 768px) {
-            .navbar-title-text { font-size: 1rem; }
-            .navbar-logo { height: 26px; }
-            .navbar-menu a { font-size: 0.95rem; padding: 0.3rem 0.7rem; }
-            .stat-card {
-                min-height: 80px;
-            }
-            .stat-icon {
-                font-size: 1.1rem;
-                width: 30px;
-                height: 30px;
-            }
-            .stat-value {
-                font-size: 1rem;
-            }
-            .stat-title {
-                font-size: 0.7rem;
-            }
-            .chart-container {
-                height: 220px;
-            }
-        }
     </style>
+    <script>
+        // Toggle menu for mobile
+        function toggleMenu() {
+            var menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('show');
+        }
+        // Đóng menu khi click ra ngoài
+        document.addEventListener('click', function(e) {
+            var menu = document.getElementById('navbarMenu');
+            var toggler = document.getElementById('navbarToggler');
+            if (menu && toggler && !menu.contains(e.target) && !toggler.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar-custom">
-        <div class="navbar-left">
-            <img src="logo.png" alt="Logo" class="navbar-logo">
-            <span class="navbar-title-text">Hệ thống Khảo sát</span>
-        </div>
-        <div class="navbar-menu">
-            <a href="index.html" class="active"><i class="fas fa-chart-pie me-1"></i> Báo cáo</a>
-            <a href="khaosat.html"><i class="fas fa-clipboard-list me-1"></i> Khảo sát</a>
+        <div class="navbar-content">
+            <div class="navbar-left">
+                <img src="logo.png" alt="Logo" class="navbar-logo">
+                <span class="navbar-title-text">Hệ thống Khảo sát</span>
+            </div>
+            <button class="navbar-toggler" id="navbarToggler" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="active"><i class="fas fa-chart-pie"></i> Báo cáo</a>
+                <a href="khaosat.html"><i class="fas fa-clipboard-list"></i> Khảo sát</a>
+            </div>
         </div>
     </nav>
 
