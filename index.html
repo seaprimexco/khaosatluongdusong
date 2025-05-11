@@ -18,6 +18,7 @@
             --warning-gradient: linear-gradient(135deg, #ffc107 0%, #cc9a06 100%);
             --danger-gradient: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
             --secondary-gradient: linear-gradient(135deg, #6c757d 0%, #565e64 100%);
+            --accent-color: #ff6b6b;
         }
 
         body {
@@ -28,46 +29,66 @@
         .navbar {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             background: var(--primary-gradient) !important;
-            padding: 0.8rem 0;
+            padding: 0.5rem 0;
         }
 
         .navbar-brand {
             font-weight: 600;
             letter-spacing: 0.5px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand img {
+            height: 32px;
+            width: auto;
         }
 
         .nav-link {
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem !important;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem !important;
         }
 
         .container {
-            padding-top: 1.5rem;
-            padding-bottom: 2rem;
+            padding-top: 1rem;
+            padding-bottom: 1.5rem;
         }
 
         .dashboard-header {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .dashboard-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #212529;
+            color: var(--accent-color);
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-title i {
+            color: var(--accent-color);
+            font-size: 1.3rem;
         }
 
         .card {
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
             background: white;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .card:hover {
@@ -76,11 +97,11 @@
         }
 
         .stat-card {
-            min-height: 100px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 1rem;
+            padding: 0.8rem;
             position: relative;
             overflow: hidden;
         }
@@ -102,19 +123,19 @@
             z-index: 1;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .stat-icon {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             opacity: 0.9;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .stat-info {
@@ -122,7 +143,7 @@
         }
 
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin: 0;
             color: #fff;
@@ -130,7 +151,7 @@
         }
 
         .stat-title {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.9;
             color: #fff;
             font-weight: 500;
@@ -139,9 +160,9 @@
 
         .chart-container {
             position: relative;
-            height: 300px;
-            margin-bottom: 1rem;
-            padding: 1rem;
+            height: 280px;
+            margin-bottom: 0.8rem;
+            padding: 0.8rem;
         }
 
         .chart-card {
@@ -152,16 +173,16 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #495057;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             border-bottom: 1px solid #f0f0f0;
         }
 
         .card-title i {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #0d6efd;
         }
 
@@ -174,21 +195,21 @@
 
         @media (max-width: 768px) {
             .stat-card {
-                min-height: 90px;
+                min-height: 80px;
             }
             .stat-icon {
-                font-size: 1.2rem;
-                width: 35px;
-                height: 35px;
+                font-size: 1.1rem;
+                width: 30px;
+                height: 30px;
             }
             .stat-value {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .stat-title {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
             .chart-container {
-                height: 250px;
+                height: 220px;
             }
         }
     </style>
@@ -198,7 +219,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-chart-line me-2"></i>
+                <img src="logo.png" alt="Logo">
                 Hệ thống Khảo sát
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -208,7 +229,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active" href="index.html">
-                            <i class="fas fa-home me-1"></i> Dashboard
+                            <i class="fas fa-chart-pie me-1"></i> Báo cáo
                         </a>
                     </li>
                     <li class="nav-item">
@@ -225,13 +246,13 @@
     <div class="container">
         <div class="dashboard-header">
             <h2 class="dashboard-title">
-                <i class="fas fa-tachometer-alt me-2"></i>
-                Dashboard
+                <i class="fas fa-chart-line"></i>
+                Báo cáo thống kê
             </h2>
         </div>
         
         <!-- Thống kê tổng quan -->
-        <div class="row g-3">
+        <div class="row g-2">
             <div class="col-md-3">
                 <div class="card text-white bg-primary stat-card">
                     <div class="stat-content">
@@ -287,7 +308,7 @@
         </div>
 
         <!-- Chỉ số nâng cao -->
-        <div class="row g-3">
+        <div class="row g-2">
             <div class="col-md-3">
                 <div class="card text-white bg-secondary stat-card">
                     <div class="stat-content">
@@ -343,7 +364,7 @@
         </div>
 
         <!-- Biểu đồ -->
-        <div class="row g-3">
+        <div class="row g-2">
             <div class="col-md-8">
                 <div class="card chart-card">
                     <div class="card-title">
