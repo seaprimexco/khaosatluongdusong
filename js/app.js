@@ -1,5 +1,10 @@
 // Hàm xử lý dữ liệu
 function xuLyDuLieu(data) {
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    console.error('Dữ liệu không hợp lệ');
+    return null;
+  }
+
   const now = new Date();
   const currentYear = now.getFullYear();
   
@@ -13,12 +18,19 @@ function xuLyDuLieu(data) {
   // Duyệt qua từng dòng dữ liệu (bỏ qua header)
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
-    const date = new Date(row[1]); // Cột B: Thời gian tạo
-    const year = date.getFullYear();
-    if (yearStats[year] !== undefined) {
-      yearStats[year].thuNhap += parseInt(row[32] || 0); // Tổng thu nhập
-      yearStats[year].chiPhi += parseInt(row[29] || 0);  // Tổng chi phí
-      yearStats[year].count += 1;
+    if (!row || !row[1]) continue; // Bỏ qua dòng không hợp lệ
+    
+    try {
+      const date = new Date(row[1]); // Cột B: Thời gian tạo
+      const year = date.getFullYear();
+      if (yearStats[year] !== undefined) {
+        yearStats[year].thuNhap += parseInt(row[32] || 0); // Tổng thu nhập
+        yearStats[year].chiPhi += parseInt(row[29] || 0);  // Tổng chi phí
+        yearStats[year].count += 1;
+      }
+    } catch (error) {
+      console.error('Lỗi xử lý dòng dữ liệu:', error);
+      continue;
     }
   }
 
@@ -33,27 +45,27 @@ function xuLyDuLieu(data) {
 
   // Tính các chỉ số tổng quan
   const tongKhaoSat = data.length - 1;
-  const tongThanhVien = data.slice(1).reduce((sum, row) => sum + parseInt(row[11] || 0), 0);
-  const tongChiPhi = data.slice(1).reduce((sum, row) => sum + parseInt(row[29] || 0), 0);
-  const tongThuNhap = data.slice(1).reduce((sum, row) => sum + parseInt(row[32] || 0), 0);
+  const tongThanhVien = data.slice(1).reduce((sum, row) => sum + (parseInt(row[11] || 0) || 0), 0);
+  const tongChiPhi = data.slice(1).reduce((sum, row) => sum + (parseInt(row[29] || 0) || 0), 0);
+  const tongThuNhap = data.slice(1).reduce((sum, row) => sum + (parseInt(row[32] || 0) || 0), 0);
   const chiPhiTB = tongKhaoSat > 0 ? Math.round(tongChiPhi / tongKhaoSat) : 0;
   const thuNhapTB = tongKhaoSat > 0 ? Math.round(tongThuNhap / tongKhaoSat) : 0;
 
   // Tính tổng chi phí theo từng loại
   const chiPhiTheoLoai = {
-    nhaO: data.slice(1).reduce((sum, row) => sum + parseInt(row[13] || 0), 0),
-    gao: data.slice(1).reduce((sum, row) => sum + parseInt(row[14] || 0), 0),
-    thit: data.slice(1).reduce((sum, row) => sum + parseInt(row[15] || 0), 0),
-    ca: data.slice(1).reduce((sum, row) => sum + parseInt(row[16] || 0), 0),
-    rauCu: data.slice(1).reduce((sum, row) => sum + parseInt(row[17] || 0), 0),
-    sua: data.slice(1).reduce((sum, row) => sum + parseInt(row[18] || 0), 0),
-    giaVi: data.slice(1).reduce((sum, row) => sum + parseInt(row[19] || 0), 0),
+    nhaO: data.slice(1).reduce((sum, row) => sum + (parseInt(row[13] || 0) || 0), 0),
+    gao: data.slice(1).reduce((sum, row) => sum + (parseInt(row[14] || 0) || 0), 0),
+    thit: data.slice(1).reduce((sum, row) => sum + (parseInt(row[15] || 0) || 0), 0),
+    ca: data.slice(1).reduce((sum, row) => sum + (parseInt(row[16] || 0) || 0), 0),
+    rauCu: data.slice(1).reduce((sum, row) => sum + (parseInt(row[17] || 0) || 0), 0),
+    sua: data.slice(1).reduce((sum, row) => sum + (parseInt(row[18] || 0) || 0), 0),
+    giaVi: data.slice(1).reduce((sum, row) => sum + (parseInt(row[19] || 0) || 0), 0),
     giaoDuc: data.slice(1).reduce((sum, row) => 
-      sum + parseInt(row[20] || 0) + parseInt(row[21] || 0) + 
-      parseInt(row[22] || 0) + parseInt(row[23] || 0), 0),
+      sum + (parseInt(row[20] || 0) || 0) + (parseInt(row[21] || 0) || 0) + 
+      (parseInt(row[22] || 0) || 0) + (parseInt(row[23] || 0) || 0), 0),
     tienIch: data.slice(1).reduce((sum, row) => 
-      sum + parseInt(row[24] || 0) + parseInt(row[25] || 0) + 
-      parseInt(row[26] || 0), 0)
+      sum + (parseInt(row[24] || 0) || 0) + (parseInt(row[25] || 0) || 0) + 
+      (parseInt(row[26] || 0) || 0), 0)
   };
 
   // Mức lương đủ sống theo Anker
@@ -106,15 +118,20 @@ function xuLyDuLieu(data) {
 
 // Hàm hiển thị dữ liệu
 function hienThiDuLieu(data) {
+  if (!data) {
+    console.error('Không có dữ liệu để hiển thị');
+    return;
+  }
+
   // Cập nhật các chỉ số tổng quan
-  document.getElementById('tongKhaoSat').textContent = data.tongKhaoSat;
-  document.getElementById('tongThanhVien').textContent = data.tongThanhVien;
-  document.getElementById('tongChiPhi').textContent = data.tongChiPhi.toLocaleString() + ' VNĐ';
-  document.getElementById('tongThuNhap').textContent = data.tongThuNhap.toLocaleString() + ' VNĐ';
-  document.getElementById('chiPhiTB').textContent = data.chiPhiTB.toLocaleString() + ' VNĐ';
-  document.getElementById('thuNhapTB').textContent = data.thuNhapTB.toLocaleString() + ' VNĐ';
-  document.getElementById('namChiPhiMax').textContent = data.namChiPhiMax;
-  document.getElementById('namThuNhapMax').textContent = data.namThuNhapMax;
+  document.getElementById('tongKhaoSat').textContent = data.tongKhaoSat || 0;
+  document.getElementById('tongThanhVien').textContent = data.tongThanhVien || 0;
+  document.getElementById('tongChiPhi').textContent = (data.tongChiPhi || 0).toLocaleString() + ' VNĐ';
+  document.getElementById('tongThuNhap').textContent = (data.tongThuNhap || 0).toLocaleString() + ' VNĐ';
+  document.getElementById('chiPhiTB').textContent = (data.chiPhiTB || 0).toLocaleString() + ' VNĐ';
+  document.getElementById('thuNhapTB').textContent = (data.thuNhapTB || 0).toLocaleString() + ' VNĐ';
+  document.getElementById('namChiPhiMax').textContent = data.namChiPhiMax || 'N/A';
+  document.getElementById('namThuNhapMax').textContent = data.namThuNhapMax || 'N/A';
 
   // Vẽ biểu đồ thu nhập & chi phí
   const ctx = document.getElementById('chartThuNhapChiPhi').getContext('2d');
@@ -288,11 +305,15 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('https://script.google.com/macros/s/AKfycbyIfABkyH2K8RnIB4_aOl-AUXmauvPcq-uKtoGSRUFfdkvRPa8jWAf1TDT6UcXTtUl_qQ/exec')
     .then(res => res.json())
     .then(result => {
-      if (result.status === 'success') {
+      if (result.status === 'success' && result.data) {
         const processedData = xuLyDuLieu(result.data);
-        hienThiDuLieu(processedData);
+        if (processedData) {
+          hienThiDuLieu(processedData);
+        } else {
+          alert('Không thể xử lý dữ liệu. Vui lòng kiểm tra lại dữ liệu đầu vào.');
+        }
       } else {
-        alert('Lỗi: ' + result.message);
+        alert('Lỗi: ' + (result.message || 'Không thể tải dữ liệu'));
       }
     })
     .catch(error => {
