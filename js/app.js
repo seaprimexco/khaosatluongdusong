@@ -463,4 +463,36 @@ function processData(apiData) {
             };
         }
     });
+}
+
+function updateComparisonChart(comparisonData) {
+    const ctx = document.getElementById('chartThuNhapChiPhi').getContext('2d');
+    // Xóa chart cũ nếu có
+    if (window.comparisonChart) {
+        window.comparisonChart.destroy();
+    }
+    window.comparisonChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: comparisonData.map(item => item.year),
+            datasets: [
+                {
+                    label: 'Chi phí',
+                    backgroundColor: '#0dcaf0',
+                    data: comparisonData.map(item => item.chiPhi)
+                },
+                {
+                    label: 'Thu nhập',
+                    backgroundColor: '#ffc107',
+                    data: comparisonData.map(item => item.thuNhap)
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            }
+        }
+    });
 } 
