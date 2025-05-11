@@ -11,116 +11,191 @@
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            --success-gradient: linear-gradient(135deg, #198754 0%, #146c43 100%);
+            --info-gradient: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%);
+            --warning-gradient: linear-gradient(135deg, #ffc107 0%, #cc9a06 100%);
+            --danger-gradient: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+            --secondary-gradient: linear-gradient(135deg, #6c757d 0%, #565e64 100%);
+        }
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .navbar {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+            background: var(--primary-gradient) !important;
+            padding: 0.8rem 0;
         }
+
         .navbar-brand {
             font-weight: 600;
             letter-spacing: 0.5px;
+            font-size: 1.2rem;
         }
+
+        .nav-link {
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .container {
+            padding-top: 1.5rem;
+            padding-bottom: 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dashboard-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #212529;
+            margin: 0;
+        }
+
         .card {
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            height: 100%;
             background: white;
+            margin-bottom: 1rem;
         }
+
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+
         .stat-card {
-            min-height: 120px;
+            min-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 1rem;
+            position: relative;
+            overflow: hidden;
         }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .stat-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
         .stat-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
             opacity: 0.9;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
+
+        .stat-info {
+            flex: 1;
+        }
+
         .stat-value {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin: 0.3rem 0;
+            margin: 0;
             color: #fff;
+            line-height: 1.2;
         }
+
         .stat-title {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.9;
             color: #fff;
             font-weight: 500;
+            margin: 0;
         }
+
         .chart-container {
             position: relative;
-            height: 350px;
-            margin-bottom: 1.5rem;
+            height: 300px;
+            margin-bottom: 1rem;
             padding: 1rem;
         }
+
+        .chart-card {
+            height: 100%;
+        }
+
         .card-title {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 1rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #495057;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
         }
+
         .card-title i {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #0d6efd;
         }
-        .container {
-            padding-top: 1.5rem;
-            padding-bottom: 2rem;
-        }
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #212529;
-            margin-bottom: 1.5rem;
-        }
-        .row {
-            margin-bottom: 1.5rem;
-        }
-        .bg-primary { background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important; }
-        .bg-success { background: linear-gradient(135deg, #198754 0%, #146c43 100%) !important; }
-        .bg-info { background: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%) !important; }
-        .bg-warning { background: linear-gradient(135deg, #ffc107 0%, #cc9a06 100%) !important; }
-        .bg-danger { background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important; }
-        .bg-secondary { background: linear-gradient(135deg, #6c757d 0%, #565e64 100%) !important; }
-        
-        /* Responsive adjustments */
+
+        .bg-primary { background: var(--primary-gradient) !important; }
+        .bg-success { background: var(--success-gradient) !important; }
+        .bg-info { background: var(--info-gradient) !important; }
+        .bg-warning { background: var(--warning-gradient) !important; }
+        .bg-danger { background: var(--danger-gradient) !important; }
+        .bg-secondary { background: var(--secondary-gradient) !important; }
+
         @media (max-width: 768px) {
             .stat-card {
-                min-height: 100px;
+                min-height: 90px;
             }
             .stat-icon {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+                width: 35px;
+                height: 35px;
             }
             .stat-value {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .stat-title {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             .chart-container {
-                height: 300px;
+                height: 250px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <i class="fas fa-chart-line me-2"></i>
@@ -147,134 +222,158 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row">
+    <div class="container">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Dashboard
+            </h2>
+        </div>
+        
+        <!-- Thống kê tổng quan -->
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="tongKhaoSat">0</div>
+                            <div class="stat-title">Tổng số khảo sát</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="tongThanhVien">0</div>
+                            <div class="stat-title">Tổng thành viên</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="tongChiPhi">0</div>
+                            <div class="stat-title">Tổng chi phí</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="tongThuNhap">0</div>
+                            <div class="stat-title">Tổng thu nhập</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chỉ số nâng cao -->
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="chiPhiTB">0</div>
+                            <div class="stat-title">Chi phí TB/hộ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="thuNhapTB">0</div>
+                            <div class="stat-title">Thu nhập TB/hộ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="namChiPhiMax">0</div>
+                            <div class="stat-title">Năm chi phí cao nhất</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success stat-card">
+                    <div class="stat-content">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="namThuNhapMax">0</div>
+                            <div class="stat-title">Năm thu nhập cao nhất</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biểu đồ -->
+        <div class="row g-3">
+            <div class="col-md-8">
+                <div class="card chart-card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        So sánh thu nhập & chi phí hàng năm
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartThuNhapChiPhi"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card chart-card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Chi phí theo loại
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chiPhiPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
-                <h2 class="mb-4">
-                    <i class="fas fa-tachometer-alt me-2"></i>
-                    Dashboard
-                </h2>
-                
-                <!-- Thống kê tổng quan -->
-                <div class="row g-4 mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-white bg-primary stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-clipboard-check stat-icon"></i>
-                                <div class="stat-title">Tổng số khảo sát</div>
-                                <div class="stat-value" id="tongKhaoSat">0</div>
-                            </div>
-                        </div>
+                <div class="card chart-card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Xu hướng mức lương đủ sống (Anker)
                     </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-success stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-users stat-icon"></i>
-                                <div class="stat-title">Tổng thành viên</div>
-                                <div class="stat-value" id="tongThanhVien">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-info stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-money-bill-wave stat-icon"></i>
-                                <div class="stat-title">Tổng chi phí</div>
-                                <div class="stat-value" id="tongChiPhi">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-warning stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-wallet stat-icon"></i>
-                                <div class="stat-title">Tổng thu nhập</div>
-                                <div class="stat-value" id="tongThuNhap">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chỉ số nâng cao -->
-                <div class="row g-4 mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-white bg-secondary stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-calculator stat-icon"></i>
-                                <div class="stat-title">Chi phí TB/hộ</div>
-                                <div class="stat-value" id="chiPhiTB">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-secondary stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-chart-bar stat-icon"></i>
-                                <div class="stat-title">Thu nhập TB/hộ</div>
-                                <div class="stat-value" id="thuNhapTB">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-danger stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-arrow-up stat-icon"></i>
-                                <div class="stat-title">Năm chi phí cao nhất</div>
-                                <div class="stat-value" id="namChiPhiMax">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-success stat-card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-arrow-trend-up stat-icon"></i>
-                                <div class="stat-title">Năm thu nhập cao nhất</div>
-                                <div class="stat-value" id="namThuNhapMax">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Biểu đồ -->
-                <div class="row g-4">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-chart-line"></i>
-                                    So sánh thu nhập & chi phí hàng năm
-                                </h5>
-                                <div class="chart-container">
-                                    <canvas id="chartThuNhapChiPhi"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-chart-pie"></i>
-                                    Chi phí theo loại
-                                </h5>
-                                <div class="chart-container">
-                                    <canvas id="chiPhiPieChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fas fa-chart-line"></i>
-                                    Xu hướng mức lương đủ sống (Anker)
-                                </h5>
-                                <div class="chart-container">
-                                    <canvas id="luongDuSongChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="chart-container">
+                        <canvas id="luongDuSongChart"></canvas>
                     </div>
                 </div>
             </div>
