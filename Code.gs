@@ -88,30 +88,54 @@ function updateData() {
   SpreadsheetApp.getUi().alert('Dữ liệu đã được cập nhật thành công!');
 }
 
+// Hàm lấy dữ liệu danh mục từ sheet DANH_MUC
 function getDanhMuc() {
   try {
+    // Lấy sheet DANH_MUC
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName('DANH_MUC');
+    
+    // Kiểm tra sheet có tồn tại không
     if (!sheet) {
-      return ContentService.createTextOutput(JSON.stringify({status: 'error', message: 'Không tìm thấy sheet DANH_MUC'})).setMimeType(ContentService.MimeType.JSON);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: 'error', 
+        message: 'Không tìm thấy sheet DANH_MUC'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
+
+    // Lấy toàn bộ dữ liệu từ sheet
     const data = sheet.getDataRange().getValues();
-    const headers = data[0];
-    const rows = data.slice(1);
+    const headers = data[0]; // Dòng đầu tiên là header
+    const rows = data.slice(1); // Các dòng còn lại là dữ liệu
+    
+    // Khởi tạo object chứa danh mục
     const danhMuc = {};
-    // Lọc các mục có Trang_Thai = 1
+
+    // Lọc các mục có Trang_Thai = 1 (đang hoạt động)
     const activeRows = rows.filter(row => String(row[headers.indexOf('Trang_Thai')]).trim() === '1');
-    // Gom nhóm
+
+    // Gom nhóm dữ liệu theo ID
     activeRows.forEach(row => {
       const id = String(row[headers.indexOf('ID')]).trim();
       const ten = String(row[headers.indexOf('Ten')]).trim();
       const giaTri = String(row[headers.indexOf('Gia_Tri')]).trim();
-      // Gom nhóm đơn giản
+
+      // Thêm vào object danh mục
       if (!danhMuc[id]) danhMuc[id] = [];
       danhMuc[id].push(giaTri);
     });
-    return ContentService.createTextOutput(JSON.stringify({status: 'success', data: danhMuc})).setMimeType(ContentService.MimeType.JSON);
+
+    // Trả về kết quả dạng JSON
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      data: danhMuc
+    })).setMimeType(ContentService.MimeType.JSON);
+
   } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({status: 'error', message: error.toString()})).setMimeType(ContentService.MimeType.JSON);
+    // Xử lý lỗi nếu có
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
   }
 } 
