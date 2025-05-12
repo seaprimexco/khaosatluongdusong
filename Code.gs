@@ -2,49 +2,78 @@
 function doPost(e) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('DT_KHAO_SAT');
-    // Lấy dữ liệu từ e.parameter (dạng form)
     const data = e.parameter;
+    
+    // Tạo ID từ timestamp
+    const timestamp = new Date();
+    const id = timestamp.getFullYear() + 
+               String(timestamp.getMonth() + 1).padStart(2, '0') + 
+               String(timestamp.getDate()).padStart(2, '0') + 
+               String(timestamp.getHours()).padStart(2, '0') + 
+               String(timestamp.getMinutes()).padStart(2, '0') + 
+               String(timestamp.getSeconds()).padStart(2, '0');
+
+    // Tính toán tổng chi phí
+    const tongChiPhi = parseInt(data.chiPhiNhaO || 0) + 
+                      parseInt(data.gao || 0) + 
+                      parseInt(data.thit || 0) + 
+                      parseInt(data.ca || 0) + 
+                      parseInt(data.rauCu || 0) + 
+                      parseInt(data.sua || 0) + 
+                      parseInt(data.giaVi || 0) + 
+                      parseInt(data.hocPhi || 0) + 
+                      parseInt(data.sachVo || 0) + 
+                      parseInt(data.dongPhuc || 0) + 
+                      parseInt(data.khacGiaoDuc || 0) + 
+                      parseInt(data.dien || 0) + 
+                      parseInt(data.nuoc || 0) + 
+                      parseInt(data.internet || 0) + 
+                      parseInt(data.rac || 0);
+
+    // Tính toán tổng thu nhập
+    const tongThuNhap = parseInt(data.thuNhapChinh || 0) + parseInt(data.thuNhapPhu || 0);
+
+    // Thêm dòng mới vào sheet
     sheet.appendRow([
-      new Date(),
-      new Date(),
-      Session.getActiveUser().getEmail(),
-      Session.getActiveUser().getEmail(),
-      'Mới tạo',
-      data.hoTen,
-      data.dienThoai,
-      data.viTri,
-      data.diaChi,
-      data.nguoiLon,
-      data.treEm,
-      parseInt(data.nguoiLon) + parseInt(data.treEm),
-      data.loaiNhaO,
-      data.chiPhiNhaO,
-      data.gao,
-      data.thit,
-      data.ca,
-      data.rauCu,
-      data.sua,
-      data.giaVi,
-      data.hocPhi,
-      data.sachVo,
-      data.dongPhuc,
-      data.khacGiaoDuc,
-      data.dienNuoc,
-      data.internet,
-      data.rac,
-      // Tổng chi phí
-      parseInt(data.chiPhiNhaO) + parseInt(data.gao) + parseInt(data.thit) +
-      parseInt(data.ca) + parseInt(data.rauCu) + parseInt(data.sua) +
-      parseInt(data.giaVi) + parseInt(data.hocPhi) + parseInt(data.sachVo) +
-      parseInt(data.dongPhuc) + parseInt(data.khacGiaoDuc) + parseInt(data.dienNuoc) +
-      parseInt(data.internet) + parseInt(data.rac),
-      data.thuNhapChinh,
-      data.thuNhapPhu,
-      parseInt(data.thuNhapChinh) + parseInt(data.thuNhapPhu),
-      data.ghiChu
+      id,                                    // A: ID
+      timestamp,                             // B: Thoi_Gian_Tao
+      timestamp,                             // C: Thoi_Gian_Cap_Nhat
+      Session.getActiveUser().getEmail(),    // D: Nguoi_Tao
+      Session.getActiveUser().getEmail(),    // E: Nguoi_Cap_Nhat
+      'Mới tạo',                            // F: Trang_Thai
+      data.hoTen,                           // G: Ho_Ten
+      data.dienThoai,                       // H: Dien_Thoai
+      data.viTri,                           // I: Vi_Tri
+      data.diaChi,                          // J: Dia_Chi
+      data.nguoiLon,                        // K: Nguoi_Lon
+      data.treEm,                           // L: Tre_Em
+      parseInt(data.nguoiLon || 0) + parseInt(data.treEm || 0), // M: Tong_Thanh_Vien
+      data.loaiNhaO,                        // N: Loai_Nha_O
+      data.chiPhiNhaO || 0,                 // O: Chi_Phi_Nha_O
+      data.gao || 0,                        // P: Gao
+      data.thit || 0,                       // Q: Thit
+      data.ca || 0,                         // R: Ca
+      data.rauCu || 0,                      // S: Rau_Cu
+      data.sua || 0,                        // T: Sua
+      data.giaVi || 0,                      // U: Gia_Vi
+      data.hocPhi || 0,                     // V: Hoc_Phi
+      data.sachVo || 0,                     // W: Sach_Vo
+      data.dongPhuc || 0,                   // X: Dong_Phuc
+      data.khacGiaoDuc || 0,                // Y: Khac_Giao_Duc
+      data.dien || 0,                       // Z: Dien
+      data.nuoc || 0,                       // AA: Nuoc
+      data.internet || 0,                   // AB: Internet
+      data.rac || 0,                        // AC: Rac
+      tongChiPhi,                           // AD: Tong_Chi_Phi
+      data.thuNhapChinh || 0,               // AE: Thu_Nhap_Chinh
+      data.thuNhapPhu || 0,                 // AF: Thu_Nhap_Phu
+      tongThuNhap,                          // AG: Tong_Thu_Nhap
+      data.ghiChu || ''                     // AH: Ghi_Chu
     ]);
+
     return ContentService.createTextOutput("OK");
   } catch (error) {
+    console.error('Lỗi:', error);
     return ContentService.createTextOutput("ERROR: " + error);
   }
 }
