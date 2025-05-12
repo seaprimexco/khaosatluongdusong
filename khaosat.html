@@ -34,7 +34,7 @@
     <!-- Main Content -->
     <div class="container mt-4">
         <h2>Form Khảo sát</h2>
-        <form id="khaoSatForm" class="mt-4">
+        <form id="formKhaoSat" class="mt-4">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="hoTen" class="form-label">Họ và tên</label>
@@ -49,7 +49,12 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="viTri" class="form-label">Vị trí</label>
-                    <select class="form-select" id="viTri" required></select>
+                    <select class="form-select" id="viTri" required>
+                        <option value="">Chọn...</option>
+                        <option value="Công nhân trực tiếp">Công nhân trực tiếp</option>
+                        <option value="Nhân viên Văn phòng">Nhân viên Văn phòng</option>
+                        <option value="Khác">Khác</option>
+                    </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="diaChi" class="form-label">Địa chỉ</label>
@@ -68,20 +73,86 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="loaiNhaO" class="form-label">Loại nhà ở</label>
-                    <select class="form-select" id="loaiNhaO" required></select>
+                    <select class="form-select" id="loaiNhaO" required>
+                        <option value="">Chọn...</option>
+                        <option value="Nhà thuê trọ">Nhà thuê trọ</option>
+                        <option value="Thuê nhà Nguyên căn">Thuê nhà Nguyên căn</option>
+                        <option value="Nhà riêng">Nhà riêng</option>
+                    </select>
                 </div>
             </div>
 
             <h4 class="mt-4">Chi phí sinh hoạt</h4>
-            <div id="nhomChiPhiContainer"></div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="chiPhiNhaO" class="form-label">Chi phí nhà ở</label>
+                    <input type="number" class="form-control" id="chiPhiNhaO" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="gao" class="form-label">Gạo</label>
+                    <input type="number" class="form-control" id="gao" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="thit" class="form-label">Thịt</label>
+                    <input type="number" class="form-control" id="thit" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="ca" class="form-label">Cá</label>
+                    <input type="number" class="form-control" id="ca" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="rauCu" class="form-label">Rau củ</label>
+                    <input type="number" class="form-control" id="rauCu" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="sua" class="form-label">Sữa</label>
+                    <input type="number" class="form-control" id="sua" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="giaVi" class="form-label">Gia vị</label>
+                    <input type="number" class="form-control" id="giaVi" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="hocPhi" class="form-label">Học phí</label>
+                    <input type="number" class="form-control" id="hocPhi" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="sachVo" class="form-label">Sách vở</label>
+                    <input type="number" class="form-control" id="sachVo" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="dongPhuc" class="form-label">Đồng phục</label>
+                    <input type="number" class="form-control" id="dongPhuc" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="khacGiaoDuc" class="form-label">Khác (Giáo dục)</label>
+                    <input type="number" class="form-control" id="khacGiaoDuc" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="dien" class="form-label">Điện</label>
+                    <input type="number" class="form-control" id="dien" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="nuoc" class="form-label">Nước</label>
+                    <input type="number" class="form-control" id="nuoc" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="internet" class="form-label">Internet</label>
+                    <input type="number" class="form-control" id="internet" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="rac" class="form-label">Rác</label>
+                    <input type="number" class="form-control" id="rac" required>
+                </div>
+            </div>
 
             <h4 class="mt-4">Thu nhập</h4>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="thuNhapChinh" class="form-label">Thu nhập chính</label>
                     <input type="number" class="form-control" id="thuNhapChinh" required>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="thuNhapPhu" class="form-label">Thu nhập phụ</label>
                     <input type="number" class="form-control" id="thuNhapPhu" required>
                 </div>
@@ -238,6 +309,41 @@
         } catch (error) {
             console.error('Lỗi khi khởi tạo form:', error);
         }
+    });
+
+    document.getElementById('formKhaoSat').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Lấy dữ liệu từ form
+        const duLieu = {
+            hoTen: document.getElementById('hoTen').value,
+            dienThoai: document.getElementById('dienThoai').value,
+            viTri: document.getElementById('viTri').value,
+            diaChi: document.getElementById('diaChi').value,
+            nguoiLon: document.getElementById('nguoiLon').value,
+            treEm: document.getElementById('treEm').value,
+            loaiNhaO: document.getElementById('loaiNhaO').value,
+            chiPhiNhaO: document.getElementById('chiPhiNhaO').value,
+            gao: document.getElementById('gao').value,
+            thit: document.getElementById('thit').value,
+            ca: document.getElementById('ca').value,
+            rauCu: document.getElementById('rauCu').value,
+            sua: document.getElementById('sua').value,
+            giaVi: document.getElementById('giaVi').value,
+            hocPhi: document.getElementById('hocPhi').value,
+            sachVo: document.getElementById('sachVo').value,
+            dongPhuc: document.getElementById('dongPhuc').value,
+            khacGiaoDuc: document.getElementById('khacGiaoDuc').value,
+            dien: document.getElementById('dien').value,
+            nuoc: document.getElementById('nuoc').value,
+            internet: document.getElementById('internet').value,
+            rac: document.getElementById('rac').value,
+            thuNhapChinh: document.getElementById('thuNhapChinh').value,
+            thuNhapPhu: document.getElementById('thuNhapPhu').value,
+            ghiChu: document.getElementById('ghiChu').value
+        };
+        console.log('Dữ liệu khảo sát:', duLieu);
+        // Xử lý dữ liệu từ form
+        // ...
     });
     </script>
 </body>
