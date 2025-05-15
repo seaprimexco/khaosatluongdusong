@@ -5,45 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; connect-src 'self' https://sheets.googleapis.com https://*.googleapis.com https://*.google.com https://script.google.com https://script.googleusercontent.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:;">
     <title>Khảo sát - Hệ thống Khảo sát</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
-            .home-button {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 99;
-    }
-    
-    .btn-home {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-    }
-    
-    .btn-home:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-    
-    @media (max-width: 768px) {
-        .btn-home {
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-            bottom: 20px;
-            right: 20px;
+        .home-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
         }
-    }
+        
+        .btn-home {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .btn-home {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
         body {
             background-color: #f7f7f7;
         }
@@ -53,6 +50,9 @@
         }
         .currency-input {
             text-align: right;
+        }
+        .currency-input::placeholder { 
+            text-align: left; 
         }
         .total-box {
             background-color: #f8f9fa;
@@ -101,8 +101,7 @@
             background-color: #0b5ed7;
         }
 
-        /* Thông báo thành công */
-        .success-notification {
+        .custom-notification {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -111,18 +110,26 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
+            z-index: 1050;
             text-align: center;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            display: none;
+            min-width: 300px;
         }
-        .success-icon {
-            color: #28a745;
+        .custom-notification.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .notification-icon {
             font-size: 5rem;
             margin-bottom: 20px;
             display: inline-block;
         }
-        .success-message {
+        .success .notification-icon { color: #28a745; }
+        .error .notification-icon { color: #dc3545; }
+
+        .notification-message {
             font-size: 1.5rem;
             margin-bottom: 20px;
         }
@@ -133,8 +140,13 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-            z-index: 999;
+            z-index: 1040;
             display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .overlay.show {
+            opacity: 1;
         }
         .recommended-salary {
             background-color: #d1e7dd;
@@ -143,9 +155,10 @@
             border-radius: 10px;
             margin-top: 15px;
         }
-        .form-text {
+        .form-text { 
             margin-top: 0.25rem;
             color: #6c757d;
+            font-size: .875em;
         }
         .tooltip-inner {
             max-width: 300px;
@@ -153,7 +166,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="#">Hệ thống Khảo sát</a>
@@ -173,29 +185,25 @@
         </div>
     </nav>
 
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="pageOverlay"></div>
 
-    <!-- Success Notification -->
-    <div class="success-notification" id="successNotification">
-        <div class="success-icon">
+    <div class="custom-notification success" id="successNotification">
+        <div class="notification-icon">
             <i class="fas fa-check-circle"></i>
         </div>
-        <div class="success-message">Gửi khảo sát thành công!</div>
-        <button class="btn btn-primary" id="closeNotification">Đóng</button>
+        <div class="notification-message">Gửi khảo sát thành công!</div>
+        <button class="btn btn-primary" id="closeSuccessNotification">Đóng</button>
     </div>
 
-    <!-- Error Notification -->
-    <div class="success-notification" id="errorNotification" style="display: none;">
-        <div class="success-icon" style="color: #dc3545;">
+    <div class="custom-notification error" id="errorNotification">
+        <div class="notification-icon">
             <i class="fas fa-times-circle"></i>
         </div>
-        <div class="success-message">Có lỗi xảy ra khi gửi khảo sát!</div>
-        <div id="errorMessage" style="margin-bottom: 20px; color: #dc3545;"></div>
+        <div class="notification-message">Có lỗi xảy ra khi gửi khảo sát!</div>
+        <div id="errorMessageDetail" style="margin-bottom: 20px; color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; padding: .75rem 1.25rem; border: 1px solid transparent; border-radius: .25rem;"></div>
         <button class="btn btn-danger" id="closeErrorNotification">Đóng</button>
     </div>
 
-    <!-- Main Content -->
     <div class="container mt-4">
         <h2 class="mb-4">Form Khảo sát Chi phí Sinh hoạt</h2>
         <p class="text-muted mb-4">
@@ -204,7 +212,6 @@
             Các trường đánh dấu <span class="text-danger">*</span> là bắt buộc.
         </p>
         <form id="formKhaoSat" class="mt-4">
-            <!-- Thông tin cá nhân -->
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">1. Thông tin cá nhân</h5>
@@ -213,20 +220,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="hoTen" class="form-label required-label">Họ và tên</label>
-                            <input type="text" class="form-control" id="hoTen" name="hoTen" required>
-                            <div class="form-text">Vui lòng nhập đầy đủ họ tên của bạn</div>
+                            <input type="text" class="form-control" id="hoTen" name="hoTen" required placeholder="Vui lòng nhập đầy đủ họ tên của bạn">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="dienThoai" class="form-label required-label">Điện thoại</label>
-                            <input type="tel" class="form-control" id="dienThoai" name="dienThoai" required>
-                            <div class="form-text">Số điện thoại của bạn, ví dụ: 0901234567</div>
+                            <input type="tel" class="form-control" id="dienThoai" name="dienThoai" required placeholder="Số điện thoại của bạn, ví dụ: 0901234567">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="viTri" class="form-label required-label">Vị trí công việc</label>
                             <select class="form-select" id="viTri" name="viTri" required>
-                                <option value="">Chọn vị trí...</option>
+                                <option value="" disabled selected>Chọn vị trí...</option>
                                 <option value="cong_nhan">Công nhân trực tiếp</option>
                                 <option value="van_phong">Nhân viên Văn phòng</option>
                                 <option value="khac">Khác</option>
@@ -235,8 +240,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="diaChi" class="form-label required-label">Địa chỉ</label>
-                            <input type="text" class="form-control" id="diaChi" name="diaChi" required>
-                            <div class="form-text">Địa chỉ hiện tại của bạn</div>
+                            <input type="text" class="form-control" id="diaChi" name="diaChi" required placeholder="Địa chỉ hiện tại của bạn">
                         </div>
                     </div>
                     <div class="row">
@@ -267,70 +271,63 @@
                         <div class="col-md-6 mb-3">
                             <label for="loaiNhaO" class="form-label required-label">Loại nhà ở</label>
                             <select class="form-select" id="loaiNhaO" name="loaiNhaO" required>
-                                <option value="">Chọn loại nhà...</option>
+                                <option value="" disabled selected>Chọn loại nhà...</option>
                                 <option value="nha_tro">Nhà thuê trọ</option>
                                 <option value="nguyen_can">Thuê nhà Nguyên căn</option>
                                 <option value="nha_rieng">Nhà riêng</option>
                             </select>
-                            <div class="form-text">Chọn loại nhà ở hiện tại của bạn</div>
+                             <div class="form-text">Chọn loại nhà ở hiện tại của bạn</div>
                         </div>
                         <div class="col-md-6 mb-3" id="chiPhiNhaOContainer">
                             <label for="chiPhiNhaO" class="form-label required-label">Chi phí nhà ở</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="chiPhiNhaO" name="chiPhiNhaO" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Tiền thuê nhà (không gồm điện, nước)">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Tiền thuê nhà hàng tháng (không bao gồm điện, nước)</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Chi phí sinh hoạt -->
             <div class="card mb-4">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">2. Chi phí sinh hoạt (VNĐ/tháng)</h5>
                 </div>
                 <div class="card-body">
-                    <!-- Nhóm chi phí ăn uống -->
                     <h6 class="fw-bold mb-3">2.1. Chi phí ăn uống</h6>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="gao" class="form-label">Gạo</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="gao" name="gao" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí gạo hàng tháng">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí gạo hàng tháng</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="thit" class="form-label">Thịt</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thit" name="thit" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí các loại thịt">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí các loại thịt hàng tháng</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="ca" class="form-label">Cá</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="ca" name="ca" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí các loại hải sản">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí các loại hải sản hàng tháng</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="rauCu" class="form-label">Rau củ</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="rauCu" name="rauCu" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí rau củ quả">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí rau củ quả hàng tháng</div>
                         </div>
                     </div>
                     <div class="row">
@@ -338,19 +335,17 @@
                             <label for="sua" class="form-label">Sữa</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="sua" name="sua" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí sữa và sản phẩm sữa">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí sữa và sản phẩm từ sữa</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="giaVi" class="form-label">Gia vị</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="giaVi" name="giaVi" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Gia vị, dầu ăn, nước mắm...">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí gia vị, dầu ăn, nước mắm, v.v</div>
                         </div>
                         <div class="col-md-6">
                             <div class="group-total p-2 mt-4">
@@ -362,44 +357,39 @@
                         </div>
                     </div>
 
-                    <!-- Nhóm chi phí giáo dục -->
                     <h6 class="fw-bold mb-3 mt-4">2.2. Chi phí giáo dục</h6>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="hocPhi" class="form-label">Học phí</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="hocPhi" name="hocPhi" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Học phí trường học các cấp">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Học phí trường học các cấp</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="sachVo" class="form-label">Sách vở</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="sachVo" name="sachVo" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Sách vở, đồ dùng học tập">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí sách vở, đồ dùng học tập</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="dongPhuc" class="form-label">Đồng phục</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="dongPhuc" name="dongPhuc" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí đồng phục học sinh">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí đồng phục học sinh</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="khacGiaoDuc" class="form-label">Chi phí khác</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="khacGiaoDuc" name="khacGiaoDuc" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Bảo hiểm, đóng góp...">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí bảo hiểm, đóng góp, v.v</div>
                         </div>
                     </div>
                     <div class="row">
@@ -413,44 +403,39 @@
                         </div>
                     </div>
 
-                    <!-- Nhóm chi phí tiện ích -->
                     <h6 class="fw-bold mb-3 mt-4">2.3. Chi phí tiện ích</h6>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="dien" class="form-label">Điện</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="dien" name="dien" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí điện hàng tháng">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí điện hàng tháng</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="nuoc" class="form-label">Nước</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="nuoc" name="nuoc" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Nước sinh hoạt hàng tháng">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí nước sinh hoạt hàng tháng</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="internet" class="form-label">Internet</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="internet" name="internet" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Internet, điện thoại">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí Internet, điện thoại</div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="rac" class="form-label">Rác</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="rac" name="rac" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí thu gom rác thải">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Chi phí thu gom rác thải</div>
                         </div>
                     </div>
                     <div class="row">
@@ -466,7 +451,6 @@
                 </div>
             </div>
 
-            <!-- Thu nhập -->
             <div class="card mb-4">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">3. Thu nhập (VNĐ/tháng)</h5>
@@ -477,155 +461,125 @@
                             <label for="thuNhapChinh" class="form-label required-label">Thu nhập chính</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thuNhapChinh" name="thuNhapChinh" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Lương chính (đã trừ thuế, BH)">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Lương từ công việc chính, đã trừ thuế và các khoản bắt buộc</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="thuNhapPhu" class="form-label">Thu nhập phụ</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thuNhapPhu" name="thuNhapPhu" 
-                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required>
+                                       onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Làm thêm, kinh doanh, đầu tư...">
                                 <span class="input-group-text">VNĐ</span>
                             </div>
-                            <div class="form-text">Thu nhập từ công việc phụ, kinh doanh, đầu tư, v.v</div>
                         </div>
                     </div>
                 </div>
             </div>
-<!-- Tổng hợp -->
-<div class="total-box">
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <h6>Tổng chi phí:</h6>
-            <p class="h4" id="tongChiPhi">0 VNĐ</p>
-        </div>
-        <div class="col-md-4">
-            <h6>Tổng thu nhập:</h6>
-            <p class="h4" id="tongThuNhap">0 VNĐ</p>
-        </div>
-        <div class="col-md-4">
-            <h6>Chênh lệch:</h6>
-            <p class="h4" id="chenhLech">0 VNĐ</p>
-        </div>
-    </div>
-    <div class="recommended-salary" id="recommendedSalaryBox">
-        <h5>Đề xuất mức lương đủ sống:</h5>
-        <p class="mb-0" id="recommendedSalary">Vui lòng điền đầy đủ thông tin để nhận đề xuất</p>
-    </div>
-    
-    <!-- Ghi chú -->
-    <div class="mb-4 mt-4">
-        <label for="ghiChu" class="form-label">Ghi chú</label>
-        <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
-        <div class="form-text">Thông tin thêm bạn muốn chia sẻ</div>
-    </div>
-    
-    <!-- Nút điều khiển form -->
-    <div class="text-center mt-4 mb-3">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <button type="button" class="btn btn-outline-secondary btn-lg me-md-2" id="resetButton">
-                        <i class="fas fa-undo me-2"></i> Điền lại
-                    </button>
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="fas fa-paper-plane me-2"></i> Gửi khảo sát
-                    </button>
+            <div class="total-box">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <h6>Tổng chi phí:</h6>
+                        <p class="h4" id="tongChiPhi">0 VNĐ</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Tổng thu nhập:</h6>
+                        <p class="h4" id="tongThuNhap">0 VNĐ</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Chênh lệch:</h6>
+                        <p class="h4" id="chenhLech">0 VNĐ</p>
+                    </div>
+                </div>
+                <div class="recommended-salary" id="recommendedSalaryBox">
+                    <h5>Đề xuất mức lương đủ sống:</h5>
+                    <p class="mb-0" id="recommendedSalary">Vui lòng điền đầy đủ thông tin để nhận đề xuất</p>
+                </div>
+                
+                <div class="mb-4 mt-4">
+                    <label for="mainGhiChu" class="form-label">Ghi chú</label>
+                    <textarea class="form-control" id="mainGhiChu" name="mainGhiChu" rows="3" placeholder="Thông tin thêm bạn muốn chia sẻ"></textarea>
+                </div>
+                
+                <div class="text-center mt-4 mb-3">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <button type="button" class="btn btn-outline-secondary btn-lg me-md-2" id="resetFormButton">
+                                    <i class="fas fa-undo me-2"></i> Điền lại
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i> Gửi khảo sát
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Nút quay về trang chủ -->
-<div class="home-button">
-    <a href="index.html" class="btn btn-success btn-home">
-        <i class="fas fa-home"></i>
-    </a>
-</div>
-
-            <!-- Ghi chú -->
-            <div class="mb-3">
-                <label for="ghiChu" class="form-label">Ghi chú</label>
-                <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
-                <div class="form-text">Thông tin thêm bạn muốn chia sẻ</div>
+    
+            <div class="home-button">
+                <a href="index.html" class="btn btn-success btn-home">
+                    <i class="fas fa-home"></i>
+                </a>
             </div>
-
-
         </form>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
     <script>
-    // Khởi tạo tooltip
     document.addEventListener('DOMContentLoaded', function() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
-        // Thiết lập các sự kiện và khởi tạo
         setupEventListeners();
-        updateTotalMembers();
-        handleNhaOTypeChange();
+        updateTotalMembers(); 
+        handleNhaOTypeChange(); 
+        updateAllTotals(); 
     });
 
-    // Thiết lập tất cả sự kiện
+    const pageOverlay = document.getElementById('pageOverlay');
+    const successNotificationEl = document.getElementById('successNotification');
+    const errorNotificationEl = document.getElementById('errorNotification');
+    const errorMessageDetailEl = document.getElementById('errorMessageDetail');
+    const formKhaoSat = document.getElementById('formKhaoSat');
+
     function setupEventListeners() {
-        // Sự kiện cho số lượng thành viên
         document.getElementById('nguoiLon').addEventListener('input', updateTotalMembers);
         document.getElementById('treEm').addEventListener('input', updateTotalMembers);
-
-        // Sự kiện cho loại nhà ở
         document.getElementById('loaiNhaO').addEventListener('change', handleNhaOTypeChange);
 
-        // Thêm sự kiện cho tất cả các trường chi phí
-        const chiPhiFields = [
-            'chiPhiNhaO', 'gao', 'thit', 'ca', 'rauCu', 'sua', 'giaVi',
-            'hocPhi', 'sachVo', 'dongPhuc', 'khacGiaoDuc',
-            'dien', 'nuoc', 'internet', 'rac'
-        ];
-        
-        chiPhiFields.forEach(field => {
-            const element = document.getElementById(field);
-            if (element) {
-                element.addEventListener('input', updateAllTotals);
-                element.addEventListener('blur', () => {
-                    if (element.value === '') {
-                        element.value = '';
-                    }
-                });
-            }
+        const currencyFields = document.querySelectorAll('.currency-input');
+        currencyFields.forEach(element => {
+            element.addEventListener('input', () => {
+                updateAllTotals();
+            });
         });
-
-        // Sự kiện cho thu nhập
-        document.getElementById('thuNhapChinh').addEventListener('input', updateAllTotals);
-        document.getElementById('thuNhapPhu').addEventListener('input', updateAllTotals);
-
-        // Sự kiện đóng thông báo
-        document.getElementById('closeNotification').addEventListener('click', hideNotification);
+        
+        document.getElementById('closeSuccessNotification').addEventListener('click', hideSuccessNotification);
         document.getElementById('closeErrorNotification').addEventListener('click', hideErrorNotification);
-
-        // Xử lý submit form
-        document.getElementById('formKhaoSat').addEventListener('submit', handleFormSubmit);
+        
+        formKhaoSat.addEventListener('submit', handleFormSubmit);
+        
+        document.getElementById('resetFormButton').addEventListener('click', function() {
+            formKhaoSat.reset();
+            document.getElementById('nguoiLon').value = '1'; 
+            document.getElementById('treEm').value = '0';   
+            updateTotalMembers();
+            handleNhaOTypeChange();
+            updateAllTotals(); 
+            document.getElementById('chenhLech').style.color = 'inherit'; 
+        });
     }
 
-    // Tự động cập nhật tổng số thành viên
     function updateTotalMembers() {
         const nguoiLon = parseInt(document.getElementById('nguoiLon').value) || 0;
         const treEm = parseInt(document.getElementById('treEm').value) || 0;
-        const tongThanhVien = nguoiLon + treEm;
-        document.getElementById('tongThanhVien').value = tongThanhVien;
-        
-        // Cập nhật đề xuất lương
+        document.getElementById('tongThanhVien').value = nguoiLon + treEm;
         updateRecommendedSalary();
     }
 
-    // Xử lý hiển thị chi phí nhà ở theo loại nhà
     function handleNhaOTypeChange() {
         const loaiNhaO = document.getElementById('loaiNhaO').value;
         const chiPhiNhaOContainer = document.getElementById('chiPhiNhaOContainer');
@@ -633,41 +587,33 @@
         
         if (loaiNhaO === 'nha_rieng') {
             chiPhiNhaOContainer.style.display = 'none';
-            chiPhiNhaOInput.value = '';
+            chiPhiNhaOInput.value = ''; 
             chiPhiNhaOInput.required = false;
         } else {
             chiPhiNhaOContainer.style.display = 'block';
             chiPhiNhaOInput.required = true;
         }
-        
-        updateAllTotals();
+        formatNumberInput(chiPhiNhaOInput); 
+        updateAllTotals(); 
     }
 
-    // Hàm định dạng số theo tiêu chuẩn Việt Nam
     function formatNumberInput(input) {
-        // Xóa tất cả ký tự không phải số
         let value = input.value.replace(/[^\d]/g, '');
-        
-        // Nếu có giá trị thì định dạng
         if (value) {
             value = parseInt(value).toLocaleString('vi-VN');
         }
-        
         input.value = value;
     }
 
-    // Hàm chuyển đổi chuỗi số có định dạng thành số
     function parseFormattedNumber(str) {
         if (!str) return 0;
-        return parseInt(str.replace(/\./g, '')) || 0;
+        return parseInt(String(str).replace(/\./g, '')) || 0;
     }
 
-    // Hàm định dạng số tiền
     function formatCurrency(number) {
         return new Intl.NumberFormat('vi-VN').format(number) + ' VNĐ';
     }
 
-    // Cập nhật tất cả các tổng
     function updateAllTotals() {
         tinhTongChiPhiAnUong();
         tinhTongChiPhiGiaoDuc();
@@ -678,63 +624,36 @@
         updateRecommendedSalary();
     }
 
-    // Hàm tính tổng chi phí ăn uống
     function tinhTongChiPhiAnUong() {
-        const chiPhiFields = ['gao', 'thit', 'ca', 'rauCu', 'sua', 'giaVi'];
-        let tong = 0;
-        
-        chiPhiFields.forEach(field => {
-            const value = parseFormattedNumber(document.getElementById(field).value);
-            tong += value;
-        });
-        
+        const fields = ['gao', 'thit', 'ca', 'rauCu', 'sua', 'giaVi'];
+        let tong = fields.reduce((sum, fieldId) => sum + parseFormattedNumber(document.getElementById(fieldId).value), 0);
         document.getElementById('tongChiPhiAnUong').textContent = formatCurrency(tong);
         return tong;
     }
 
-    // Hàm tính tổng chi phí giáo dục
     function tinhTongChiPhiGiaoDuc() {
-        const chiPhiFields = ['hocPhi', 'sachVo', 'dongPhuc', 'khacGiaoDuc'];
-        let tong = 0;
-        
-        chiPhiFields.forEach(field => {
-            const value = parseFormattedNumber(document.getElementById(field).value);
-            tong += value;
-        });
-        
+        const fields = ['hocPhi', 'sachVo', 'dongPhuc', 'khacGiaoDuc'];
+        let tong = fields.reduce((sum, fieldId) => sum + parseFormattedNumber(document.getElementById(fieldId).value), 0);
         document.getElementById('tongChiPhiGiaoDuc').textContent = formatCurrency(tong);
         return tong;
     }
 
-    // Hàm tính tổng chi phí tiện ích
     function tinhTongChiPhiTienIch() {
-        const chiPhiFields = ['dien', 'nuoc', 'internet', 'rac'];
-        let tong = 0;
-        
-        chiPhiFields.forEach(field => {
-            const value = parseFormattedNumber(document.getElementById(field).value);
-            tong += value;
-        });
-        
+        const fields = ['dien', 'nuoc', 'internet', 'rac'];
+        let tong = fields.reduce((sum, fieldId) => sum + parseFormattedNumber(document.getElementById(fieldId).value), 0);
         document.getElementById('tongChiPhiTienIch').textContent = formatCurrency(tong);
         return tong;
     }
 
-    // Hàm tính tổng chi phí
     function tinhTongChiPhi() {
-        let tongChiPhi = tinhTongChiPhiAnUong() + tinhTongChiPhiGiaoDuc() + tinhTongChiPhiTienIch();
-        
-        // Thêm chi phí nhà ở nếu không phải nhà riêng
-        const loaiNhaO = document.getElementById('loaiNhaO').value;
-        if (loaiNhaO !== 'nha_rieng') {
-            tongChiPhi += parseFormattedNumber(document.getElementById('chiPhiNhaO').value);
+        let tong = tinhTongChiPhiAnUong() + tinhTongChiPhiGiaoDuc() + tinhTongChiPhiTienIch();
+        if (document.getElementById('loaiNhaO').value !== 'nha_rieng') {
+            tong += parseFormattedNumber(document.getElementById('chiPhiNhaO').value);
         }
-        
-        document.getElementById('tongChiPhi').textContent = formatCurrency(tongChiPhi);
-        return tongChiPhi;
+        document.getElementById('tongChiPhi').textContent = formatCurrency(tong);
+        return tong;
     }
 
-    // Hàm tính tổng thu nhập
     function tinhTongThuNhap() {
         const chinh = parseFormattedNumber(document.getElementById('thuNhapChinh').value);
         const phu = parseFormattedNumber(document.getElementById('thuNhapPhu').value);
@@ -743,7 +662,6 @@
         return tong;
     }
 
-    // Hàm tính chênh lệch
     function tinhChenhLech() {
         const thuNhap = tinhTongThuNhap();
         const chiPhi = tinhTongChiPhi();
@@ -754,130 +672,119 @@
         return chenhLech;
     }
 
-    // Tính toán và hiển thị mức lương đề xuất dựa trên phương pháp Anker
     function updateRecommendedSalary() {
         const tongThanhVien = parseInt(document.getElementById('tongThanhVien').value) || 0;
         const nguoiLon = parseInt(document.getElementById('nguoiLon').value) || 0;
         const treEm = parseInt(document.getElementById('treEm').value) || 0;
         
+        const recommendedSalaryEl = document.getElementById('recommendedSalary');
+
         if (tongThanhVien <= 0 || nguoiLon <= 0) {
-            document.getElementById('recommendedSalary').textContent = "Vui lòng điền đầy đủ thông tin về số thành viên trong gia đình";
+            recommendedSalaryEl.textContent = "Vui lòng điền đầy đủ thông tin về số thành viên trong gia đình";
             return;
         }
         
-        // Tính chi phí sinh hoạt cơ bản cho một người lao động
-        const tongChiPhi = tinhTongChiPhi();
-        
-        // Hệ số quy đổi Anker (trẻ em = 0.7 người lớn)
+        const tongChiPhiValue = tinhTongChiPhi();
         const soThanhVienQuyDoi = nguoiLon + (treEm * 0.7);
         
-        // Chi phí trung bình mỗi người quy đổi
-        const chiPhiTrungBinh = tongChiPhi / soThanhVienQuyDoi;
+        if (soThanhVienQuyDoi === 0) { 
+             recommendedSalaryEl.textContent = "Số thành viên quy đổi không hợp lệ.";
+             return;
+        }
+
+        const chiPhiTrungBinh = tongChiPhiValue / soThanhVienQuyDoi;
+        const luongDeXuat = chiPhiTrungBinh * soThanhVienQuyDoi / nguoiLon; 
+        const luongDeXuatFinal = luongDeXuat * 1.1; 
         
-        // Số người lao động trung bình mỗi hộ (giả sử tất cả người lớn là lao động)
-        const soLaoDong = nguoiLon;
-        
-        // Tính lương đề xuất cho mỗi lao động
-        const luongDeXuat = chiPhiTrungBinh * soThanhVienQuyDoi / soLaoDong;
-        
-        // Thêm 10% cho tiết kiệm và các chi phí phát sinh
-        const luongDeXuatFinal = luongDeXuat * 1.1;
-        
-        document.getElementById('recommendedSalary').innerHTML = `
+        recommendedSalaryEl.innerHTML = `
             <strong>${formatCurrency(Math.round(luongDeXuatFinal))}</strong> / người lao động / tháng
-            <p class="mt-2 mb-0 small">Dựa trên chi phí sinh hoạt của ${soThanhVienQuyDoi.toFixed(1)} thành viên quy đổi, 
-            với ${soLaoDong} người lao động trong gia đình. Đã bao gồm 10% cho tiết kiệm và chi phí phát sinh.</p>
+            <p class="mt-2 mb-0 small text-muted">Dựa trên chi phí sinh hoạt của ${soThanhVienQuyDoi.toFixed(1)} thành viên quy đổi, 
+            với ${nguoiLon} người lao động trong gia đình. Đã bao gồm 10% cho tiết kiệm và chi phí phát sinh.</p>
         `;
     }
 
-    // Hiển thị thông báo thành công
+    function showOverlay() {
+        pageOverlay.style.display = 'block';
+        requestAnimationFrame(() => pageOverlay.classList.add('show'));
+    }
+
+    function hideOverlay() {
+        pageOverlay.classList.remove('show');
+        setTimeout(() => {
+            pageOverlay.style.display = 'none';
+        }, 300); 
+    }
+    
+    function showNotification(notificationEl) {
+        showOverlay();
+        notificationEl.style.display = 'block';
+        requestAnimationFrame(() => { 
+            notificationEl.classList.add('show');
+        });
+    }
+
+    function hideNotification(notificationEl, callback) {
+        notificationEl.classList.remove('show');
+        setTimeout(() => {
+            notificationEl.style.display = 'none';
+            if (document.querySelectorAll('.custom-notification.show').length === 0) {
+                 hideOverlay();
+            }
+            if (callback) callback();
+        }, 300); 
+    }
+
     function showSuccessNotification() {
-        document.getElementById('overlay').style.display = 'block';
-        const notification = document.getElementById('successNotification');
-        notification.style.display = 'block';
-        notification.style.opacity = '1';
-        
-        // Hiệu ứng nhẹ nhàng
-        setTimeout(() => {
-            const icon = notification.querySelector('.success-icon i');
-            icon.style.transition = 'transform 0.5s ease-in-out';
-            icon.style.transform = 'scale(1.2)';
-            
-            setTimeout(() => {
-                icon.style.transform = 'scale(1)';
-            }, 500);
-        }, 100);
+        showNotification(successNotificationEl);
     }
 
-    // Ẩn thông báo
-    function hideNotification() {
-        const notification = document.getElementById('successNotification');
-        notification.style.opacity = '0';
-        
-        setTimeout(() => {
-            notification.style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }, 300);
+    function hideSuccessNotification() {
+        hideNotification(successNotificationEl);
     }
-
-    // Hiển thị thông báo lỗi
+    
     function showErrorNotification(message) {
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('errorMessage').textContent = message;
-        const notification = document.getElementById('errorNotification');
-        notification.style.display = 'block';
-        notification.style.opacity = '1';
+        errorMessageDetailEl.textContent = message;
+        showNotification(errorNotificationEl);
     }
 
-    // Ẩn thông báo lỗi
     function hideErrorNotification() {
-        const notification = document.getElementById('errorNotification');
-        notification.style.opacity = '0';
-        
-        setTimeout(() => {
-            notification.style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }, 300);
+        hideNotification(errorNotificationEl);
     }
 
-    // Xử lý gửi form
     async function handleFormSubmit(e) {
         e.preventDefault();
+        const submitButton = formKhaoSat.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang gửi...';
+        submitButton.disabled = true;
         
         try {
-            const form = document.getElementById('formKhaoSat');
-            const formData = new FormData(form);
-            
-            // Thêm các trường tính toán
+            const formData = new FormData(formKhaoSat);
             formData.append('tongThanhVien', document.getElementById('tongThanhVien').value);
             
-            // Chuyển đổi các giá trị số từ định dạng Việt Nam sang số
             const numberFields = [
                 'chiPhiNhaO', 'gao', 'thit', 'ca', 'rauCu', 'sua', 'giaVi',
                 'hocPhi', 'sachVo', 'dongPhuc', 'khacGiaoDuc',
                 'dien', 'nuoc', 'internet', 'rac',
                 'thuNhapChinh', 'thuNhapPhu'
             ];
-            
             numberFields.forEach(field => {
-                const value = formData.get(field);
-                if (value) {
-                    formData.set(field, parseFormattedNumber(value));
+                const element = document.getElementById(field);
+                if (element) { 
+                     if (element.closest('.mb-3').style.display !== 'none') { 
+                        formData.set(field, parseFormattedNumber(element.value));
+                     } else {
+                        formData.set(field, 0); 
+                     }
                 }
             });
             
-            // Thêm các trường tổng
-            formData.append('tongChiPhi', tinhTongChiPhi());
-            formData.append('tongThuNhap', tinhTongThuNhap());
-            formData.append('chenhLech', tinhChenhLech());
+            formData.append('tongChiPhiSinhHoat', tinhTongChiPhi());
+            formData.append('tongThuNhapCaNhan', tinhTongThuNhap());
+            formData.append('chenhLechThuChi', tinhChenhLech());
+            formData.append('timestamp', new Date().toISOString());
             
-            // Hiển thị hiệu ứng loading
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang gửi...';
-            submitButton.disabled = true;
-            
-            // Gửi dữ liệu
             const response = await fetch('https://script.google.com/macros/s/AKfycbxVjXAiM3-W3bxNUnmrx-BfZe1sIHAV9h3qhp7T2Y4IB4aEGalvvch6-l5qimz7u7jdsA/exec', {
                 method: 'POST',
                 body: formData
@@ -885,31 +792,25 @@
             
             const result = await response.text();
             
-            // Khôi phục nút submit
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-            
-            if (result === 'OK') {
+            if (response.ok && result.toLowerCase().includes('ok')) { 
                 showSuccessNotification();
-                form.reset();
-                document.getElementById('tongChiPhiAnUong').textContent = '0 VNĐ';
-                document.getElementById('tongChiPhiGiaoDuc').textContent = '0 VNĐ';
-                document.getElementById('tongChiPhiTienIch').textContent = '0 VNĐ';
-                document.getElementById('tongChiPhi').textContent = '0 VNĐ';
-                document.getElementById('tongThuNhap').textContent = '0 VNĐ';
-                document.getElementById('chenhLech').textContent = '0 VNĐ';
-                document.getElementById('recommendedSalary').textContent = 'Vui lòng điền đầy đủ thông tin để nhận đề xuất';
-                
-                // Reset các trường số về giá trị mặc định
+                formKhaoSat.reset(); 
+
                 document.getElementById('nguoiLon').value = '1';
                 document.getElementById('treEm').value = '0';
-                document.getElementById('tongThanhVien').value = '1';
+                updateTotalMembers(); 
+                handleNhaOTypeChange(); 
+                updateAllTotals(); 
+                document.getElementById('chenhLech').style.color = 'inherit';
             } else {
-                showErrorNotification('Có lỗi xảy ra: ' + result);
+                showErrorNotification('Lỗi từ máy chủ: ' + result);
             }
         } catch (error) {
             console.error('Lỗi khi gửi form:', error);
-            showErrorNotification('Có lỗi xảy ra khi gửi form. Vui lòng thử lại sau.');
+            showErrorNotification('Lỗi kết nối hoặc xử lý: ' + error.message);
+        } finally {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
         }
     }
     </script>
