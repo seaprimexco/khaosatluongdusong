@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; connect-src 'self' https://sheets.googleapis.com https://*.googleapis.com https://*.google.com https://script.google.com https://script.googleusercontent.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:;">
+    <title>Khảo sát - Hệ thống Khảo sát</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Hệ thống Khảo sát</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="khaosat.html">Khảo sát</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h2>Form Khảo sát</h2>
+        <form id="khaoSatForm" class="mt-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="hoTen" class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" id="hoTen" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="dienThoai" class="form-label">Điện thoại</label>
+                    <input type="tel" class="form-control" id="dienThoai" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="viTri" class="form-label">Vị trí</label>
+                    <select class="form-select" id="viTri" required></select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="diaChi" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control" id="diaChi" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="nguoiLon" class="form-label">Số người lớn</label>
+                    <input type="number" class="form-control" id="nguoiLon" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="treEm" class="form-label">Số trẻ em</label>
+                    <input type="number" class="form-control" id="treEm" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="loaiNhaO" class="form-label">Loại nhà ở</label>
+                    <select class="form-select" id="loaiNhaO" required></select>
+                </div>
+            </div>
+
+            <h4 class="mt-4">Chi phí sinh hoạt</h4>
+            <div id="nhomChiPhiContainer"></div>
+
+            <h4 class="mt-4">Thu nhập</h4>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="thuNhapChinh" class="form-label">Thu nhập chính</label>
+                    <input type="number" class="form-control" id="thuNhapChinh" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="thuNhapPhu" class="form-label">Thu nhập phụ</label>
+                    <input type="number" class="form-control" id="thuNhapPhu" required>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-3" id="tongHopBox">
+                <div><b>Tổng chi phí:</b> <span id="tongChiPhi">0</span> VNĐ</div>
+                <div><b>Tổng thu nhập:</b> <span id="tongThuNhap">0</span> VNĐ</div>
+                <div><b>So sánh:</b> <span id="soSanh"></span></div>
+                <div><b>Đề xuất mức lương đủ sống (Anker):</b> <span id="ankerSuggest"></span> VNĐ</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="ghiChu" class="form-label">Ghi chú</label>
+                <textarea class="form-control" id="ghiChu" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Gửi khảo sát</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+    <script>
+    async function loadDanhMuc() {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxVjXAiM3-W3bxNUnmrx-BfZe1sIHAV9h3qhp7T2Y4IB4aEGalvvch6-l5qimz7u7jdsA/exec?getDanhMuc');
+        const result = await response.json();
+        if (result.status === 'success') return result.data;
+        alert('Không thể tải danh mục: ' + result.message);
+        return {};
+    }
+
+    function createSelectOptions(selectId, options) {
+        const select = document.getElementById(selectId);
+        if (select) {
+            select.innerHTML = '<option value="">Chọn...</option>';
+            options.forEach(val => {
+                select.innerHTML += `<option value="${val}">${val}</option>`;
+            });
+        }
+    }
+
+    function createNhomChiPhi(danhMuc) {
+        const container = document.getElementById('nhomChiPhiContainer');
+        container.innerHTML = '';
+        const nhomChiPhi = [
+            { id: 'NHA_O', label: 'Nhà ở', fields: ['Tiền thuê', 'Sửa chữa'] },
+            { id: 'AN_UONG', label: 'Ăn uống', fields: ['Gạo', 'Thịt', 'Cá', 'Rau củ', 'Sữa', 'Gia vị'] },
+            { id: 'GIAO_DUC', label: 'Giáo dục', fields: ['Học phí', 'Sách vở', 'Đồng phục', 'Khác'] },
+            { id: 'TIEN_ICH', label: 'Tiện ích', fields: ['Điện', 'Nước', 'Internet', 'Rác'] }
+        ];
+        nhomChiPhi.forEach(nhom => {
+            let html = `<div class="card mb-3"><div class="card-header"><b>${nhom.label}</b> <span class="badge bg-info" id="tong_${nhom.id}">0 VNĐ</span></div><div class="card-body row">`;
+            nhom.fields.forEach(field => {
+                html += `<div class="col-md-3 mb-2">
+                    <label class="form-label">${field}</label>
+                    <input type="number" class="form-control chiPhiInput" data-nhom="${nhom.id}" data-field="${field}" value="0" min="0">
+                </div>`;
+            });
+            html += '</div></div>';
+            container.innerHTML += html;
+        });
+    }
+
+    function tinhTongChiPhi() {
+        const nhomTong = {};
+        let tongChiPhi = 0;
+        document.querySelectorAll('.chiPhiInput').forEach(input => {
+            const nhom = input.dataset.nhom;
+            const val = parseInt(input.value) || 0;
+            nhomTong[nhom] = (nhomTong[nhom] || 0) + val;
+            tongChiPhi += val;
+        });
+        Object.keys(nhomTong).forEach(nhom => {
+            const el = document.getElementById('tong_' + nhom);
+            if (el) el.textContent = nhomTong[nhom].toLocaleString() + ' VNĐ';
+        });
+        document.getElementById('tongChiPhi').textContent = tongChiPhi.toLocaleString();
+        return tongChiPhi;
+    }
+
+    function tinhTongThuNhap() {
+        const chinh = parseInt(document.getElementById('thuNhapChinh').value) || 0;
+        const phu = parseInt(document.getElementById('thuNhapPhu').value) || 0;
+        const tong = chinh + phu;
+        document.getElementById('tongThuNhap').textContent = tong.toLocaleString();
+        return tong;
+    }
+
+    function soSanhChiPhiThuNhap() {
+        const chiPhi = tinhTongChiPhi();
+        const thuNhap = tinhTongThuNhap();
+        const soSanh = document.getElementById('soSanh');
+        if (thuNhap > chiPhi) soSanh.textContent = 'Thu nhập lớn hơn chi phí 👍';
+        else if (thuNhap < chiPhi) soSanh.textContent = 'Thu nhập nhỏ hơn chi phí 👎';
+        else soSanh.textContent = 'Thu nhập bằng chi phí';
+    }
+
+    function deXuatAnker() {
+        const chiPhi = tinhTongChiPhi();
+        const anker = Math.round(chiPhi * 1.1);
+        document.getElementById('ankerSuggest').textContent = anker.toLocaleString();
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        const danhMuc = await loadDanhMuc();
+        createSelectOptions('loaiNhaO', danhMuc.LOAI_NHA_O || []);
+        createSelectOptions('viTri', danhMuc.VI_TRI || []);
+        createNhomChiPhi(danhMuc);
+
+        document.querySelectorAll('.chiPhiInput').forEach(input => {
+            input.addEventListener('input', () => {
+                tinhTongChiPhi();
+                soSanhChiPhiThuNhap();
+                deXuatAnker();
+            });
+        });
+        document.getElementById('thuNhapChinh').addEventListener('input', () => {
+            tinhTongThuNhap();
+            soSanhChiPhiThuNhap();
+        });
+        document.getElementById('thuNhapPhu').addEventListener('input', () => {
+            tinhTongThuNhap();
+            soSanhChiPhiThuNhap();
+        });
+
+        tinhTongChiPhi();
+        tinhTongThuNhap();
+        soSanhChiPhiThuNhap();
+        deXuatAnker();
+    });
+    </script>
+</body>
+</html> 
