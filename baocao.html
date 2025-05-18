@@ -335,6 +335,9 @@
         .dark-mode .fa-moon {
             color: #ffd600 !important;
         }
+        .table td.right, .table th.right {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -400,8 +403,8 @@
                             <th onclick="sortTable(1)">Họ tên</th>
                             <th onclick="sortTable(2)">Năm</th>
                             <th onclick="sortTable(3)">Điện thoại</th>
-                            <th onclick="sortTable(4)">Tổng chi phí</th>
-                            <th onclick="sortTable(5)">Tổng thu nhập</th>
+                            <th onclick="sortTable(4)" class="right">Tổng chi phí</th>
+                            <th onclick="sortTable(5)" class="right">Tổng thu nhập</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -528,8 +531,8 @@
                     <td>${d.hoTen||''}</td>
                     <td>${d.nam||''}</td>
                     <td>${d.dienThoai||''}</td>
-                    <td>${d.tongChiPhi||''}</td>
-                    <td>${d.tongThuNhap||''}</td>
+                    <td class="right">${formatCurrency(d.tongChiPhi)}</td>
+                    <td class="right">${formatCurrency(d.tongThuNhap)}</td>
                     <td class="action-btns">
                         <button class="btn btn-outline-primary btn-sm" onclick="printRow(${i})"><i class="fas fa-print"></i> In</button>
                         <button class="btn btn-outline-danger btn-sm" onclick="pdfRow(${i})"><i class="fas fa-file-pdf"></i> PDF</button>
@@ -755,6 +758,13 @@
                 };
             }
         });
+        // Thêm hàm định dạng số phần ngàn
+        function formatCurrency(val) {
+            if (val == null || val === '') return '';
+            let num = Number(String(val).replace(/[^\d.-]/g, ''));
+            if (isNaN(num)) return val;
+            return num.toLocaleString('vi-VN');
+        }
     </script>
 </body>
 </html> 
