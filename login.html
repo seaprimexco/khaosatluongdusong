@@ -64,16 +64,22 @@
                 const apiData = await response.json();
                 if (apiData.status === 'success') {
                     // Dữ liệu dạng mảng, dòng đầu là header
-                    const users = apiData.data.slice(1).map(row => ({
-                        ten_dang_nhap: row[0],
-                        mat_khau: row[1],
-                        ten_day_du: row[2],
-                        email: row[3],
-                        quyen: row[4],
-                        trang_thai: row[5]
-                    }));
+                    const users = apiData.data.slice(1)
+                        .filter(row => row[0] && row[1]) // Chỉ lấy dòng có tài khoản và mật khẩu
+                        .map(row => ({
+                            ten_dang_nhap: row[0],
+                            mat_khau: row[1],
+                            ten_day_du: row[2],
+                            email: row[3],
+                            quyen: row[4],
+                            trang_thai: row[5]
+                        }));
                     // Tìm user hợp lệ (trạng thái active hoặc để trống)
-                    const user = users.find(acc => acc.ten_dang_nhap === u && acc.mat_khau === p && (!acc.trang_thai || acc.trang_thai.toLowerCase() === 'active'));
+                    const user = users.find(acc =>
+                        String(acc.ten_dang_nhap).trim() === u &&
+                        String(acc.mat_khau).trim() === p &&
+                        (!acc.trang_thai || String(acc.trang_thai).toLowerCase().trim() === 'active')
+                    );
                     if (user) {
                         localStorage.setItem('ks_logged_in', '1');
                         localStorage.setItem('ks_user', JSON.stringify(user));
