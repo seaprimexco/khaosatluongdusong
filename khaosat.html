@@ -55,11 +55,49 @@
             text-align: left; 
         }
         .total-box {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+            background-color: #fffbe6;
+            padding: 20px;
+            border-radius: 15px;
             margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(255,193,7,0.15), 0 2px 5px rgba(0,0,0,0.08);
+            border: 2px solid #ffe066;
+            position: relative;
+        }
+        .total-box .main-total-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #856404;
+            display: flex;
+            align-items: center;
+        }
+        .total-box .main-total-label i {
+            margin-right: 8px;
+            color: #ffc107;
+            font-size: 1.5rem;
+        }
+        .main-total-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #d35400;
+            background: linear-gradient(90deg, #ffe066 60%, #fffbe6 100%);
+            border-radius: 8px;
+            padding: 8px 18px;
+            box-shadow: 0 2px 8px rgba(255,193,7,0.10);
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .main-total-value.animated {
+            animation: highlightTotal 0.7s;
+        }
+        @keyframes highlightTotal {
+            0% { background: #ffe066; color: #fff; }
+            60% { background: #fffbe6; color: #d35400; }
+            100% { background: linear-gradient(90deg, #ffe066 60%, #fffbe6 100%); color: #d35400; }
+        }
+        #tongThanhVien[readonly] {
+            pointer-events: none;
+            background-color: #e9ecef;
+            cursor: not-allowed;
         }
         .group-total {
             background-color: #e9ecef;
@@ -162,6 +200,137 @@
         }
         .tooltip-inner {
             max-width: 300px;
+        }
+        .group-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .group-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: #0d6efd;
+            display: flex;
+            align-items: center;
+        }
+        .group-total-inline {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #d35400;
+            background: #fffbe6;
+            border-radius: 6px;
+            padding: 4px 14px;
+            box-shadow: 0 2px 8px rgba(255,193,7,0.10);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .group-total-inline i {
+            color: #ffc107;
+        }
+        .main-total-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .main-total-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #856404;
+            display: flex;
+            align-items: center;
+        }
+        .main-total-label i {
+            margin-right: 8px;
+            font-size: 1.5rem;
+        }
+        .main-total-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 8px 18px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .main-total-chi-phi {
+            color: #d35400;
+            background: linear-gradient(90deg, #ffe066 60%, #fffbe6 100%);
+            box-shadow: 0 2px 8px rgba(255,193,7,0.10);
+        }
+        .main-total-thu-nhap {
+            color: #0d6efd;
+            background: linear-gradient(90deg, #e0f0ff 60%, #fff 100%);
+            box-shadow: 0 2px 8px rgba(13,110,253,0.10);
+        }
+        .main-total-chenh-lech {
+            color: #28a745;
+            background: linear-gradient(90deg, #d4edda 60%, #fff 100%);
+            box-shadow: 0 2px 8px rgba(40,167,69,0.10);
+        }
+        .main-total-chenh-lech.negative {
+            color: #dc3545;
+            background: linear-gradient(90deg, #f8d7da 60%, #fff 100%);
+            box-shadow: 0 2px 8px rgba(220,53,69,0.10);
+        }
+        .input-group .input-group-text i {
+            min-width: 18px;
+        }
+        .total-sinh-hoat-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+        .total-sinh-hoat-label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .total-sinh-hoat-label i {
+            margin-right: 6px;
+            color: #ffc107;
+        }
+        .total-sinh-hoat-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #d35400;
+            background: #fffbe6;
+            border-radius: 6px;
+            padding: 4px 16px;
+            box-shadow: 0 2px 8px rgba(255,193,7,0.10);
+        }
+        .section-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        .total-sinh-hoat-inline {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #d35400;
+            background: #fffbe6;
+            border-radius: 6px;
+            padding: 4px 16px;
+            box-shadow: 0 2px 8px rgba(255,193,7,0.10);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .total-sinh-hoat-inline i {
+            color: #ffc107;
+            margin-right: 4px;
         }
     </style>
 </head>
@@ -292,17 +461,23 @@
 
             <div class="card mb-4">
                 <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">2. Chi phí sinh hoạt (VNĐ/tháng)</h5>
+                    <div class="section-title-row">
+                        <h5 class="mb-0 section-title">2. Chi phí sinh hoạt (VNĐ/tháng)</h5>
+                        <span class="total-sinh-hoat-inline"><i class="fas fa-calculator"></i> <span id="tongChiPhiSinhHoat">0 VNĐ</span></span>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <h6 class="fw-bold mb-3">2.1. Chi phí ăn uống</h6>
+                    <div class="group-title-row">
+                        <span class="group-title">2.1. Chi phí ăn uống</span>
+                        <span class="group-total-inline"><i class="fas fa-utensils"></i> <span id="tongChiPhiAnUong">0 VNĐ</span></span>
+                    </div>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="gao" class="form-label">Gạo</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="gao" name="gao" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí gạo hàng tháng">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-utensils"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -310,7 +485,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thit" name="thit" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí các loại thịt">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-utensils"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -318,7 +493,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="ca" name="ca" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí các loại hải sản">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-fish"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -326,7 +501,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="rauCu" name="rauCu" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí rau củ quả">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-carrot"></i></span>
                             </div>
                         </div>
                     </div>
@@ -336,7 +511,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="sua" name="sua" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí sữa và sản phẩm sữa">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-cheese"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -344,27 +519,22 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="giaVi" name="giaVi" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Gia vị, dầu ăn, nước mắm...">
-                                <span class="input-group-text">VNĐ</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="group-total p-2 mt-4">
-                                <div class="row">
-                                    <div class="col-md-6">Tổng chi phí ăn uống:</div>
-                                    <div class="col-md-6 text-end" id="tongChiPhiAnUong">0 VNĐ</div>
-                                </div>
+                                <span class="input-group-text"><i class="fas fa-pepper-hot"></i></span>
                             </div>
                         </div>
                     </div>
 
-                    <h6 class="fw-bold mb-3 mt-4">2.2. Chi phí giáo dục</h6>
+                    <div class="group-title-row mt-4">
+                        <span class="group-title">2.2. Chi phí giáo dục</span>
+                        <span class="group-total-inline"><i class="fas fa-graduation-cap"></i> <span id="tongChiPhiGiaoDuc">0 VNĐ</span></span>
+                    </div>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="hocPhi" class="form-label">Học phí</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="hocPhi" name="hocPhi" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Học phí trường học các cấp">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-book"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -372,7 +542,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="sachVo" name="sachVo" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Sách vở, đồ dùng học tập">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-book"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -380,7 +550,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="dongPhuc" name="dongPhuc" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí đồng phục học sinh">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-tshirt"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -388,29 +558,22 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="khacGiaoDuc" name="khacGiaoDuc" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Bảo hiểm, đóng góp...">
-                                <span class="input-group-text">VNĐ</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 offset-md-6">
-                            <div class="group-total p-2">
-                                <div class="row">
-                                    <div class="col-md-6">Tổng chi phí giáo dục:</div>
-                                    <div class="col-md-6 text-end" id="tongChiPhiGiaoDuc">0 VNĐ</div>
-                                </div>
+                                <span class="input-group-text"><i class="fas fa-hand-holding-heart"></i></span>
                             </div>
                         </div>
                     </div>
 
-                    <h6 class="fw-bold mb-3 mt-4">2.3. Chi phí tiện ích</h6>
+                    <div class="group-title-row mt-4">
+                        <span class="group-title">2.3. Chi phí tiện ích</span>
+                        <span class="group-total-inline"><i class="fas fa-bolt"></i> <span id="tongChiPhiTienIch">0 VNĐ</span></span>
+                    </div>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="dien" class="form-label">Điện</label>
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="dien" name="dien" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí điện hàng tháng">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-bolt"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -418,7 +581,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="nuoc" name="nuoc" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Nước sinh hoạt hàng tháng">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-water"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -426,7 +589,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="internet" name="internet" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Internet, điện thoại">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-wifi"></i></span>
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
@@ -434,17 +597,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="rac" name="rac" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Chi phí thu gom rác thải">
-                                <span class="input-group-text">VNĐ</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 offset-md-6">
-                            <div class="group-total p-2">
-                                <div class="row">
-                                    <div class="col-md-6">Tổng chi phí tiện ích:</div>
-                                    <div class="col-md-6 text-end" id="tongChiPhiTienIch">0 VNĐ</div>
-                                </div>
+                                <span class="input-group-text"><i class="fas fa-trash"></i></span>
                             </div>
                         </div>
                     </div>
@@ -462,7 +615,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thuNhapChinh" name="thuNhapChinh" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Lương chính (đã trừ thuế, BH)">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -470,7 +623,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control currency-input" id="thuNhapPhu" name="thuNhapPhu" 
                                        onkeyup="formatNumberInput(this)" onblur="formatNumberInput(this)" required placeholder="Làm thêm, kinh doanh, đầu tư...">
-                                <span class="input-group-text">VNĐ</span>
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                             </div>
                         </div>
                     </div>
@@ -478,17 +631,17 @@
             </div>
             <div class="total-box">
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <h6>Tổng chi phí:</h6>
-                        <p class="h4" id="tongChiPhi">0 VNĐ</p>
+                    <div class="col-md-4 main-total-block">
+                        <div class="main-total-label"><i class="fas fa-coins"></i> Tổng chi phí:</div>
+                        <span class="main-total-value main-total-chi-phi" id="tongChiPhi">0 VNĐ</span>
                     </div>
-                    <div class="col-md-4">
-                        <h6>Tổng thu nhập:</h6>
-                        <p class="h4" id="tongThuNhap">0 VNĐ</p>
+                    <div class="col-md-4 main-total-block">
+                        <div class="main-total-label"><i class="fas fa-wallet"></i> Tổng thu nhập:</div>
+                        <span class="main-total-value main-total-thu-nhap" id="tongThuNhap">0 VNĐ</span>
                     </div>
-                    <div class="col-md-4">
-                        <h6>Chênh lệch:</h6>
-                        <p class="h4" id="chenhLech">0 VNĐ</p>
+                    <div class="col-md-4 main-total-block">
+                        <div class="main-total-label"><i class="fas fa-balance-scale"></i> Chênh lệch:</div>
+                        <span class="main-total-value main-total-chenh-lech" id="chenhLech">0 VNĐ</span>
                     </div>
                 </div>
                 <div class="recommended-salary" id="recommendedSalaryBox">
@@ -523,6 +676,25 @@
                 </a>
             </div>
         </form>
+    </div>
+
+    <!-- Modal xác nhận reset -->
+    <div class="modal fade" id="resetConfirmModal" tabindex="-1" aria-labelledby="resetConfirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resetConfirmModalLabel">Xác nhận</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đã nhập không?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger" id="confirmResetBtn">Xóa dữ liệu</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -563,6 +735,11 @@
         formKhaoSat.addEventListener('submit', handleFormSubmit);
         
         document.getElementById('resetFormButton').addEventListener('click', function() {
+            // Hiện modal xác nhận thay vì reset ngay
+            var resetModal = new bootstrap.Modal(document.getElementById('resetConfirmModal'));
+            resetModal.show();
+        });
+        document.getElementById('confirmResetBtn').addEventListener('click', function() {
             formKhaoSat.reset();
             document.getElementById('nguoiLon').value = '1'; 
             document.getElementById('treEm').value = '0';   
@@ -570,6 +747,8 @@
             handleNhaOTypeChange();
             updateAllTotals(); 
             document.getElementById('chenhLech').style.color = 'inherit'; 
+            var resetModal = bootstrap.Modal.getInstance(document.getElementById('resetConfirmModal'));
+            resetModal.hide();
         });
     }
 
@@ -618,6 +797,8 @@
         tinhTongChiPhiAnUong();
         tinhTongChiPhiGiaoDuc();
         tinhTongChiPhiTienIch();
+        const tongSinhHoat = tinhTongChiPhiAnUong() + tinhTongChiPhiGiaoDuc() + tinhTongChiPhiTienIch();
+        document.getElementById('tongChiPhiSinhHoat').textContent = formatCurrency(tongSinhHoat);
         tinhTongChiPhi();
         tinhTongThuNhap();
         tinhChenhLech();
@@ -650,7 +831,13 @@
         if (document.getElementById('loaiNhaO').value !== 'nha_rieng') {
             tong += parseFormattedNumber(document.getElementById('chiPhiNhaO').value);
         }
-        document.getElementById('tongChiPhi').textContent = formatCurrency(tong);
+        const tongChiPhiEl = document.getElementById('tongChiPhi');
+        const prev = tongChiPhiEl.textContent;
+        tongChiPhiEl.textContent = formatCurrency(tong);
+        if (prev !== formatCurrency(tong)) {
+            tongChiPhiEl.classList.add('animated');
+            setTimeout(() => tongChiPhiEl.classList.remove('animated'), 700);
+        }
         return tong;
     }
 
@@ -668,7 +855,11 @@
         const chenhLech = thuNhap - chiPhi;
         const element = document.getElementById('chenhLech');
         element.textContent = formatCurrency(chenhLech);
-        element.style.color = chenhLech >= 0 ? 'green' : 'red';
+        if (chenhLech >= 0) {
+            element.classList.remove('negative');
+        } else {
+            element.classList.add('negative');
+        }
         return chenhLech;
     }
 
