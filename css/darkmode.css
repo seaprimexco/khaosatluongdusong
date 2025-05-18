@@ -1,0 +1,244 @@
+/* Dark mode theme for Khảo sát WebApp */
+.ks-darkmode,
+.ks-darkmode body {
+    background-color: #181a1b !important;
+    color: #e0e0e0 !important;
+}
+.ks-darkmode .container,
+.ks-darkmode .table-responsive,
+.ks-darkmode .summary-box,
+.ks-darkmode .sidebar-filter,
+.ks-darkmode .card,
+.ks-darkmode .modal-content,
+.ks-darkmode .dropdown-menu,
+.ks-darkmode .account-dropdown {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+}
+.ks-darkmode .table,
+.ks-darkmode .table-light,
+.ks-darkmode table {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+}
+.ks-darkmode th,
+.ks-darkmode .table thead th,
+.ks-darkmode .table-light th,
+.ks-darkmode label.form-label,
+.ks-darkmode .navbar-title-text,
+.ks-darkmode .dashboard-title,
+.ks-darkmode .card-title,
+.ks-darkmode .stat-title,
+.ks-darkmode .section-title,
+.ks-darkmode .group-title,
+.ks-darkmode .main-total-label,
+.ks-darkmode .report-title,
+.ks-darkmode .summary-label,
+.ks-darkmode .report-tab,
+.ks-darkmode .report-tab.active,
+.ks-darkmode .card-header {
+    color: #ffe082 !important;
+    font-weight: bold !important;
+    font-size: 1.08rem !important;
+}
+.ks-darkmode .table thead th,
+.ks-darkmode .table-light th {
+    border-bottom: 2.5px solid #ffe082 !important;
+}
+.ks-darkmode .navbar-custom,
+.ks-darkmode .navbar,
+.ks-darkmode .navbar-brand {
+    background: #23272b !important;
+    color: #ffe082 !important;
+    border-bottom: 1.5px solid #222 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.ks-darkmode .navbar-menu a {
+    color: #e0e0e0 !important;
+}
+.ks-darkmode .navbar-menu a.active, .ks-darkmode .navbar-menu a:hover {
+    color: #ffe082 !important;
+    border-bottom: 2.5px solid #ffe082 !important;
+}
+.ks-darkmode .navbar-account .account-toggle {
+    color: #ffe082 !important;
+}
+.ks-darkmode .dropdown-menu a, .ks-darkmode .account-dropdown a {
+    color: #e0e0e0 !important;
+}
+.ks-darkmode .dropdown-menu a:hover, .ks-darkmode .account-dropdown a:hover {
+    background: #333 !important;
+    color: #ffe082 !important;
+}
+.ks-darkmode .stat-icon {
+    background: rgba(40,40,40,0.2) !important;
+}
+.ks-darkmode .bg-primary, .ks-darkmode .thu-nhap-tb-bg {
+    background: linear-gradient(135deg, #283593 0%, #1565c0 100%) !important;
+}
+.ks-darkmode .bg-success {
+    background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%) !important;
+}
+.ks-darkmode .bg-info, .ks-darkmode .chi-phi-tb-bg {
+    background: linear-gradient(135deg, #0288d1 0%, #01579b 100%) !important;
+}
+.ks-darkmode .bg-warning {
+    background: linear-gradient(135deg, #fbc02d 0%, #f9a825 100%) !important;
+    color: #23272b !important;
+}
+.ks-darkmode .bg-danger {
+    background: linear-gradient(135deg, #b71c1c 0%, #e53935 100%) !important;
+}
+.ks-darkmode .bg-secondary {
+    background: linear-gradient(135deg, #424242 0%, #212121 100%) !important;
+}
+.ks-darkmode .stat-card {
+    border: 1px solid #333 !important;
+}
+.ks-darkmode .chart-card {
+    background: #23272b !important;
+}
+.ks-darkmode .form-control, .ks-darkmode input, .ks-darkmode select, .ks-darkmode textarea {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #444 !important;
+}
+.ks-darkmode .form-control:focus, .ks-darkmode input:focus, .ks-darkmode select:focus, .ks-darkmode textarea:focus {
+    background: #181a1b !important;
+    color: #fff !important;
+}
+.ks-darkmode .text-muted {
+    color: #b0b0b0 !important;
+}
+.ks-darkmode .border-0 {
+    border: none !important;
+}
+.ks-darkmode .border {
+    border: 1px solid #444 !important;
+}
+.ks-darkmode .navbar-toggler {
+    color: #ffe082 !important;
+}
+.ks-darkmode .fs-3, .ks-darkmode .fw-bold {
+    color: #fff !important;
+}
+.ks-darkmode .fa-moon {
+    color: #ffd600 !important;
+}
+.ks-darkmode .login-container {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+}
+.ks-darkmode .login-title {
+    color: #ffe082 !important;
+}
+.ks-darkmode .login-logo {
+    background: #23272b;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px #0008;
+    padding: 8px;
+    border: 1.5px solid #444;
+    transition: background 0.3s;
+}
+.ks-darkmode .btn-primary {
+    background: #1976d2 !important;
+    color: #fff !important;
+}
+.ks-darkmode .login-error {
+    color: #ffd600 !important;
+}
+
+/* --- BỔ SUNG ĐỒNG BỘ NỀN TỐI CHO TOÀN BỘ GIAO DIỆN --- */
+.ks-darkmode .table,
+.ks-darkmode .table-responsive,
+.ks-darkmode .summary-box,
+.ks-darkmode .sidebar-filter,
+.ks-darkmode .tab-content,
+.ks-darkmode .report-tabs,
+.ks-darkmode .report-tab,
+.ks-darkmode .form-control,
+.ks-darkmode .btn,
+.ks-darkmode .dropdown-menu,
+.ks-darkmode .modal-content,
+.ks-darkmode .account-dropdown {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+}
+.ks-darkmode .table thead th,
+.ks-darkmode .table-light th {
+    background: #23272b !important;
+    color: #ffe082 !important;
+    border-bottom: 2.5px solid #ffe082 !important;
+}
+.ks-darkmode .table tbody tr {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+}
+.ks-darkmode .table tbody tr:hover {
+    background: #282c34 !important;
+}
+.ks-darkmode .report-tab,
+.ks-darkmode .report-tab.active {
+    background: #23272b !important;
+    color: #ffe082 !important;
+    border-bottom: 2.5px solid #ffe082 !important;
+}
+.ks-darkmode .form-control,
+.ks-darkmode input,
+.ks-darkmode select,
+.ks-darkmode textarea {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #444 !important;
+}
+.ks-darkmode .form-control:focus,
+.ks-darkmode input:focus,
+.ks-darkmode select:focus,
+.ks-darkmode textarea:focus {
+    background: #181a1b !important;
+    color: #fff !important;
+}
+.ks-darkmode .btn-primary,
+.ks-darkmode .btn-outline-primary {
+    background: #1976d2 !important;
+    color: #fff !important;
+    border-color: #1976d2 !important;
+}
+.ks-darkmode .btn-outline-primary {
+    background: transparent !important;
+    color: #ffe082 !important;
+    border-color: #ffe082 !important;
+}
+.ks-darkmode .btn-outline-primary:hover {
+    background: #ffe082 !important;
+    color: #23272b !important;
+}
+.ks-darkmode .btn-outline-danger {
+    background: transparent !important;
+    color: #ff5252 !important;
+    border-color: #ff5252 !important;
+}
+.ks-darkmode .btn-outline-danger:hover {
+    background: #ff5252 !important;
+    color: #23272b !important;
+}
+.ks-darkmode .sidebar-filter-toggle {
+    color: #ffe082 !important;
+}
+.ks-darkmode .table td,
+.ks-darkmode .table th {
+    border-color: #444 !important;
+}
+.ks-darkmode .home-button .btn-home {
+    background: #23272b !important;
+    color: #ffe082 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4) !important;
+}
+.ks-darkmode .home-button .btn-home:hover {
+    background: #ffe082 !important;
+    color: #23272b !important;
+} 
