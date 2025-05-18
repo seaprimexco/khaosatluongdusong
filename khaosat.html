@@ -7,6 +7,7 @@
     <title>Khảo sát - Hệ thống Khảo sát</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/darkmode.css">
     <style>
         .home-button {
             position: fixed;
@@ -473,116 +474,6 @@
                 border-bottom: 1.5px solid transparent;
             }
         }
-        .dark-mode {
-            background-color: #181a1b !important;
-            color: #e0e0e0 !important;
-        }
-        .dark-mode .navbar-custom {
-            background: #23272b !important;
-            border-bottom: 1.5px solid #222 !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-        }
-        .dark-mode .navbar-title-text,
-        .dark-mode .section-title,
-        .dark-mode .group-title,
-        .dark-mode .main-total-label,
-        .dark-mode .card-header,
-        .dark-mode .card-header.bg-primary,
-        .dark-mode .card-header.bg-success,
-        .dark-mode .card-header.bg-info {
-            color: #ffe082 !important;
-        }
-        .dark-mode .stat-title {
-            color: #90caf9 !important;
-        }
-        .dark-mode .navbar-menu a {
-            color: #e0e0e0 !important;
-        }
-        .dark-mode .navbar-menu a.active, .dark-mode .navbar-menu a:hover {
-            color: #90caf9 !important;
-            border-bottom: 2.5px solid #90caf9 !important;
-        }
-        .dark-mode .navbar-account .account-toggle {
-            color: #90caf9 !important;
-        }
-        .dark-mode .dropdown-menu, .dark-mode .account-dropdown {
-            background: #23272b !important;
-            color: #e0e0e0 !important;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-        }
-        .dark-mode .dropdown-menu a, .dark-mode .account-dropdown a {
-            color: #e0e0e0 !important;
-        }
-        .dark-mode .dropdown-menu a:hover, .dark-mode .account-dropdown a:hover {
-            background: #333 !important;
-            color: #90caf9 !important;
-        }
-        .dark-mode .container, .dark-mode .dashboard-header, .dark-mode .card, .dark-mode .section-bg {
-            background: #23272b !important;
-            color: #e0e0e0 !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
-        }
-        .dark-mode .card-title, .dark-mode .stat-title, .dark-mode .stat-value, .dark-mode .stat-year {
-            color: #e0e0e0 !important;
-        }
-        .dark-mode .stat-icon {
-            background: rgba(40,40,40,0.2) !important;
-        }
-        .dark-mode .bg-primary {
-            background: linear-gradient(135deg, #283593 0%, #1565c0 100%) !important;
-        }
-        .dark-mode .bg-success {
-            background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%) !important;
-        }
-        .dark-mode .bg-info {
-            background: linear-gradient(135deg, #0288d1 0%, #01579b 100%) !important;
-        }
-        .dark-mode .bg-warning {
-            background: linear-gradient(135deg, #fbc02d 0%, #f9a825 100%) !important;
-            color: #23272b !important;
-        }
-        .dark-mode .bg-danger {
-            background: linear-gradient(135deg, #b71c1c 0%, #e53935 100%) !important;
-        }
-        .dark-mode .bg-secondary {
-            background: linear-gradient(135deg, #424242 0%, #212121 100%) !important;
-        }
-        .dark-mode .stat-card {
-            border: 1px solid #333 !important;
-        }
-        .dark-mode .chart-card {
-            background: #23272b !important;
-        }
-        .dark-mode .form-control, .dark-mode input, .dark-mode select, .dark-mode textarea {
-            background: #23272b !important;
-            color: #e0e0e0 !important;
-            border: 1px solid #444 !important;
-        }
-        .dark-mode .form-control:focus, .dark-mode input:focus, .dark-mode select:focus, .dark-mode textarea:focus {
-            background: #181a1b !important;
-            color: #fff !important;
-        }
-        .dark-mode .text-muted {
-            color: #b0b0b0 !important;
-        }
-        .dark-mode .border-0 {
-            border: none !important;
-        }
-        .dark-mode .border {
-            border: 1px solid #444 !important;
-        }
-        .dark-mode .dropdown-menu, .dark-mode .account-dropdown {
-            border: 1px solid #333 !important;
-        }
-        .dark-mode .navbar-toggler {
-            color: #90caf9 !important;
-        }
-        .dark-mode .fs-3, .dark-mode .fw-bold {
-            color: #fff !important;
-        }
-        .dark-mode .fa-moon {
-            color: #ffd600 !important;
-        }
     </style>
 </head>
 <body>
@@ -956,6 +847,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/darkmode.js"></script>
     <script>
     // Chặn truy cập nếu chưa đăng nhập
     if (!localStorage.getItem('ks_logged_in')) {
@@ -1289,31 +1181,6 @@
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.navbar-account')) {
             document.getElementById('accountDropdown').classList.remove('show');
-        }
-    });
-
-    // Dark mode toggle
-    function setDarkMode(on) {
-        if(on) {
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('ks_darkmode', '1');
-        } else {
-            document.body.classList.remove('dark-mode');
-            localStorage.setItem('ks_darkmode', '0');
-        }
-    }
-
-    // Đảm bảo gán sự kiện sau khi DOM đã render
-    document.addEventListener('DOMContentLoaded', function() {
-        if(localStorage.getItem('ks_darkmode') === '1') {
-            document.body.classList.add('dark-mode');
-        }
-        var darkBtn = document.getElementById('darkModeToggle');
-        if(darkBtn) {
-            darkBtn.onclick = function() {
-                const isDark = document.body.classList.contains('dark-mode');
-                setDarkMode(!isDark);
-            };
         }
     });
     </script>
