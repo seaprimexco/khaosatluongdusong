@@ -187,6 +187,54 @@
                 border-bottom: 1.5px solid transparent;
             }
         }
+        .report-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .report-tab {
+            padding: 0.6rem 1.5rem;
+            background: #f4f8fb;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: #0d6efd;
+            cursor: pointer;
+            font-size: 1.08rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .report-tab.active {
+            background: #fff;
+            color: #222;
+            border-bottom: 2.5px solid #0d6efd;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .summary-box {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .summary-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .summary-item {
+            flex: 1 1 180px;
+            min-width: 180px;
+            background: #f4f8fb;
+            border-radius: 8px;
+            padding: 1rem 1rem 0.7rem 1rem;
+            text-align: center;
+        }
+        .summary-label { color: #888; font-size: 0.98rem; margin-bottom: 0.2rem; }
+        .summary-value { font-size: 1.25rem; font-weight: bold; color: #0d6efd; }
+        .summary-year { font-size: 0.95rem; color: #888; margin-top: 0.2rem; }
+        .summary-actions { text-align: right; margin-top: 1rem; }
     </style>
 </head>
 <body>
@@ -216,45 +264,91 @@
     </nav>
     <div class="container mt-4 mb-5">
         <h2 class="mb-4">Báo cáo kết quả khảo sát</h2>
-        <div class="sidebar-filter mb-3">
-            <div class="sidebar-filter-toggle" onclick="toggleFilter()">
-                <i class="fas fa-sliders-h me-2"></i> Bộ lọc <i class="fas fa-chevron-down ms-2" id="filterChevron"></i>
+        <div class="report-tabs">
+            <button class="report-tab active" id="tabCaNhan" onclick="showTab('caNhan')">Báo cáo từng cá nhân</button>
+            <button class="report-tab" id="tabTongHop" onclick="showTab('tongHop')">Báo cáo tổng hợp</button>
+        </div>
+        <div class="tab-content active" id="tabContentCaNhan">
+            <div class="sidebar-filter mb-3">
+                <div class="sidebar-filter-toggle" onclick="toggleFilter()">
+                    <i class="fas fa-sliders-h me-2"></i> Bộ lọc <i class="fas fa-chevron-down ms-2" id="filterChevron"></i>
+                </div>
+                <div class="sidebar-filter-content" id="filterContent">
+                    <form id="filterForm" class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label for="filterYear" class="form-label">Năm</label>
+                            <select class="form-select" id="filterYear" name="filterYear">
+                                <option value="">Tất cả</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filterName" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="filterName" name="filterName" placeholder="Nhập tên cần tìm...">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-1"></i> Lọc</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="sidebar-filter-content" id="filterContent">
-                <form id="filterForm" class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label for="filterYear" class="form-label">Năm</label>
-                        <select class="form-select" id="filterYear" name="filterYear">
-                            <option value="">Tất cả</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="filterName" class="form-label">Tên</label>
-                        <input type="text" class="form-control" id="filterName" name="filterName" placeholder="Nhập tên cần tìm...">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-1"></i> Lọc</button>
-                    </div>
-                </form>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="reportTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th onclick="sortTable(0)">STT</th>
+                            <th onclick="sortTable(1)">Họ tên</th>
+                            <th onclick="sortTable(2)">Năm</th>
+                            <th onclick="sortTable(3)">Điện thoại</th>
+                            <th onclick="sortTable(4)">Tổng chi phí</th>
+                            <th onclick="sortTable(5)">Tổng thu nhập</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <!-- Dữ liệu sẽ được render ở đây -->
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle" id="reportTable">
-                <thead class="table-light">
-                    <tr>
-                        <th onclick="sortTable(0)">STT</th>
-                        <th onclick="sortTable(1)">Họ tên</th>
-                        <th onclick="sortTable(2)">Năm</th>
-                        <th onclick="sortTable(3)">Điện thoại</th>
-                        <th onclick="sortTable(4)">Tổng chi phí</th>
-                        <th onclick="sortTable(5)">Tổng thu nhập</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody id="reportTableBody">
-                    <!-- Dữ liệu sẽ được render ở đây -->
-                </tbody>
-            </table>
+        <div class="tab-content" id="tabContentTongHop">
+            <div class="summary-box">
+                <form class="row g-3 align-items-end mb-3" id="summaryForm">
+                    <div class="col-md-3">
+                        <label for="summaryYear" class="form-label">Chọn năm</label>
+                        <select class="form-select" id="summaryYear" name="summaryYear"></select>
+                    </div>
+                </form>
+                <div class="summary-row">
+                    <div class="summary-item">
+                        <div class="summary-label">Tổng số khảo sát</div>
+                        <div class="summary-value" id="sumKhaoSat">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Tổng thành viên</div>
+                        <div class="summary-value" id="sumThanhVien">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Tổng chi phí</div>
+                        <div class="summary-value" id="sumChiPhi">0 VNĐ</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Tổng thu nhập</div>
+                        <div class="summary-value" id="sumThuNhap">0 VNĐ</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Chi phí TB/hộ</div>
+                        <div class="summary-value" id="sumChiPhiTB">0 VNĐ</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Thu nhập TB/hộ</div>
+                        <div class="summary-value" id="sumThuNhapTB">0 VNĐ</div>
+                    </div>
+                </div>
+                <div class="summary-actions">
+                    <button class="btn btn-outline-primary me-2" type="button" onclick="printSummary()"><i class="fas fa-print me-1"></i> In</button>
+                    <button class="btn btn-outline-danger" type="button" onclick="pdfSummary()"><i class="fas fa-file-pdf me-1"></i> PDF</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="home-button">
@@ -265,6 +359,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
+        // Tab chuyển đổi
+        function showTab(tab) {
+            document.getElementById('tabCaNhan').classList.toggle('active', tab==='caNhan');
+            document.getElementById('tabTongHop').classList.toggle('active', tab==='tongHop');
+            document.getElementById('tabContentCaNhan').classList.toggle('active', tab==='caNhan');
+            document.getElementById('tabContentTongHop').classList.toggle('active', tab==='tongHop');
+        }
         // Ẩn/hiện sidebar filter
         function toggleFilter() {
             const content = document.getElementById('filterContent');
@@ -414,6 +515,99 @@
             // Watermark logo (nếu muốn, cần base64 hoặc url hợp lệ)
             // doc.addImage('logo.png', 'PNG', 40, 100, 120, 60, '', 'NONE', 0.08);
             doc.save(`baocao_${d.hoTen||'nguoidung'}.pdf`);
+        }
+        // Tổng hợp theo năm
+        function updateSummary(year) {
+            let filtered = surveyData;
+            if (year) filtered = filtered.filter(d => d.nam == year);
+            const tongKhaoSat = filtered.length;
+            const tongThanhVien = filtered.reduce((sum, d) => sum + (parseInt(d.raw[12])||0), 0);
+            const tongChiPhi = filtered.reduce((sum, d) => sum + (parseFloat((d.tongChiPhi||'0').toString().replace(/\./g, '').replace(',', '.'))||0), 0);
+            const tongThuNhap = filtered.reduce((sum, d) => sum + (parseFloat((d.tongThuNhap||'0').toString().replace(/\./g, '').replace(',', '.'))||0), 0);
+            const chiPhiTB = tongKhaoSat ? tongChiPhi / tongKhaoSat : 0;
+            const thuNhapTB = tongKhaoSat ? tongThuNhap / tongKhaoSat : 0;
+            document.getElementById('sumKhaoSat').textContent = tongKhaoSat.toLocaleString('vi-VN');
+            document.getElementById('sumThanhVien').textContent = tongThanhVien.toLocaleString('vi-VN');
+            document.getElementById('sumChiPhi').textContent = tongChiPhi.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('sumThuNhap').textContent = tongThuNhap.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('sumChiPhiTB').textContent = Math.round(chiPhiTB).toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('sumThuNhapTB').textContent = Math.round(thuNhapTB).toLocaleString('vi-VN') + ' VNĐ';
+        }
+        document.getElementById('summaryYear').addEventListener('change', function() {
+            updateSummary(this.value);
+        });
+        // Render options năm cho tổng hợp
+        function renderSummaryYearOptions() {
+            const yearSet = new Set(surveyData.map(d => d.nam));
+            const select = document.getElementById('summaryYear');
+            select.innerHTML = [...yearSet].sort().map(y => `<option value="${y}">${y}</option>`).join('');
+            if (select.value) updateSummary(select.value); else if (select.options.length) updateSummary(select.options[0].value);
+        }
+        // Khi fetch xong dữ liệu, render luôn options năm tổng hợp
+        const oldFetchData = fetchData;
+        fetchData = async function() {
+            await oldFetchData();
+            renderSummaryYearOptions();
+        };
+        // Xuất PDF/in tổng hợp
+        function printSummary() {
+            const year = document.getElementById('summaryYear').value;
+            const html = `
+                <html><head><title>Báo cáo tổng hợp</title><style>
+                body { font-family: Arial, sans-serif; margin: 40px; }
+                .report-logo { height: 48px; margin-bottom: 8px; }
+                .report-title { font-size: 1.3rem; font-weight: bold; color: #0d6efd; margin-bottom: 0.5rem; }
+                .report-company { font-size: 1.1rem; color: #333; margin-bottom: 0.5rem; }
+                .summary-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.2rem; }
+                .summary-item { flex: 1 1 180px; min-width: 180px; background: #f4f8fb; border-radius: 8px; padding: 1rem 1rem 0.7rem 1rem; text-align: center; }
+                .summary-label { color: #888; font-size: 0.98rem; margin-bottom: 0.2rem; }
+                .summary-value { font-size: 1.25rem; font-weight: bold; color: #0d6efd; }
+                </style></head><body>
+                <img src='logo.png' class='report-logo'>
+                <div class='report-company'>CÔNG TY ABC</div>
+                <div class='report-title'>BÁO CÁO TỔNG HỢP KHẢO SÁT NĂM ${year}</div>
+                <div class='summary-row'>
+                    <div class='summary-item'><div class='summary-label'>Tổng số khảo sát</div><div class='summary-value'>${document.getElementById('sumKhaoSat').textContent}</div></div>
+                    <div class='summary-item'><div class='summary-label'>Tổng thành viên</div><div class='summary-value'>${document.getElementById('sumThanhVien').textContent}</div></div>
+                    <div class='summary-item'><div class='summary-label'>Tổng chi phí</div><div class='summary-value'>${document.getElementById('sumChiPhi').textContent}</div></div>
+                    <div class='summary-item'><div class='summary-label'>Tổng thu nhập</div><div class='summary-value'>${document.getElementById('sumThuNhap').textContent}</div></div>
+                    <div class='summary-item'><div class='summary-label'>Chi phí TB/hộ</div><div class='summary-value'>${document.getElementById('sumChiPhiTB').textContent}</div></div>
+                    <div class='summary-item'><div class='summary-label'>Thu nhập TB/hộ</div><div class='summary-value'>${document.getElementById('sumThuNhapTB').textContent}</div></div>
+                </div>
+                <div style='margin-top:2.5rem;display:flex;justify-content:space-between;'>
+                    <div style='width:45%;text-align:center;'><span style='font-style:italic;color:#888;'>Người thực hiện</span><div style='height:60px;border-bottom:1px dotted #bbb;margin-bottom:0.3rem;'></div></div>
+                    <div style='width:45%;text-align:center;'><span style='font-style:italic;color:#888;'>Người duyệt</span><div style='height:60px;border-bottom:1px dotted #bbb;margin-bottom:0.3rem;'></div></div>
+                </div>
+                </body></html>
+            `;
+            const win = window.open('', '', 'width=900,height=700');
+            win.document.write(html);
+            win.document.close();
+            win.print();
+        }
+        function pdfSummary() {
+            const year = document.getElementById('summaryYear').value;
+            const doc = new window.jspdf.jsPDF();
+            doc.addImage('logo.png', 'PNG', 80, 8, 50, 18);
+            doc.setFontSize(14);
+            doc.text('CÔNG TY ABC', 105, 32, { align: 'center' });
+            doc.setFontSize(18);
+            doc.setTextColor(13,110,253);
+            doc.text(`BÁO CÁO TỔNG HỢP KHẢO SÁT NĂM ${year}`, 105, 45, { align: 'center' });
+            doc.setFontSize(13);
+            doc.setTextColor(0,0,0);
+            let y = 60;
+            doc.text(`Tổng số khảo sát: ${document.getElementById('sumKhaoSat').textContent}`, 20, y); y+=10;
+            doc.text(`Tổng thành viên: ${document.getElementById('sumThanhVien').textContent}`, 20, y); y+=10;
+            doc.text(`Tổng chi phí: ${document.getElementById('sumChiPhi').textContent}`, 20, y); y+=10;
+            doc.text(`Tổng thu nhập: ${document.getElementById('sumThuNhap').textContent}`, 20, y); y+=10;
+            doc.text(`Chi phí TB/hộ: ${document.getElementById('sumChiPhiTB').textContent}`, 20, y); y+=10;
+            doc.text(`Thu nhập TB/hộ: ${document.getElementById('sumThuNhapTB').textContent}`, 20, y); y+=10;
+            doc.text('Người thực hiện', 35, y+30);
+            doc.text('Người duyệt', 135, y+30);
+            doc.line(25, y+28, 75, y+28);
+            doc.line(125, y+28, 175, y+28);
+            doc.save(`baocao_tonghop_${year}.pdf`);
         }
         // Khởi tạo
         fetchData();
