@@ -345,6 +345,48 @@
         .bg-warning { background: var(--warning-gradient) !important; }
         .bg-danger { background: var(--danger-gradient) !important; }
         .bg-secondary { background: var(--secondary-gradient) !important; }
+
+        .navbar-account {
+            position: relative;
+            margin-left: 1.5rem;
+        }
+        .account-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #0d6efd;
+            gap: 0.4rem;
+            font-size: 1.08rem;
+        }
+        .account-toggle i.fa-user-circle {
+            font-size: 1.5rem;
+        }
+        .account-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #fff;
+            min-width: 160px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+            border-radius: 8px;
+            z-index: 2000;
+            padding: 0.5rem 0.2rem;
+        }
+        .account-dropdown.show { display: block; }
+        .account-dropdown a {
+            display: block;
+            color: #222;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .account-dropdown a:hover {
+            background: #f0f6ff;
+            color: #0d6efd;
+        }
     </style>
     <script>
         // Toggle menu for mobile
@@ -548,6 +590,27 @@
                 }
             });
         }
+
+        // Hiển thị tên người dùng
+        (function() {
+            let user = {};
+            try { user = JSON.parse(localStorage.getItem('ks_user') || '{}'); } catch(e){}
+            document.getElementById('accountName').textContent = user.ten_day_du || user.name || user.username || '';
+        })();
+        function toggleAccountDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('accountDropdown').classList.toggle('show');
+        }
+        function logout() {
+            localStorage.removeItem('ks_logged_in');
+            localStorage.removeItem('ks_user');
+            window.location.href = 'login.html';
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.navbar-account')) {
+                document.getElementById('accountDropdown').classList.remove('show');
+            }
+        });
     </script>
 </head>
 <body>
@@ -558,14 +621,21 @@
                 <img src="logo.png" alt="Logo" class="navbar-logo">
                 <span class="navbar-title-text">Hệ thống Khảo sát</span>
             </div>
-            <button class="navbar-toggler" id="navbarToggler" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="index.html" class="active">Tổng quan</a>
-                <a href="khaosat.html">Khảo sát</a>
-                <a href="baocao.html">Báo cáo</a>
-                <a href="#">Cài đặt</a>
+            <div style="display: flex; align-items: center;">
+                <div class="navbar-menu" id="navbarMenu">
+                    <a href="index.html" class="active">Tổng quan</a>
+                    <a href="khaosat.html">Khảo sát</a>
+                    <a href="baocao.html">Báo cáo</a>
+                    <a href="#">Cài đặt</a>
+                </div>
+                <div class="navbar-account dropdown">
+                    <span class="account-toggle" onclick="toggleAccountDropdown(event)">
+                        <i class="fas fa-user-circle"></i> <span id="accountName"></span> <i class="fas fa-caret-down"></i>
+                    </span>
+                    <div class="account-dropdown" id="accountDropdown">
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
