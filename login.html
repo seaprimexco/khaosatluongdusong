@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Hệ thống Khảo sát</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; }
+        .login-container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        .login-logo {
+            display: block;
+            margin: 0 auto 1.2rem auto;
+            height: 56px;
+        }
+        .login-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 1.2rem;
+        }
+        .form-label { font-weight: 500; }
+        .btn-primary { width: 100%; font-weight: 600; }
+        .login-error { color: #dc3545; text-align: center; margin-top: 0.7rem; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="logo.png" alt="Logo" class="login-logo">
+        <div class="login-title">Đăng nhập hệ thống khảo sát</div>
+        <form id="loginForm" autocomplete="off">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tài khoản</label>
+                <input type="text" class="form-control" id="username" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            <div class="login-error" id="loginError"></div>
+        </form>
+    </div>
+    <script>
+        // Demo: tài khoản admin / 123456
+        const USERS = [
+            { username: 'admin', password: '123456', name: 'Quản trị viên' },
+            { username: 'user', password: '123456', name: 'Người dùng' }
+        ];
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            const user = USERS.find(acc => acc.username === u && acc.password === p);
+            if (user) {
+                localStorage.setItem('ks_logged_in', '1');
+                localStorage.setItem('ks_user', JSON.stringify(user));
+                window.location.href = 'khaosat.html';
+            } else {
+                document.getElementById('loginError').textContent = 'Tài khoản hoặc mật khẩu không đúng!';
+            }
+        });
+    </script>
+</body>
+</html> 
