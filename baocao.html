@@ -6,6 +6,7 @@
     <title>Báo cáo khảo sát</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/darkmode.css">
     <style>
         body { background: #f8f9fa; }
         .sidebar-filter {
@@ -15,6 +16,9 @@
             padding: 1.2rem 1rem 1rem 1rem;
             margin-bottom: 1.5rem;
             transition: all 0.3s;
+        }
+        .ks-darkmode .sidebar-filter {
+            background: #23272b !important;
         }
         .sidebar-filter-toggle {
             display: flex;
@@ -26,10 +30,11 @@
         }
         .sidebar-filter-content { display: block; }
         .sidebar-filter-content.hide { display: none; }
-        .table-responsive { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .table-responsive { border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .ks-darkmode .table-responsive { background: #23272b !important; }
         table.table { border-collapse: separate; border-spacing: 0; }
         th, td { vertical-align: middle !important; }
-        th { cursor: pointer; user-select: none; background: #f4f8fb; font-weight: 700; color: #0d6efd; border-bottom: 2px solid #e5eaf2; }
+        th { cursor: pointer; user-select: none; font-weight: 700; border-bottom: 2px solid #e5eaf2; }
         tr { transition: background 0.2s; }
         tr:hover { background: #f0f6ff; }
         td { border-bottom: 1px solid #f0f0f0; }
@@ -56,6 +61,7 @@
             align-items: center;
             border-bottom: 1.5px solid #e5eaf2;
         }
+        .ks-darkmode .navbar-custom { background: #23272b !important; }
         .navbar-content {
             display: flex;
             align-items: center;
@@ -147,6 +153,7 @@
             z-index: 2000;
             padding: 0.5rem 0.2rem;
         }
+        .ks-darkmode .account-dropdown { background: #23272b !important; }
         .account-dropdown.show { display: block; }
         .account-dropdown a {
             display: block;
@@ -192,6 +199,7 @@
             gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
+        .ks-darkmode .report-tabs { background: #23272b !important; }
         .report-tab {
             padding: 0.6rem 1.5rem;
             background: #f4f8fb;
@@ -203,19 +211,24 @@
             font-size: 1.08rem;
             transition: background 0.2s, color 0.2s;
         }
+        .ks-darkmode .report-tab { background: #23272b !important; color: #ffe082 !important; }
         .report-tab.active {
             background: #fff;
-            color: #222;
-            border-bottom: 2.5px solid #0d6efd;
+            color: #1565c0;
+            border-bottom: 2.5px solid #1565c0;
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .ks-darkmode .tab-content { background: #23272b !important; }
         .summary-box {
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             padding: 1.5rem 1.2rem 1.2rem 1.2rem;
             margin-bottom: 1.5rem;
+        }
+        .ks-darkmode .summary-box {
+            background: #23272b !important;
         }
         .summary-row {
             display: flex;
@@ -226,13 +239,12 @@
         .summary-item {
             flex: 1 1 180px;
             min-width: 180px;
-            background: #f4f8fb;
             border-radius: 8px;
             padding: 1rem 1rem 0.7rem 1rem;
             text-align: center;
         }
         .summary-label { color: #888; font-size: 0.98rem; margin-bottom: 0.2rem; }
-        .summary-value { font-size: 1.25rem; font-weight: bold; color: #0d6efd; }
+        .summary-value { font-size: 1.25rem; font-weight: bold; color: #1565c0; }
         .summary-year { font-size: 0.95rem; color: #888; margin-top: 0.2rem; }
         .summary-actions { text-align: right; margin-top: 1rem; }
         .dark-mode {
@@ -250,8 +262,16 @@
         .dark-mode .report-tab,
         .dark-mode .card-header,
         .dark-mode .table thead th,
-        .dark-mode .table-light th {
+        .dark-mode .table-light th,
+        .dark-mode label.form-label,
+        .dark-mode .report-tab.active {
             color: #ffe082 !important;
+            font-weight: bold !important;
+            font-size: 1.08rem !important;
+        }
+        .dark-mode .table thead th,
+        .dark-mode .table-light th {
+            border-bottom: 2.5px solid #ffe082 !important;
         }
         .dark-mode .card-header.bg-primary,
         .dark-mode .card-header.bg-success,
@@ -352,6 +372,10 @@
         .table td.right, .table th.right {
             text-align: right;
         }
+        th.bg-primary, th.bg-success, th.bg-warning, th.bg-danger, th.bg-info, th.bg-secondary {
+            color: #fff !important;
+        }
+        th, .table thead th, .table-light th { background: #f4f8fb; color: #0d6efd; }
     </style>
 </head>
 <body>
@@ -476,6 +500,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="js/darkmode.js"></script>
     <script>
         // Tab chuyển đổi
         function showTab(tab) {
@@ -747,29 +772,6 @@
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.navbar-account')) {
                 document.getElementById('accountDropdown').classList.remove('show');
-            }
-        });
-        // Dark mode toggle
-        function setDarkMode(on) {
-            if(on) {
-                document.body.classList.add('dark-mode');
-                localStorage.setItem('ks_darkmode', '1');
-            } else {
-                document.body.classList.remove('dark-mode');
-                localStorage.setItem('ks_darkmode', '0');
-            }
-        }
-        // Đảm bảo gán sự kiện sau khi DOM đã render
-        document.addEventListener('DOMContentLoaded', function() {
-            if(localStorage.getItem('ks_darkmode') === '1') {
-                document.body.classList.add('dark-mode');
-            }
-            var darkBtn = document.getElementById('darkModeToggle');
-            if(darkBtn) {
-                darkBtn.onclick = function() {
-                    const isDark = document.body.classList.contains('dark-mode');
-                    setDarkMode(!isDark);
-                };
             }
         });
         // Thêm hàm định dạng số phần ngàn
