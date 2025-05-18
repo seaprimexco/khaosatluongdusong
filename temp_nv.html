@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bảng Khảo Sát Chi Phí Sinh Hoạt</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        .container {
+            width: 100%;
+            max-width: 21cm; /* A4 width minus margins */
+        }
+        .header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16pt;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .section-title {
+            font-weight: bold;
+            background-color: #f2f2f2;
+            padding: 8px;
+        }
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+            display: inline-block;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        input[type="text"], input[type="number"] {
+            width: 90%;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        @media print {
+            body {
+                width: 21cm;
+                height: 29.7cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">BẢNG KHẢO SÁT CHI PHÍ SINH HOẠT</div>
+
+        <!-- Thông tin cá nhân -->
+        <table>
+            <tr>
+                <th colspan="4" class="section-title">Thông tin cá nhân</th>
+            </tr>
+            <tr>
+                <td colspan="2">Họ và tên chủ hộ</td>
+                <td colspan="2"><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Vị trí công việc</td>
+                <td>
+                    <label><input type="checkbox"> Công nhân trực tiếp</label>
+                </td>
+                <td>
+                    <label><input type="checkbox"> Nhân viên Văn phòng</label>
+                </td>
+                <td>
+                    <label><input type="checkbox"> Khác</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Số thành viên trong gia đình</td>
+                <td colspan="3">
+                    <input type="number" style="width: 100px;"> (Người lớn: <input type="number" style="width: 60px;">, Trẻ em: <input type="number" style="width: 60px;">)
+                </td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td colspan="3"><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 1. Nhà ở -->
+        <table>
+            <tr>
+                <th colspan="2" class="section-title">1. Nhà ở</th>
+            </tr>
+            <tr>
+                <th>Loại nhà</th>
+                <th>Chi phí</th>
+            </tr>
+            <tr>
+                <td>Thuê trọ</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Thuê Nhà nguyên căn</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Nhà riêng</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Khác</td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 2. Thực phẩm -->
+        <table>
+            <tr>
+                <th colspan="4" class="section-title">2. Thực phẩm</th>
+            </tr>
+            <tr>
+                <th>Mặt hàng</th>
+                <th>Chi phí</th>
+                <th>Mặt hàng</th>
+                <th>Chi phí</th>
+            </tr>
+            <tr>
+                <td>Gạo</td>
+                <td><input type="text"></td>
+                <td>Thịt</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Cá/hải sản</td>
+                <td><input type="text"></td>
+                <td>Rau củ</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Sữa</td>
+                <td><input type="text"></td>
+                <td>Dầu ăn/Gia vị</td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 3. Giáo dục -->
+        <table>
+            <tr>
+                <th colspan="7" class="section-title">3. Giáo dục</th>
+            </tr>
+            <tr>
+                <th>Cấp học</th>
+                <th>Trường (Công/Tư)</th>
+                <th>Học phí</th>
+                <th>Ăn bán trú</th>
+                <th>Sách vở</th>
+                <th>Khác</th>
+                <th>Tổng</th>
+            </tr>
+            <tr>
+                <td>Mầm non</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Tiểu học</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>THPT</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Đại học</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Tổng cộng</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 4. Y tế -->
+        <table>
+            <tr>
+                <th colspan="4" class="section-title">4. Y tế</th>
+            </tr>
+            <tr>
+                <th>Diễn giải</th>
+                <th>Chi phí</th>
+                <th>Diễn giải</th>
+                <th>Chi phí</th>
+            </tr>
+            <tr>
+                <td>Bảo hiểm y tế</td>
+                <td><input type="text"></td>
+                <td>Chi phí chữa bệnh</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Tổng</td>
+                <td colspan="3"><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 5. Tiện ích -->
+        <table>
+            <tr>
+                <th colspan="4" class="section-title">5. Tiện ích</th>
+            </tr>
+            <tr>
+                <th>Khoản mục</th>
+                <th>Chi phí</th>
+                <th>Khoản mục</th>
+                <th>Chi phí</th>
+            </tr>
+            <tr>
+                <td>Điện</td>
+                <td><input type="text"></td>
+                <td>Gas</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Nước</td>
+                <td><input type="text"></td>
+                <td>Xăng xe</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Điện thoại/Internet</td>
+                <td><input type="text"></td>
+                <td>Khác</td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- 6. Tổng thu nhập -->
+        <table>
+            <tr>
+                <th colspan="3" class="section-title">6. Tổng thu nhập</th>
+            </tr>
+            <tr>
+                <th>Nguồn thu nhập</th>
+                <th>Bản thân</th>
+                <th>Người thân</th>
+            </tr>
+            <tr>
+                <td>Lương chính</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Thu nhập khác</td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+
+        <!-- Xác nhận -->
+        <table>
+            <tr>
+                <th colspan="3" class="section-title">Xác nhận</th>
+            </tr>
+            <tr>
+                <td>Người khảo sát</td>
+                <td colspan="2"><input type="text"></td>
+            </tr>
+            <tr>
+                <td>Ngày khảo sát</td>
+                <td colspan="2"><input type="date"></td>
+            </tr>
+            <tr>
+                <td>Chữ ký</td>
+                <td colspan="2" style="height: 60px;"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
