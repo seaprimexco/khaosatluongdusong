@@ -49,13 +49,29 @@
             }
         }
         .password-toggle {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
             cursor: pointer;
+            background: none;
+            border: none;
             color: #888;
-            z-index: 2;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+        }
+        .input-group-text.password-toggle {
+            background: transparent;
+            border: none;
+        }
+        .ks-darkmode .form-check-input {
+            background-color: #23272b !important;
+            border: 2px solid #ffe082 !important;
+        }
+        .ks-darkmode .form-check-input:checked {
+            background-color: #ffe082 !important;
+            border-color: #ffe082 !important;
+        }
+        .ks-darkmode .form-check-input:checked[type="checkbox"] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2323272b' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M3 9l3 3 7-7'/%3e%3c/svg%3e") !important;
         }
     </style>
 </head>
@@ -69,12 +85,16 @@
         <form id="loginForm" autocomplete="off">
             <div class="mb-3">
                 <label for="username" class="form-label">Tài khoản</label>
-                <input type="text" class="form-control" id="username" required autofocus>
+                <div class="input-group w-100">
+                    <input type="text" class="form-control" id="username" required autofocus>
+                </div>
             </div>
-            <div class="mb-3 position-relative">
+            <div class="mb-3">
                 <label for="password" class="form-label">Mật khẩu</label>
-                <input type="password" class="form-control" id="password" required>
-                <span class="password-toggle" id="togglePassword"><i class="fas fa-eye"></i></span>
+                <div class="input-group w-100">
+                    <input type="password" class="form-control" id="password" required>
+                    <span class="input-group-text password-toggle" id="togglePassword"><i class="fas fa-eye"></i></span>
+                </div>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -158,6 +178,8 @@
             if (u) {
                 document.getElementById('username').value = u;
                 document.getElementById('rememberMe').checked = true;
+            } else {
+                document.getElementById('rememberMe').checked = false;
             }
             if (p) {
                 document.getElementById('password').value = p;
