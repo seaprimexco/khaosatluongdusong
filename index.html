@@ -27,13 +27,14 @@
         }
 
         .navbar-custom {
-            background: var(--primary-gradient);
-            border-radius: 0 0 18px 18px;
+            background: #fff;
+            border-radius: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             padding: 0.2rem 0.5rem;
-            min-height: 54px;
+            min-height: 60px;
             display: flex;
             align-items: center;
+            border-bottom: 3px solid #0d6efd;
         }
 
         .navbar-content {
@@ -52,16 +53,16 @@
         }
 
         .navbar-logo {
-            height: 32px;
+            height: 40px;
             width: auto;
             display: block;
             object-fit: contain;
         }
 
         .navbar-title-text {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #0d6efd;
             letter-spacing: 0.5px;
             margin: 0;
             line-height: 32px;
@@ -85,26 +86,26 @@
         }
 
         .navbar-menu a, .navbar-menu .dropdown-toggle {
-            color: #fff;
-            font-size: 1.05rem;
-            font-weight: 500;
-            padding: 0.35rem 1rem;
-            border-radius: 2rem;
+            color: #0d6efd;
+            font-size: 1.08rem;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem 0.3rem 1.2rem;
+            border-radius: 0;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.4rem;
-            background: rgba(255,255,255,0.08);
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            background: none;
+            border-bottom: 3px solid transparent;
+            transition: border-bottom 0.2s, color 0.2s;
             cursor: pointer;
             position: relative;
         }
 
         .navbar-menu a.active, .navbar-menu a:hover, .navbar-menu .dropdown-toggle:hover {
-            background: #fff;
-            color: var(--primary-gradient);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-bottom: 3px solid #0d6efd;
+            color: #0a58ca;
+            background: none;
         }
 
         /* Dropdown styles */
@@ -118,7 +119,7 @@
             left: 0;
             min-width: 180px;
             background: #fff;
-            border-radius: 12px;
+            border-radius: 0;
             box-shadow: 0 8px 24px rgba(0,0,0,0.13);
             z-index: 2000;
             padding: 0.5rem 0.2rem;
@@ -223,11 +224,12 @@
 
         .card {
             border: none;
-            border-radius: 10px;
+            border-radius: 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
             background: white;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
         }
 
         .card:hover {
@@ -441,6 +443,26 @@
 
             // Cập nhật biểu đồ
             updateCharts(processedData, latestYear);
+
+            // Tính mức lương đủ sống Anker: trung bình chi phí sinh hoạt thực tế của các hộ chia cho số lao động, cộng 10% dự phòng
+            let ankerSalary = 0;
+            if (tongThanhVien > 0) {
+                ankerSalary = Math.round((tongChiPhi / tongThanhVien) * 1.1);
+            }
+            document.getElementById('ankerSalary').textContent = ankerSalary.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('ankerYear').textContent = `Năm ${latestYear}`;
+            // Vẽ biểu đồ xu hướng Anker
+            const ankerTrend = [];
+            const years = [...new Set(processedData.map(item => item.year))].sort();
+            years.forEach(year => {
+                const yData = processedData.filter(i => i.year === year);
+                const chiPhi = yData.reduce((sum, i) => sum + i.tongChiPhi, 0);
+                const nguoiLon = yData.reduce((sum, i) => sum + (i.tongThanhVien || 0), 0);
+                let salary = 0;
+                if (nguoiLon > 0) salary = Math.round((chiPhi / nguoiLon) * 1.1);
+                ankerTrend.push({ year, salary });
+            });
+            renderAnkerChart(ankerTrend);
         }
 
         // Hàm cập nhật biểu đồ
@@ -490,6 +512,38 @@
 
         // Gọi hàm load dữ liệu khi trang đã tải xong
         document.addEventListener('DOMContentLoaded', loadData);
+
+        function renderAnkerChart(ankerTrend) {
+            const ctx = document.getElementById('ankerChart').getContext('2d');
+            if (window.ankerChartInstance) window.ankerChartInstance.destroy();
+            window.ankerChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ankerTrend.map(d => d.year),
+                    datasets: [{
+                        label: 'Lương đủ sống (Anker)',
+                        data: ankerTrend.map(d => d.salary),
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13,110,253,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0d6efd',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: true, title: { display: false } },
+                        y: { display: true, title: { display: false }, beginAtZero: true }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -586,6 +640,27 @@
             </div>
         </div>
 
+        <!-- Card Anker: Xu hướng mức lương đủ sống -->
+        <div class="row g-2">
+            <div class="col-12">
+                <div class="card bg-light border-0" id="ankerCard">
+                    <div class="d-flex align-items-center justify-content-between p-3">
+                        <div>
+                            <h5 class="mb-1" style="color:#0d6efd;"><i class="fas fa-hand-holding-usd me-2"></i>Xu hướng mức lương đủ sống (Anker)</h5>
+                            <div class="text-muted small">Tính toán từ dữ liệu khảo sát thực tế theo phương pháp Anker</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fs-3 fw-bold" id="ankerSalary">0 VNĐ</div>
+                            <div class="small text-muted" id="ankerYear">Năm</div>
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <canvas id="ankerChart" height="60"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Chỉ số nâng cao -->
         <div class="row g-2">
             <div class="col-md-3">
@@ -675,7 +750,7 @@
                         Xu hướng mức lương đủ sống (Anker)
                     </div>
                     <div class="chart-container">
-                        <canvas id="luongDuSongChart"></canvas>
+                        <canvas id="ankerChart"></canvas>
                     </div>
                 </div>
             </div>
