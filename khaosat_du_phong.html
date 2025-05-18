@@ -27,6 +27,7 @@
                         <a class="nav-link active" href="khaosat.html">Khảo sát</a>
                     </li>
                 </ul>
+                <button class="btn btn-link ms-auto" id="darkModeToggle" title="Chế độ tối" style="font-size:1.4rem; color:#fff; margin-left:auto;"><i class="fas fa-moon"></i></button>
             </div>
         </div>
     </nav>
@@ -214,6 +215,30 @@
         tinhTongThuNhap();
         soSanhChiPhiThuNhap();
         deXuatAnker();
+    });
+
+    // Dark mode toggle
+    function setDarkMode(on) {
+        if(on) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('ks_darkmode', '1');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('ks_darkmode', '0');
+        }
+    }
+    // Đảm bảo gán sự kiện sau khi DOM đã render
+    document.addEventListener('DOMContentLoaded', function() {
+        if(localStorage.getItem('ks_darkmode') === '1') {
+            document.body.classList.add('dark-mode');
+        }
+        var darkBtn = document.getElementById('darkModeToggle');
+        if(darkBtn) {
+            darkBtn.onclick = function() {
+                const isDark = document.body.classList.contains('dark-mode');
+                setDarkMode(!isDark);
+            };
+        }
     });
     </script>
 </body>
