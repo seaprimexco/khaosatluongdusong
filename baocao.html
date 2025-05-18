@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo khảo sát</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; }
+        .sidebar-filter {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 1.2rem 1rem 1rem 1rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        .sidebar-filter-toggle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #0d6efd;
+            margin-bottom: 0.7rem;
+        }
+        .sidebar-filter-content { display: block; }
+        .sidebar-filter-content.hide { display: none; }
+        .table-responsive { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        table.table { border-collapse: separate; border-spacing: 0; }
+        th, td { vertical-align: middle !important; }
+        th { cursor: pointer; user-select: none; background: #f4f8fb; font-weight: 700; color: #0d6efd; border-bottom: 2px solid #e5eaf2; }
+        tr { transition: background 0.2s; }
+        tr:hover { background: #f0f6ff; }
+        td { border-bottom: 1px solid #f0f0f0; }
+        .action-btns button { margin-right: 0.3rem; }
+        .home-button { position: fixed; bottom: 30px; right: 30px; z-index: 99; }
+        .btn-home { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+        .btn-home:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); }
+        .report-logo { height: 48px; margin-bottom: 8px; }
+        .report-title { font-size: 1.3rem; font-weight: bold; color: #0d6efd; margin-bottom: 0.5rem; }
+        .report-company { font-size: 1.1rem; color: #333; margin-bottom: 0.5rem; }
+        .report-section { margin-bottom: 0.7rem; }
+        .report-sign { margin-top: 2.5rem; display: flex; justify-content: space-between; }
+        .report-sign .sign-box { width: 45%; text-align: center; }
+        .report-sign .sign-label { font-style: italic; color: #888; }
+        .report-sign .sign-space { height: 60px; border-bottom: 1px dotted #bbb; margin-bottom: 0.3rem; }
+        .watermark-logo { position: absolute; opacity: 0.08; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 300px; z-index: 0; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-4">Báo cáo kết quả khảo sát</h2>
+        <div class="sidebar-filter mb-3">
+            <div class="sidebar-filter-toggle" onclick="toggleFilter()">
+                <i class="fas fa-sliders-h me-2"></i> Bộ lọc <i class="fas fa-chevron-down ms-2" id="filterChevron"></i>
+            </div>
+            <div class="sidebar-filter-content" id="filterContent">
+                <form id="filterForm" class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label for="filterYear" class="form-label">Năm</label>
+                        <select class="form-select" id="filterYear" name="filterYear">
+                            <option value="">Tất cả</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="filterName" class="form-label">Tên</label>
+                        <input type="text" class="form-control" id="filterName" name="filterName" placeholder="Nhập tên cần tìm...">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-1"></i> Lọc</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" id="reportTable">
+                <thead class="table-light">
+                    <tr>
+                        <th onclick="sortTable(0)">STT</th>
+                        <th onclick="sortTable(1)">Họ tên</th>
+                        <th onclick="sortTable(2)">Năm</th>
+                        <th onclick="sortTable(3)">Điện thoại</th>
+                        <th onclick="sortTable(4)">Tổng chi phí</th>
+                        <th onclick="sortTable(5)">Tổng thu nhập</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- Dữ liệu sẽ được render ở đây -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="home-button">
+        <a href="index.html" class="btn btn-success btn-home" title="Về trang chủ">
+            <i class="fas fa-home"></i>
+        </a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script>
+        // Ẩn/hiện sidebar filter
+        function toggleFilter() {
+            const content = document.getElementById('filterContent');
+            const chevron = document.getElementById('filterChevron');
+            if (content.classList.contains('hide')) {
+                content.classList.remove('hide');
+                chevron.classList.remove('fa-chevron-up');
+                chevron.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('hide');
+                chevron.classList.remove('fa-chevron-down');
+                chevron.classList.add('fa-chevron-up');
+            }
+        }
+        // Dữ liệu mẫu, thay bằng fetch thực tế
+        let surveyData = [];
+        // Hàm fetch dữ liệu thực tế
+        async function fetchData() {
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxVjXAiM3-W3bxNUnmrx-BfZe1sIHAV9h3qhp7T2Y4IB4aEGalvvch6-l5qimz7u7jdsA/exec');
+                const apiData = await response.json();
+                if (apiData.status === 'success') {
+                    surveyData = apiData.data.slice(1).map((row, idx) => ({
+                        stt: idx + 1,
+                        hoTen: row[2],
+                        nam: new Date(row[1]).getFullYear(),
+                        dienThoai: row[3],
+                        tongChiPhi: row[29],
+                        tongThuNhap: row[32],
+                        raw: row
+                    }));
+                    renderYearOptions();
+                    renderTable(surveyData);
+                }
+            } catch (e) { console.error(e); }
+        }
+        // Render options năm
+        function renderYearOptions() {
+            const yearSet = new Set(surveyData.map(d => d.nam));
+            const select = document.getElementById('filterYear');
+            select.innerHTML = '<option value="">Tất cả</option>' + [...yearSet].sort().map(y => `<option value="${y}">${y}</option>`).join('');
+        }
+        // Lọc dữ liệu
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const year = document.getElementById('filterYear').value;
+            const name = document.getElementById('filterName').value.trim().toLowerCase();
+            let filtered = surveyData;
+            if (year) filtered = filtered.filter(d => d.nam == year);
+            if (name) filtered = filtered.filter(d => d.hoTen && d.hoTen.toLowerCase().includes(name));
+            renderTable(filtered);
+        });
+        // Render bảng
+        function renderTable(data) {
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = data.map((d, i) => `
+                <tr>
+                    <td>${i+1}</td>
+                    <td>${d.hoTen||''}</td>
+                    <td>${d.nam||''}</td>
+                    <td>${d.dienThoai||''}</td>
+                    <td>${d.tongChiPhi||''}</td>
+                    <td>${d.tongThuNhap||''}</td>
+                    <td class="action-btns">
+                        <button class="btn btn-outline-primary btn-sm" onclick="printRow(${i})"><i class="fas fa-print"></i> In</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="pdfRow(${i})"><i class="fas fa-file-pdf"></i> PDF</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        // Sắp xếp bảng
+        let sortCol = -1, sortAsc = true;
+        function sortTable(colIdx) {
+            if (sortCol === colIdx) sortAsc = !sortAsc; else { sortCol = colIdx; sortAsc = true; }
+            const rows = Array.from(surveyData);
+            const key = ['stt','hoTen','nam','dienThoai','tongChiPhi','tongThuNhap'][colIdx];
+            rows.sort((a,b) => {
+                if (a[key] < b[key]) return sortAsc ? -1 : 1;
+                if (a[key] > b[key]) return sortAsc ? 1 : -1;
+                return 0;
+            });
+            renderTable(rows);
+            // Đánh dấu cột đang sort
+            document.querySelectorAll('th').forEach((th,i)=>{
+                th.classList.remove('sorted-asc','sorted-desc');
+                if(i===colIdx) th.classList.add(sortAsc?'sorted-asc':'sorted-desc');
+            });
+        }
+        // In/PDF dòng
+        function printRow(idx) {
+            const d = surveyData[idx];
+            const win = window.open('', '', 'width=900,height=700');
+            win.document.write(`
+                <html><head><title>In khảo sát</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 40px; }
+                    .report-logo { height: 48px; margin-bottom: 8px; }
+                    .report-title { font-size: 1.3rem; font-weight: bold; color: #0d6efd; margin-bottom: 0.5rem; }
+                    .report-company { font-size: 1.1rem; color: #333; margin-bottom: 0.5rem; }
+                    .report-section { margin-bottom: 0.7rem; }
+                    .report-sign { margin-top: 2.5rem; display: flex; justify-content: space-between; }
+                    .report-sign .sign-box { width: 45%; text-align: center; }
+                    .report-sign .sign-label { font-style: italic; color: #888; }
+                    .report-sign .sign-space { height: 60px; border-bottom: 1px dotted #bbb; margin-bottom: 0.3rem; }
+                    .watermark-logo { position: absolute; opacity: 0.08; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 300px; z-index: 0; }
+                </style>
+                </head><body>
+                <img src='logo.png' class='report-logo'>
+                <div class='report-company'>CÔNG TY ABC</div>
+                <div class='report-title'>BÁO CÁO KHẢO SÁT</div>
+                <div class='report-section'><b>Họ tên:</b> ${d.hoTen||''}</div>
+                <div class='report-section'><b>Năm:</b> ${d.nam||''}</div>
+                <div class='report-section'><b>Điện thoại:</b> ${d.dienThoai||''}</div>
+                <div class='report-section'><b>Tổng chi phí:</b> ${d.tongChiPhi||''}</div>
+                <div class='report-section'><b>Tổng thu nhập:</b> ${d.tongThuNhap||''}</div>
+                <div class='report-sign'>
+                    <div class='sign-box'><div class='sign-label'>Người thực hiện</div><div class='sign-space'></div></div>
+                    <div class='sign-box'><div class='sign-label'>Người khảo sát</div><div class='sign-space'></div></div>
+                </div>
+                <img src='logo.png' class='watermark-logo'>
+                </body></html>`);
+            win.document.close();
+            win.print();
+        }
+        function pdfRow(idx) {
+            const d = surveyData[idx];
+            const doc = new window.jspdf.jsPDF();
+            doc.addImage('logo.png', 'PNG', 80, 8, 50, 18);
+            doc.setFontSize(14);
+            doc.text('CÔNG TY ABC', 105, 32, { align: 'center' });
+            doc.setFontSize(18);
+            doc.setTextColor(13,110,253);
+            doc.text('BÁO CÁO KHẢO SÁT', 105, 45, { align: 'center' });
+            doc.setFontSize(13);
+            doc.setTextColor(0,0,0);
+            let y = 60;
+            doc.text(`Họ tên: ${d.hoTen||''}`, 20, y); y+=10;
+            doc.text(`Năm: ${d.nam||''}`, 20, y); y+=10;
+            doc.text(`Điện thoại: ${d.dienThoai||''}`, 20, y); y+=10;
+            doc.text(`Tổng chi phí: ${d.tongChiPhi||''}`, 20, y); y+=10;
+            doc.text(`Tổng thu nhập: ${d.tongThuNhap||''}`, 20, y); y+=10;
+            // Chỗ ký tên
+            doc.text('Người thực hiện', 35, y+30);
+            doc.text('Người khảo sát', 135, y+30);
+            doc.line(25, y+28, 75, y+28);
+            doc.line(125, y+28, 175, y+28);
+            // Watermark logo (nếu muốn, cần base64 hoặc url hợp lệ)
+            // doc.addImage('logo.png', 'PNG', 40, 100, 120, 60, '', 'NONE', 0.08);
+            doc.save(`baocao_${d.hoTen||'nguoidung'}.pdf`);
+        }
+        // Khởi tạo
+        fetchData();
+    </script>
+</body>
+</html> 
