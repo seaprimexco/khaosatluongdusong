@@ -15,6 +15,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.08);
             padding: 2.5rem 2rem 2rem 2rem;
+            position: relative;
         }
         .login-logo {
             display: block;
@@ -31,10 +32,70 @@
         .form-label { font-weight: 500; }
         .btn-primary { width: 100%; font-weight: 600; }
         .login-error { color: #dc3545; text-align: center; margin-top: 0.7rem; }
+        .dark-mode {
+            background-color: #181a1b !important;
+            color: #e0e0e0 !important;
+        }
+        .dark-mode .login-container {
+            background: #23272b !important;
+            color: #e0e0e0 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+        }
+        .dark-mode .login-title {
+            color: #90caf9 !important;
+        }
+        .dark-mode .form-control {
+            background: #23272b !important;
+            color: #e0e0e0 !important;
+            border: 1px solid #444 !important;
+        }
+        .dark-mode .form-control:focus {
+            background: #181a1b !important;
+            color: #fff !important;
+        }
+        .dark-mode .btn-primary {
+            background: #1976d2 !important;
+            color: #fff !important;
+        }
+        .dark-mode .login-error {
+            color: #ffd600 !important;
+        }
+        .dark-mode .fa-moon {
+            color: #ffd600 !important;
+        }
+        .login-dark-toggle {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 10;
+            font-size: 1.4rem;
+            color: #333;
+        }
+        @media (max-width: 600px) {
+            .login-dark-toggle {
+                top: unset;
+                bottom: 18px;
+                right: 18px;
+            }
+            .login-logo {
+                margin-top: 1.5rem;
+            }
+        }
+        .dark-mode .login-logo {
+            background: #23272b;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0008;
+            padding: 8px;
+            border: 1.5px solid #444;
+            transition: background 0.3s;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <button class="btn btn-link login-dark-toggle" id="darkModeToggle" title="Chế độ tối">
+            <i class="fas fa-moon"></i>
+        </button>
         <img src="logo.png" alt="Logo" class="login-logo">
         <div class="login-title">Đăng nhập hệ thống khảo sát</div>
         <form id="loginForm" autocomplete="off">
@@ -93,6 +154,29 @@
             } catch (err) {
                 loginError.textContent = 'Lỗi kết nối!';
                 console.error(err);
+            }
+        });
+        // Dark mode toggle
+        function setDarkMode(on) {
+            if(on) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('ks_darkmode', '1');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('ks_darkmode', '0');
+            }
+        }
+        // Đảm bảo gán sự kiện sau khi DOM đã render
+        document.addEventListener('DOMContentLoaded', function() {
+            if(localStorage.getItem('ks_darkmode') === '1') {
+                document.body.classList.add('dark-mode');
+            }
+            var darkBtn = document.getElementById('darkModeToggle');
+            if(darkBtn) {
+                darkBtn.onclick = function() {
+                    const isDark = document.body.classList.contains('dark-mode');
+                    setDarkMode(!isDark);
+                };
             }
         });
     </script>
