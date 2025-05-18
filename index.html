@@ -74,7 +74,7 @@
         .navbar-toggler {
             border: none;
             background: transparent;
-            color: #fff;
+            color: #0d6efd !important;
             font-size: 1.5rem;
             display: none;
         }
@@ -187,6 +187,13 @@
             }
             .navbar-content {
                 flex-direction: row;
+            }
+            .navbar-toggler {
+                display: block;
+                color: #0d6efd !important;
+                margin-left: 1rem;
+                background: none;
+                border: none;
             }
         }
         @media (max-width: 768px) {
@@ -622,6 +629,9 @@
                 <span class="navbar-title-text">Hệ thống Khảo sát</span>
             </div>
             <div style="display: flex; align-items: center;">
+                <button class="navbar-toggler" id="navbarToggler" type="button" onclick="toggleMenu()" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <div class="navbar-menu" id="navbarMenu">
                     <a href="index.html" class="active">Tổng quan</a>
                     <a href="khaosat.html">Khảo sát</a>
