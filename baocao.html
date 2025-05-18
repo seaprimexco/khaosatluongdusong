@@ -491,9 +491,9 @@
                 if (apiData.status === 'success') {
                     surveyData = apiData.data.slice(1).map((row, idx) => ({
                         stt: idx + 1,
-                        hoTen: row[2],
+                        hoTen: row[6],
                         nam: new Date(row[1]).getFullYear(),
-                        dienThoai: row[3],
+                        dienThoai: row[7],
                         tongChiPhi: row[29],
                         tongThuNhap: row[32],
                         raw: row
