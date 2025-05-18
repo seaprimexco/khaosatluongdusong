@@ -600,64 +600,27 @@
         // In/PDF dòng
         function printRow(idx) {
             const d = surveyData[idx];
-            const win = window.open('', '', 'width=900,height=700');
-            win.document.write(`
-                <html><head><title>In khảo sát</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 40px; }
-                    .report-logo { height: 48px; margin-bottom: 8px; }
-                    .report-title { font-size: 1.3rem; font-weight: bold; color: #0d6efd; margin-bottom: 0.5rem; }
-                    .report-company { font-size: 1.1rem; color: #333; margin-bottom: 0.5rem; }
-                    .report-section { margin-bottom: 0.7rem; }
-                    .report-sign { margin-top: 2.5rem; display: flex; justify-content: space-between; }
-                    .report-sign .sign-box { width: 45%; text-align: center; }
-                    .report-sign .sign-label { font-style: italic; color: #888; }
-                    .report-sign .sign-space { height: 60px; border-bottom: 1px dotted #bbb; margin-bottom: 0.3rem; }
-                    .watermark-logo { position: absolute; opacity: 0.08; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 300px; z-index: 0; }
-                </style>
-                </head><body>
-                <img src='logo.png' class='report-logo'>
-                <div class='report-company'>CÔNG TY ABC</div>
-                <div class='report-title'>BÁO CÁO KHẢO SÁT</div>
-                <div class='report-section'><b>Họ tên:</b> ${d.hoTen||''}</div>
-                <div class='report-section'><b>Năm:</b> ${d.nam||''}</div>
-                <div class='report-section'><b>Điện thoại:</b> ${d.dienThoai||''}</div>
-                <div class='report-section'><b>Tổng chi phí:</b> ${d.tongChiPhi||''}</div>
-                <div class='report-section'><b>Tổng thu nhập:</b> ${d.tongThuNhap||''}</div>
-                <div class='report-sign'>
-                    <div class='sign-box'><div class='sign-label'>Người thực hiện</div><div class='sign-space'></div></div>
-                    <div class='sign-box'><div class='sign-label'>Người khảo sát</div><div class='sign-space'></div></div>
-                </div>
-                <img src='logo.png' class='watermark-logo'>
-                </body></html>`);
-            win.document.close();
-            win.print();
+            const data = {
+                hoTen: d.hoTen,
+                nam: d.nam,
+                dienThoai: d.dienThoai,
+                tongChiPhi: d.tongChiPhi,
+                tongThuNhap: d.tongThuNhap
+                // ... thêm trường khác nếu cần
+            };
+            window.open('khaosat_nv.html?data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
         }
         function pdfRow(idx) {
             const d = surveyData[idx];
-            const doc = new window.jspdf.jsPDF();
-            doc.addImage('logo.png', 'PNG', 80, 8, 50, 18);
-            doc.setFontSize(14);
-            doc.text('CÔNG TY ABC', 105, 32, { align: 'center' });
-            doc.setFontSize(18);
-            doc.setTextColor(13,110,253);
-            doc.text('BÁO CÁO KHẢO SÁT', 105, 45, { align: 'center' });
-            doc.setFontSize(13);
-            doc.setTextColor(0,0,0);
-            let y = 60;
-            doc.text(`Họ tên: ${d.hoTen||''}`, 20, y); y+=10;
-            doc.text(`Năm: ${d.nam||''}`, 20, y); y+=10;
-            doc.text(`Điện thoại: ${d.dienThoai||''}`, 20, y); y+=10;
-            doc.text(`Tổng chi phí: ${d.tongChiPhi||''}`, 20, y); y+=10;
-            doc.text(`Tổng thu nhập: ${d.tongThuNhap||''}`, 20, y); y+=10;
-            // Chỗ ký tên
-            doc.text('Người thực hiện', 35, y+30);
-            doc.text('Người khảo sát', 135, y+30);
-            doc.line(25, y+28, 75, y+28);
-            doc.line(125, y+28, 175, y+28);
-            // Watermark logo (nếu muốn, cần base64 hoặc url hợp lệ)
-            // doc.addImage('logo.png', 'PNG', 40, 100, 120, 60, '', 'NONE', 0.08);
-            doc.save(`baocao_${d.hoTen||'nguoidung'}.pdf`);
+            const data = {
+                hoTen: d.hoTen,
+                nam: d.nam,
+                dienThoai: d.dienThoai,
+                tongChiPhi: d.tongChiPhi,
+                tongThuNhap: d.tongThuNhap
+                // ... thêm trường khác nếu cần
+            };
+            window.open('khaosat_nv.html?data=' + encodeURIComponent(JSON.stringify(data)), '_blank');
         }
         // Tổng hợp theo năm
         function updateSummary(year) {
