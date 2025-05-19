@@ -97,6 +97,7 @@
             <img src="logo.png" alt="Logo" style="height:80px;">
         </div>
         <div class="header">BẢNG KHẢO SÁT CHI PHÍ SINH HOẠT</div>
+        
         <!-- Thông tin cá nhân -->
         <table>
             <tr>
@@ -108,50 +109,29 @@
                 </th>
             </tr>
             <tr>
-                <td colspan="2"><strong>Họ và tên chủ hộ</strong></td>
-                <td colspan="2" id="hoTen"></td>
+                <td><strong>Họ và tên</strong></td>
+                <td id="Ho_Ten"></td>
+                <td><strong>Điện thoại</strong></td>
+                <td id="Dien_Thoai"></td>
             </tr>
             <tr>
                 <td><strong>Vị trí công việc</strong></td>
-                <td id="viTri"></td>
-                <td><strong>Số thành viên trong gia đình</strong></td>
-                <td id="tongThanhVien"></td>
+                <td id="Vi_Tri"></td>
+                <td><strong>Địa chỉ</strong></td>
+                <td id="Dia_Chi"></td>
             </tr>
             <tr>
                 <td><strong>Người lớn</strong></td>
-                <td id="nguoiLon"></td>
+                <td id="Nguoi_Lon"></td>
                 <td><strong>Trẻ em</strong></td>
-                <td id="treEm"></td>
+                <td id="Tre_Em"></td>
             </tr>
             <tr>
-                <td><strong>Địa chỉ</strong></td>
-                <td colspan="3" id="diaChi"></td>
-            </tr>
-            <tr>
-                <td><strong>Năm</strong></td>
-                <td id="nam"></td>
-                <td><strong>Điện thoại</strong></td>
-                <td id="dienThoai"></td>
-            </tr>
-            <tr>
-                <td><strong>Email</strong></td>
-                <td id="email"></td>
-                <td><strong>Giới tính</strong></td>
-                <td id="gioiTinh"></td>
-            </tr>
-            <tr>
-                <td><strong>Ngày sinh</strong></td>
-                <td id="ngaySinh"></td>
-                <td><strong>CMND/CCCD</strong></td>
-                <td id="cmnd"></td>
-            </tr>
-            <tr>
-                <td><strong>Phòng ban</strong></td>
-                <td id="phongBan"></td>
-                <td><strong>Chức vụ</strong></td>
-                <td id="chucVu"></td>
+                <td><strong>Tổng thành viên</strong></td>
+                <td colspan="3" id="Tong_Thanh_Vien"></td>
             </tr>
         </table>
+        
         <!-- 1. Nhà ở -->
         <table>
             <tr>
@@ -163,32 +143,15 @@
                 </th>
             </tr>
             <tr>
-                <th>Loại nhà</th>
-                <th>Chi phí</th>
-            </tr>
-            <tr>
-                <td>Thuê trọ</td>
-                <td id="nhaTro"></td>
-            </tr>
-            <tr>
-                <td>Thuê Nhà nguyên căn</td>
-                <td id="nguyenCan"></td>
-            </tr>
-            <tr>
-                <td>Nhà riêng</td>
-                <td id="nhaRieng"></td>
-            </tr>
-            <tr>
-                <td>Khác</td>
-                <td id="nhaKhac"></td>
-            </tr>
-            <tr>
                 <td><strong>Loại nhà ở</strong></td>
-                <td id="loaiNhaO"></td>
+                <td id="Loai_Nha_O"></td>
+            </tr>
+            <tr>
                 <td><strong>Chi phí nhà ở</strong></td>
-                <td id="chiPhiNhaO"></td>
+                <td id="Chi_Phi_Nha_O"></td>
             </tr>
         </table>
+        
         <!-- 2. Thực phẩm -->
         <table>
             <tr>
@@ -207,27 +170,28 @@
             </tr>
             <tr>
                 <td>Gạo</td>
-                <td id="gao"></td>
+                <td id="Gao"></td>
                 <td>Thịt</td>
-                <td id="thit"></td>
+                <td id="Thit"></td>
             </tr>
             <tr>
                 <td>Cá/hải sản</td>
-                <td id="ca"></td>
+                <td id="Ca"></td>
                 <td>Rau củ</td>
-                <td id="rauCu"></td>
+                <td id="Rau_Cu"></td>
             </tr>
             <tr>
                 <td>Sữa</td>
-                <td id="sua"></td>
+                <td id="Sua"></td>
                 <td>Dầu ăn/Gia vị</td>
-                <td id="giaVi"></td>
+                <td id="Gia_Vi"></td>
             </tr>
         </table>
+        
         <!-- 3. Giáo dục -->
         <table>
             <tr>
-                <th colspan="7" class="section-title">
+                <th colspan="4" class="section-title">
                     <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
                         <path fill="white" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
                     </svg>
@@ -235,103 +199,34 @@
                 </th>
             </tr>
             <tr>
-                <th>Cấp học</th>
-                <th>Trường (Công/Tư)</th>
-                <th>Học phí</th>
-                <th>Ăn bán trú</th>
-                <th>Sách vở</th>
-                <th>Khác</th>
-                <th>Tổng</th>
+                <th>Khoản mục</th>
+                <th>Chi phí</th>
+                <th>Khoản mục</th>
+                <th>Chi phí</th>
             </tr>
             <tr>
-                <td>Mầm non</td>
-                <td id="truongMamNon"></td>
-                <td id="hocPhiMamNon"></td>
-                <td id="anBanTruMamNon"></td>
-                <td id="sachVoMamNon"></td>
-                <td id="khacMamNon"></td>
-                <td id="tongMamNon"></td>
+                <td>Học phí</td>
+                <td id="Hoc_Phi"></td>
+                <td>Sách vở</td>
+                <td id="Sach_Vo"></td>
             </tr>
             <tr>
-                <td>Tiểu học</td>
-                <td id="truongTieuHoc"></td>
-                <td id="hocPhiTieuHoc"></td>
-                <td id="anBanTruTieuHoc"></td>
-                <td id="sachVoTieuHoc"></td>
-                <td id="khacTieuHoc"></td>
-                <td id="tongTieuHoc"></td>
-            </tr>
-            <tr>
-                <td>THPT</td>
-                <td id="truongTHPT"></td>
-                <td id="hocPhiTHPT"></td>
-                <td id="anBanTruTHPT"></td>
-                <td id="sachVoTHPT"></td>
-                <td id="khacTHPT"></td>
-                <td id="tongTHPT"></td>
-            </tr>
-            <tr>
-                <td>Đại học</td>
-                <td id="truongDaiHoc"></td>
-                <td id="hocPhiDaiHoc"></td>
-                <td id="anBanTruDaiHoc"></td>
-                <td id="sachVoDaiHoc"></td>
-                <td id="khacDaiHoc"></td>
-                <td id="tongDaiHoc"></td>
-            </tr>
-            <tr style="background-color: #e8f6ff; font-weight: bold;">
-                <td>Tổng cộng</td>
-                <td></td>
-                <td id="tongHocPhi"></td>
-                <td id="tongAnBanTru"></td>
-                <td id="tongSachVo"></td>
-                <td id="tongKhacGiaoDuc"></td>
-                <td id="tongGiaoDuc"></td>
-            </tr>
-            <tr>
-                <td><strong>Học phí</strong></td>
-                <td id="hocPhi"></td>
-                <td><strong>Sách vở</strong></td>
-                <td id="sachVo"></td>
-            </tr>
-            <tr>
-                <td><strong>Đồng phục</strong></td>
-                <td id="dongPhuc"></td>
-                <td><strong>Chi phí khác (giáo dục)</strong></td>
-                <td id="khacGiaoDuc"></td>
+                <td>Đồng phục</td>
+                <td id="Dong_Phuc"></td>
+                <td>Chi phí khác (giáo dục)</td>
+                <td id="Khac_Giao_Duc"></td>
             </tr>
         </table>
-        <!-- 4. Y tế -->
+        
+        <!-- 4. Tiện ích -->
         <table>
             <tr>
                 <th colspan="4" class="section-title">
                     <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
-                        <path fill="white" d="M18,14H14V18H10V14H6V10H10V6H14V10H18M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" />
+                        <path fill="white" d="M19,5V7H15V5H19M9,5V11H5V5H9M19,13V19H15V13H19M9,17V19H5V17H9M21,3H13V9H21V3M11,3H3V13H11V3M21,11H13V21H21V11M11,15H3V21H11V15Z" />
                     </svg>
-                    4. Y tế
+                    4. Tiện ích
                 </th>
-            </tr>
-            <tr>
-                <th>Diễn giải</th>
-                <th>Chi phí</th>
-                <th>Diễn giải</th>
-                <th>Chi phí</th>
-            </tr>
-            <tr>
-                <td>Bảo hiểm y tế</td>
-                <td id="baoHiemYTe"></td>
-                <td>Chi phí chữa bệnh</td>
-                <td id="chuaBenh"></td>
-            </tr>
-            <tr style="background-color: #e8f6ff; font-weight: bold;">
-                <td>Tổng</td>
-                <td colspan="3" id="tongYTe"></td>
-            </tr>
-        </table>
-        <!-- 5. Tiện ích -->
-        <table>
-            <tr>
-                <th colspan="4" class="section-title">5. Tiện ích</th>
             </tr>
             <tr>
                 <th>Khoản mục</th>
@@ -341,104 +236,69 @@
             </tr>
             <tr>
                 <td>Điện</td>
-                <td id="dien"></td>
-                <td>Gas</td>
-                <td id="gas"></td>
-            </tr>
-            <tr>
+                <td id="Dien"></td>
                 <td>Nước</td>
-                <td id="nuoc"></td>
-                <td>Xăng xe</td>
-                <td id="xangXe"></td>
+                <td id="Nuoc"></td>
             </tr>
             <tr>
-                <td>Điện thoại/Internet</td>
-                <td id="internet"></td>
-                <td>Khác</td>
-                <td id="tienIchKhac"></td>
+                <td>Internet/Điện thoại</td>
+                <td id="Internet"></td>
+                <td>Rác</td>
+                <td id="Rac"></td>
             </tr>
         </table>
-        <!-- 6. Tổng thu nhập -->
+        
+        <!-- 5. Tổng chi phí và thu nhập -->
         <table>
             <tr>
-                <th colspan="3" class="section-title">6. Tổng thu nhập</th>
+                <th colspan="4" class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+                        <path fill="white" d="M11.8,10.9C9.53,10.31 8.8,9.7 8.8,8.75C8.8,7.66 9.81,6.9 11.5,6.9C13.28,6.9 13.94,7.75 14,9H16.21C16.14,7.28 15.09,5.7 13,5.19V3H10V5.16C8.06,5.58 6.5,6.84 6.5,8.77C6.5,11.08 8.41,12.23 11.2,12.9C13.7,13.5 14.2,14.38 14.2,15.31C14.2,16 13.71,17.1 11.5,17.1C9.44,17.1 8.63,16.18 8.5,15H6.32C6.44,17.19 8.08,18.42 10,18.83V21H13V18.85C14.95,18.5 16.5,17.35 16.5,15.3C16.5,12.46 14.07,11.5 11.8,10.9Z" />
+                    </svg>
+                    5. Tổng chi phí và thu nhập
+                </th>
             </tr>
             <tr>
-                <th>Nguồn thu nhập</th>
-                <th>Bản thân</th>
-                <th>Người thân</th>
-            </tr>
-            <tr>
-                <td>Lương chính</td>
-                <td id="thuNhapChinh"></td>
-                <td id="thuNhapNguoiThan"></td>
-            </tr>
-            <tr>
-                <td>Thu nhập khác</td>
-                <td id="thuNhapPhu"></td>
-                <td id="thuNhapKhacNguoiThan"></td>
+                <th>Khoản mục</th>
+                <th>Chi phí/Thu nhập</th>
+                <th>Khoản mục</th>
+                <th>Chi phí/Thu nhập</th>
             </tr>
             <tr>
                 <td><strong>Tổng chi phí</strong></td>
-                <td id="tongChiPhi"></td>
+                <td id="Tong_Chi_Phi"></td>
+                <td><strong>Thu nhập chính</strong></td>
+                <td id="Thu_Nhap_Chinh"></td>
+            </tr>
+            <tr>
+                <td><strong>Thu nhập phụ</strong></td>
+                <td id="Thu_Nhap_Phu"></td>
                 <td><strong>Tổng thu nhập</strong></td>
-                <td id="tongThuNhap"></td>
-            </tr>
-        </table>
-        <!-- Xác nhận -->
-        <table>
-            <tr>
-                <th colspan="3" class="section-title">Xác nhận</th>
-            </tr>
-            <tr>
-                <td>Người khảo sát</td>
-                <td colspan="2" id="nguoiKhaoSat"></td>
-            </tr>
-            <tr>
-                <td>Ngày khảo sát</td>
-                <td colspan="2" id="ngayKhaoSat"></td>
-            </tr>
-            <tr>
-                <td>Chữ ký</td>
-                <td colspan="2" style="height: 60px;"></td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td><strong>Ghi chú</strong></td>
-                <td colspan="3" id="ghiChu"></td>
-            </tr>
-            <tr>
-                <td><strong>Rác</strong></td>
-                <td id="rac"></td>
-            </tr>
-            <tr>
-                <td><strong>Tổng chi phí ăn uống</strong></td>
-                <td id="tongChiPhiAnUong"></td>
-            </tr>
-            <tr>
-                <td><strong>Tổng chi phí giáo dục</strong></td>
-                <td id="tongChiPhiGiaoDuc"></td>
-            </tr>
-            <tr>
-                <td><strong>Tổng chi phí tiện ích</strong></td>
-                <td id="tongChiPhiTienIch"></td>
-            </tr>
-            <tr>
-                <td><strong>Tổng chi phí sinh hoạt</strong></td>
-                <td id="tongChiPhiSinhHoat"></td>
+                <td id="Tong_Thu_Nhap"></td>
             </tr>
             <tr>
                 <td><strong>Chênh lệch thu chi</strong></td>
-                <td id="chenhLech"></td>
+                <td colspan="3" id="Chenh_Lech" style="font-weight: bold;"></td>
+            </tr>
+        </table>
+        
+        <!-- Xác nhận -->
+        <table>
+            <tr>
+                <th colspan="3" class="section-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+                        <path fill="white" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z" />
+                    </svg>
+                    Xác nhận
+                </th>
             </tr>
             <tr>
-                <td><strong>Đề xuất lương đủ sống</strong></td>
-                <td id="recommendedSalary"></td>
+                <td>Ngày khảo sát</td>
+                <td colspan="2" id="Ngay_Khao_Sat"></td>
             </tr>
             <tr>
-                <td><strong>Ghi chú khảo sát</strong></td>
-                <td id="mainGhiChu"></td>
+                <td>Chữ ký người khai</td>
+                <td colspan="2" style="height: 60px;"></td>
             </tr>
         </table>
     </div>
@@ -447,83 +307,163 @@
     function getData() {
         const params = new URLSearchParams(window.location.search);
         let data = {};
+        
+        // Phương thức 1: Lấy từ tham số 'data' dạng JSON 
         if (params.has('data')) {
             try {
                 data = JSON.parse(decodeURIComponent(params.get('data')));
-            } catch (e) {}
+                return data;
+            } catch (e) {
+                console.error("Lỗi khi parse JSON:", e);
+            }
         }
-        // Không lấy từ localStorage nữa, chỉ lấy từ URL
-        return data;
-    }
-    function formatNumber(val) {
-        if (typeof val === 'number') return val.toLocaleString('vi-VN');
-        if (typeof val === 'string' && /^\d{4,}$/.test(val.replace(/\./g, ''))) {
-            let num = parseInt(val.replace(/\./g, ''));
-            if (!isNaN(num)) return num.toLocaleString('vi-VN');
-        }
-        return val;
-    }
-    function fillData(data) {
-        const fields = [
-            'hoTen','viTri','tongThanhVien','nguoiLon','treEm','diaChi',
-            'nhaTro','nguyenCan','nhaRieng','nhaKhac','loaiNhaO','chiPhiNhaO',
-            'gao','thit','ca','rauCu','sua','giaVi',
-            'truongMamNon','hocPhiMamNon','anBanTruMamNon','sachVoMamNon','khacMamNon','tongMamNon',
-            'truongTieuHoc','hocPhiTieuHoc','anBanTruTieuHoc','sachVoTieuHoc','khacTieuHoc','tongTieuHoc',
-            'truongTHPT','hocPhiTHPT','anBanTruTHPT','sachVoTHPT','khacTHPT','tongTHPT',
-            'truongDaiHoc','hocPhiDaiHoc','anBanTruDaiHoc','sachVoDaiHoc','khacDaiHoc','tongDaiHoc',
-            'tongHocPhi','tongAnBanTru','tongSachVo','tongKhacGiaoDuc','tongGiaoDuc',
-            'hocPhi','sachVo','dongPhuc','khacGiaoDuc',
-            'baoHiemYTe','chuaBenh','tongYTe',
-            'dien','gas','nuoc','xangXe','internet','tienIchKhac','rac',
-            'thuNhapChinh','thuNhapNguoiThan','thuNhapPhu','thuNhapKhacNguoiThan',
-            'tongChiPhiAnUong','tongChiPhiGiaoDuc','tongChiPhiTienIch','tongChiPhiSinhHoat','tongChiPhi','tongThuNhap','chenhLech','recommendedSalary',
-            'nguoiKhaoSat','ngayKhaoSat','email','gioiTinh','ngaySinh','cmnd','phongBan','chucVu','ghiChu','mainGhiChu'
+        
+        // Phương thức 2: Lấy từ các tham số URL riêng lẻ
+        const fieldNames = [
+            'Ho_Ten', 'Dien_Thoai', 'Vi_Tri', 'Dia_Chi', 'Nguoi_Lon', 'Tre_Em', 
+            'Tong_Thanh_Vien', 'Loai_Nha_O', 'Chi_Phi_Nha_O', 'Gao', 'Thit', 'Ca', 
+            'Rau_Cu', 'Sua', 'Gia_Vi', 'Hoc_Phi', 'Sach_Vo', 'Dong_Phuc', 
+            'Khac_Giao_Duc', 'Dien', 'Nuoc', 'Internet', 'Rac', 'Tong_Chi_Phi', 
+            'Thu_Nhap_Chinh', 'Thu_Nhap_Phu', 'Tong_Thu_Nhap'
         ];
-        // Các trường cần định dạng số
-        const moneyFields = [
-            'nhaTro','nguyenCan','nhaRieng','nhaKhac','chiPhiNhaO',
-            'gao','thit','ca','rauCu','sua','giaVi',
-            'hocPhiMamNon','anBanTruMamNon','sachVoMamNon','khacMamNon','tongMamNon',
-            'hocPhiTieuHoc','anBanTruTieuHoc','sachVoTieuHoc','khacTieuHoc','tongTieuHoc',
-            'hocPhiTHPT','anBanTruTHPT','sachVoTHPT','khacTHPT','tongTHPT',
-            'hocPhiDaiHoc','anBanTruDaiHoc','sachVoDaiHoc','khacDaiHoc','tongDaiHoc',
-            'tongHocPhi','tongAnBanTru','tongSachVo','tongKhacGiaoDuc','tongGiaoDuc',
-            'hocPhi','sachVo','dongPhuc','khacGiaoDuc',
-            'baoHiemYTe','chuaBenh','tongYTe',
-            'dien','gas','nuoc','xangXe','internet','tienIchKhac','rac',
-            'thuNhapChinh','thuNhapNguoiThan','thuNhapPhu','thuNhapKhacNguoiThan',
-            'tongChiPhiAnUong','tongChiPhiGiaoDuc','tongChiPhiTienIch','tongChiPhiSinhHoat','tongChiPhi','tongThuNhap','chenhLech','recommendedSalary'
-        ];
-        let missing = [];
-        Object.keys(data).forEach(key => {
-            if(document.getElementById(key)) {
-                if (moneyFields.includes(key)) {
-                    document.getElementById(key).textContent = formatNumber(data[key]);
-                } else {
-                    document.getElementById(key).textContent = data[key] || '';
-                }
-            } else if(key !== 'data') {
-                missing.push(key);
+        
+        fieldNames.forEach(field => {
+            if (params.has(field)) {
+                data[field] = params.get(field);
             }
         });
-        if(missing.length) {
-            document.getElementById('dataWarning').style.display = 'block';
-            document.getElementById('dataWarning').textContent = 'Cảnh báo: Các trường sau không khớp với mẫu báo cáo và sẽ không hiển thị: ' + missing.join(', ');
+        
+        // Phương thức 3: Thử lấy từ localStorage
+        if (Object.keys(data).length === 0 && window.localStorage) {
+            try {
+                const storedData = localStorage.getItem('khaosat_data');
+                if (storedData) {
+                    data = JSON.parse(storedData);
+                }
+            } catch (e) {
+                console.error("Lỗi khi đọc từ localStorage:", e);
+            }
+        }
+        
+        return data;
+    }
+    
+    function formatNumber(val) {
+        if (!val) return '';
+        
+        // Xử lý nếu val là chuỗi số đã có định dạng
+        if (typeof val === 'string') {
+            // Loại bỏ tất cả các dấu phân cách hiện có
+            val = val.replace(/[.,\s]/g, '');
+        }
+        
+        // Chuyển đổi thành số
+        let num = parseFloat(val);
+        if (isNaN(num)) return val;
+        
+        // Định dạng số theo tiêu chuẩn Việt Nam
+        return num.toLocaleString('vi-VN');
+    }
+    
+    function calculateDifference(income, expense) {
+        // Loại bỏ các ký tự định dạng
+        income = income ? income.toString().replace(/[.,\s]/g, '') : "0";
+        expense = expense ? expense.toString().replace(/[.,\s]/g, '') : "0";
+        
+        // Chuyển đổi thành số
+        let incomeNum = parseFloat(income);
+        let expenseNum = parseFloat(expense);
+        
+        if (isNaN(incomeNum)) incomeNum = 0;
+        if (isNaN(expenseNum)) expenseNum = 0;
+        
+        return incomeNum - expenseNum;
+    }
+    
+    function fillData(data) {
+        console.log("Dữ liệu đang xử lý:", data);
+        
+        // Các trường cần định dạng số
+        const moneyFields = [
+            'Chi_Phi_Nha_O', 'Gao', 'Thit', 'Ca', 'Rau_Cu', 'Sua', 'Gia_Vi', 
+            'Hoc_Phi', 'Sach_Vo', 'Dong_Phuc', 'Khac_Giao_Duc', 'Dien', 'Nuoc', 
+            'Internet', 'Rac', 'Tong_Chi_Phi', 'Thu_Nhap_Chinh', 'Thu_Nhap_Phu', 'Tong_Thu_Nhap'
+        ];
+        
+        let missingFields = [];
+        
+        // Điền dữ liệu vào các trường
+        for (const [key, value] of Object.entries(data)) {
+            const element = document.getElementById(key);
+            if (element) {
+                if (moneyFields.includes(key)) {
+                    element.textContent = formatNumber(value);
+                } else {
+                    element.textContent = value || '';
+                }
+            } else {
+                // Trường hợp ID không tồn tại trong DOM
+                missingFields.push(key);
+            }
+        }
+        
+        // Tính chênh lệch thu chi
+        if (data.Tong_Thu_Nhap && data.Tong_Chi_Phi) {
+            const chenhLech = calculateDifference(data.Tong_Thu_Nhap, data.Tong_Chi_Phi);
+            const chenhLechElement = document.getElementById('Chenh_Lech');
+            
+            if (chenhLechElement) {
+                chenhLechElement.textContent = formatNumber(chenhLech);
+                
+                // Đổi màu cho chênh lệch
+                if (chenhLech < 0) {
+                    chenhLechElement.style.color = 'red';
+                } else {
+                    chenhLechElement.style.color = 'green';
+                }
+            }
+        }
+        
+        // Hiển thị cảnh báo nếu có trường dữ liệu bị thiếu
+        if (missingFields.length > 0) {
+            const warning = document.getElementById('dataWarning');
+            if (warning) {
+                warning.style.display = 'block';
+                warning.textContent = `Cảnh báo: Các trường sau không tìm thấy trong form: ${missingFields.join(', ')}`;  
+            }
+        }
+        
+        // Điền ngày khảo sát nếu chưa có
+        const ngayKhaoSatElement = document.getElementById('Ngay_Khao_Sat');
+        if (ngayKhaoSatElement && !ngayKhaoSatElement.textContent) {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            ngayKhaoSatElement.textContent = `${day}/${month}/${year}`;
         }
     }
+    
+    // Chạy khi trang đã tải xong
     document.addEventListener('DOMContentLoaded', function() {
+        // Để debug
+        console.log("DOM loaded, fetching data");
+        
         const data = getData();
+        console.log("Fetched data:", data);
+        
         if (Object.keys(data).length === 0) {
             document.getElementById('dataWarning').style.display = 'block';
-            document.getElementById('dataWarning').textContent = 'Không có dữ liệu khảo sát để hiển thị. Vui lòng truy cập từ form khảo sát hoặc truyền dữ liệu hợp lệ.';
-            return;
+            document.getElementById('dataWarning').textContent = 'Không có dữ liệu khảo sát để hiển thị. Vui lòng kiểm tra URL hoặc cung cấp dữ liệu hợp lệ.';
+        } else {
+            fillData(data);
         }
-        fillData(data);
-        document.getElementById('printBtn').onclick = function() {
+        
+        // Kích hoạt chức năng in
+        document.getElementById('printBtn').addEventListener('click', function() {
             window.print();
-        };
+        });
     });
     </script>
 </body>
-</html> 
+</html>
