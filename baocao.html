@@ -13,7 +13,7 @@
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 1.2rem 1rem 1rem 1rem;
+            padding: 0.8rem 1rem;
             margin-bottom: 1.5rem;
             transition: all 0.3s;
         }
@@ -26,10 +26,15 @@
             cursor: pointer;
             font-weight: 600;
             color: #0d6efd;
-            margin-bottom: 0.7rem;
+            padding: 0.3rem 0;
         }
-        .sidebar-filter-content { display: block; }
-        .sidebar-filter-content.hide { display: none; }
+        .sidebar-filter-content {
+            display: block;
+            padding: 0.5rem 0;
+        }
+        .sidebar-filter-content.hide {
+            display: none;
+        }
         .table-responsive { border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
         .ks-darkmode .table-responsive { background: #23272b !important; }
         table.table { border-collapse: separate; border-spacing: 0; }
@@ -376,6 +381,77 @@
             color: #fff !important;
         }
         th, .table thead th, .table-light th { background: #f4f8fb; color: #0d6efd; }
+        .form-select-sm, .form-control-sm {
+            height: calc(1.5em + 0.5rem + 2px);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+            border-color: #ced4da;
+        }
+        .form-select-sm {
+            padding-right: 1.5rem;
+            background-position: right 0.5rem center;
+            background-size: 0.75rem;
+        }
+        .form-control-sm {
+            padding-right: 0.5rem;
+        }
+        #filterForm input {
+            min-width: 200px;
+        }
+        #filterForm select {
+            min-width: 100px;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+            white-space: nowrap;
+        }
+        .gap-3 {
+            gap: 1rem !important;
+        }
+        @media (max-width: 992px) {
+            .sidebar-filter > div {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+            #filterForm {
+                margin-top: 0.5rem;
+                flex-wrap: wrap;
+            }
+            #filterForm > div {
+                flex: 1 1 auto;
+            }
+            #filterForm input, #filterForm select {
+                width: 100% !important;
+                min-width: unset;
+            }
+            #filterForm .btn {
+                margin-top: 0.5rem;
+            }
+        }
+        @media (max-width: 576px) {
+            #filterForm {
+                flex-direction: column;
+            }
+            #filterForm > div {
+                width: 100%;
+            }
+            #filterForm select, #filterForm input {
+                width: 100% !important;
+            }
+            #filterForm .btn {
+                width: 100%;
+            }
+        }
+        .border-secondary-subtle {
+            border-color: #ced4da !important;
+        }
+        .btn-outline-secondary.border-secondary-subtle:hover {
+            border-color: #ced4da !important;
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 <body>
@@ -412,24 +488,28 @@
         </div>
         <div class="tab-content active" id="tabContentCaNhan">
             <div class="sidebar-filter mb-3">
-                <div class="sidebar-filter-toggle" onclick="toggleFilter()">
-                    <i class="fas fa-sliders-h me-2"></i> Bộ lọc <i class="fas fa-chevron-down ms-2" id="filterChevron"></i>
-                </div>
-                <div class="sidebar-filter-content" id="filterContent">
-                    <form id="filterForm" class="row g-3 align-items-end">
-                        <div class="col-md-3">
-                            <label for="filterYear" class="form-label">Năm</label>
-                            <select class="form-select" id="filterYear" name="filterYear">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="sidebar-filter-toggle" onclick="toggleFilter()">
+                        <i class="fas fa-sliders-h me-2"></i> Bộ lọc <i class="fas fa-chevron-down ms-2" id="filterChevron"></i>
+                    </div>
+                    <form id="filterForm" class="d-flex align-items-center gap-3 mb-0" onsubmit="return false;">
+                        <div class="d-flex align-items-center">
+                            <label for="filterYear" class="form-label mb-0 me-2">Năm:</label>
+                            <select class="form-select form-select-sm" id="filterYear" name="filterYear" style="width: 100px;" onchange="applyFilter()">
                                 <option value="">Tất cả</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label for="filterName" class="form-label">Tên</label>
-                            <input type="text" class="form-control" id="filterName" name="filterName" placeholder="Nhập tên cần tìm...">
+                        <div class="d-flex align-items-center">
+                            <label for="filterName" class="form-label mb-0 me-2">Tên:</label>
+                            <input type="text" class="form-control form-control-sm" id="filterName" name="filterName" 
+                                placeholder="Nhập tên, họ hoặc từ khóa..." 
+                                style="width: 200px;" 
+                                oninput="applyFilter()"
+                                onkeydown="if(event.key === 'Enter') event.preventDefault()">
                         </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-1"></i> Lọc</button>
-                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm border-secondary-subtle" onclick="resetFilter()" title="Đặt lại bộ lọc">
+                            <i class="fas fa-redo"></i>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -450,6 +530,45 @@
                         <!-- Dữ liệu sẽ được render ở đây -->
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label class="me-2">Hiển thị:</label>
+                        <select class="form-select form-select-sm" id="pageSize" style="width: auto;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="ms-2">bản ghi</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span id="paginationInfo" class="me-3"></span>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item">
+                                    <button class="page-link" onclick="changePage(1)" id="firstPage">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </button>
+                                </li>
+                                <li class="page-item">
+                                    <button class="page-link" onclick="changePage(currentPage-1)" id="prevPage">
+                                        <i class="fas fa-angle-left"></i>
+                                    </button>
+                                </li>
+                                <li class="page-item">
+                                    <button class="page-link" onclick="changePage(currentPage+1)" id="nextPage">
+                                        <i class="fas fa-angle-right"></i>
+                                    </button>
+                                </li>
+                                <li class="page-item">
+                                    <button class="page-link" onclick="changePage(totalPages)" id="lastPage">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tab-content" id="tabContentTongHop">
@@ -511,14 +630,14 @@
         }
         // Ẩn/hiện sidebar filter
         function toggleFilter() {
-            const content = document.getElementById('filterContent');
+            const content = document.getElementById('filterForm');
             const chevron = document.getElementById('filterChevron');
-            if (content.classList.contains('hide')) {
-                content.classList.remove('hide');
+            if (content.style.display === 'none') {
+                content.style.display = 'flex';
                 chevron.classList.remove('fa-chevron-up');
                 chevron.classList.add('fa-chevron-down');
             } else {
-                content.classList.add('hide');
+                content.style.display = 'none';
                 chevron.classList.remove('fa-chevron-down');
                 chevron.classList.add('fa-chevron-up');
             }
@@ -551,34 +670,92 @@
             const select = document.getElementById('filterYear');
             select.innerHTML = '<option value="">Tất cả</option>' + [...yearSet].sort().map(y => `<option value="${y}">${y}</option>`).join('');
         }
-        // Lọc dữ liệu
-        document.getElementById('filterForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Cập nhật hàm applyFilter
+        function applyFilter() {
             const year = document.getElementById('filterYear').value;
             const name = document.getElementById('filterName').value.trim().toLowerCase();
             let filtered = surveyData;
-            if (year) filtered = filtered.filter(d => d.nam == year);
-            if (name) filtered = filtered.filter(d => d.hoTen && d.hoTen.toLowerCase().includes(name));
+            
+            // Lọc theo năm nếu có chọn
+            if (year) {
+                filtered = filtered.filter(d => d.nam == year);
+            }
+            
+            // Lọc theo tên với tìm kiếm gần đúng
+            if (name) {
+                const searchTerms = name.split(/\s+/).filter(term => term.length > 0);
+                filtered = filtered.filter(d => {
+                    // Kiểm tra và chuyển đổi hoTen thành string
+                    const hoTen = String(d.hoTen || '').toLowerCase();
+                    // Kiểm tra xem tất cả các từ tìm kiếm có xuất hiện trong tên không
+                    return searchTerms.every(term => hoTen.includes(term));
+                });
+            }
+            
             renderTable(filtered);
-        });
-        // Render bảng
+        }
+        // Thêm biến cho phân trang
+        let currentPage = 1;
+        let pageSize = 10;
+        let totalPages = 1;
+        let filteredData = [];
+        // Cập nhật hàm renderTable để hỗ trợ phân trang
         function renderTable(data) {
+            filteredData = data;
+            totalPages = Math.ceil(data.length / pageSize);
+            currentPage = Math.min(currentPage, totalPages);
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const pageData = data.slice(start, end);
+
             const tbody = document.getElementById('reportTableBody');
-            tbody.innerHTML = data.map((d, i) => `
+            tbody.innerHTML = pageData.map((d, i) => `
                 <tr>
-                    <td>${i+1}</td>
+                    <td>${start + i + 1}</td>
                     <td>${d.hoTen||''}</td>
                     <td>${d.nam||''}</td>
                     <td>${d.dienThoai||''}</td>
                     <td class="right">${formatCurrency(d.tongChiPhi)}</td>
                     <td class="right">${formatCurrency(d.tongThuNhap)}</td>
                     <td class="action-btns">
-                        <button class="btn btn-outline-primary btn-sm" onclick="printRow(${i})"><i class="fas fa-print"></i> In</button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="pdfRow(${i})"><i class="fas fa-file-pdf"></i> PDF</button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="printRow(${start + i})"><i class="fas fa-print"></i> In</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="pdfRow(${start + i})"><i class="fas fa-file-pdf"></i> PDF</button>
                     </td>
                 </tr>
             `).join('');
+
+            // Cập nhật thông tin phân trang
+            updatePaginationInfo();
+            updatePaginationButtons();
         }
+        // Hàm cập nhật thông tin phân trang
+        function updatePaginationInfo() {
+            const start = (currentPage - 1) * pageSize + 1;
+            const end = Math.min(currentPage * pageSize, filteredData.length);
+            document.getElementById('paginationInfo').textContent = 
+                `Hiển thị ${start} đến ${end} của ${filteredData.length} bản ghi`;
+        }
+        // Hàm cập nhật trạng thái các nút phân trang
+        function updatePaginationButtons() {
+            document.getElementById('firstPage').parentElement.classList.toggle('disabled', currentPage === 1);
+            document.getElementById('prevPage').parentElement.classList.toggle('disabled', currentPage === 1);
+            document.getElementById('nextPage').parentElement.classList.toggle('disabled', currentPage === totalPages);
+            document.getElementById('lastPage').parentElement.classList.toggle('disabled', currentPage === totalPages);
+        }
+        // Hàm chuyển trang
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable(filteredData);
+        }
+        // Thêm event listener cho select pageSize
+        document.getElementById('pageSize').addEventListener('change', function() {
+            pageSize = parseInt(this.value);
+            currentPage = 1;
+            renderTable(filteredData);
+        });
         // Sắp xếp bảng
         let sortCol = -1, sortAsc = true;
         function sortTable(colIdx) {
@@ -759,11 +936,14 @@
             select.innerHTML = [...yearSet].sort().map(y => `<option value="${y}">${y}</option>`).join('');
             if (select.value) updateSummary(select.value); else if (select.options.length) updateSummary(select.options[0].value);
         }
-        // Khi fetch xong dữ liệu, render luôn options năm tổng hợp
+        // Cập nhật hàm fetchData để khởi tạo phân trang
         const oldFetchData = fetchData;
         fetchData = async function() {
             await oldFetchData();
             renderSummaryYearOptions();
+            currentPage = 1;
+            pageSize = parseInt(document.getElementById('pageSize').value);
+            renderTable(surveyData);
         };
         // Xuất PDF/in tổng hợp
         function printSummary() {
@@ -854,6 +1034,18 @@
             if (isNaN(num)) return val;
             return num.toLocaleString('vi-VN');
         }
+        // Cập nhật hàm resetFilter
+        function resetFilter() {
+            document.getElementById('filterYear').value = '';
+            document.getElementById('filterName').value = '';
+            renderTable(surveyData);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ẩn form filter ban đầu trên mobile
+            if (window.innerWidth <= 992) {
+                document.getElementById('filterForm').style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html> 
