@@ -1,1 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHIẾU KHẢO SÁT CHI PHÍ SINH HOẠT</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #f0f2f5; 
+            color: #1a1a1a; 
+            margin: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container { 
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .content-wrapper {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        .logo { 
+            text-align: center; 
+            margin-bottom: 25px; 
+        }
+        .logo img { 
+            height: 60px;
+            object-fit: contain;
+        }
+        .report-title { 
+            text-align: center; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: #1565c0; 
+            margin-bottom: 30px; 
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .report-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #1976d2;
+            border-radius: 2px;
+        }
+        .section-title { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            color: #0d47a1; 
+            text-transform: uppercase; 
+            margin: 30px 0 15px 0; 
+            letter-spacing: 0.5px; 
+            border-left: 4px solid #1976d2; 
+            padding: 8px 0 8px 15px; 
+            background: #f8f9fa;
+            border-radius: 0 4px 4px 0;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th, td { 
+            padding: 10px 12px; 
+            border: 1px solid #e0e0e0; 
+            font-size: 0.95rem;
+        }
+        th { 
+            background: #f8f9fa; 
+            color: #1976d2; 
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        td.right { 
+            text-align: right; 
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+        }
+        .label { 
+            color: #424242; 
+            font-weight: 500; 
+            white-space: nowrap;
+        }
+        .check-x { 
+            font-weight: bold; 
+            color: #1976d2; 
+            font-size: 1.2rem; 
+            text-align: center; 
+        }
+        .sign-table td { 
+            height: 60px; 
+            vertical-align: bottom; 
+            text-align: center; 
+        }
+        .sign-label { 
+            font-style: italic; 
+            color: #757575; 
+            font-size: 0.9rem; 
+        }
+        .sign-space { 
+            height: 50px; 
+            border-bottom: 1px dotted #bbb; 
+            margin-bottom: 0.3rem; 
+        }
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        .btn-home {
+            background: #43a047;
+        }
+        .btn-home:hover {
+            background: #2e7031;
+        }
+        .btn-print {
+            background: #1976d2;
+        }
+        .btn-print:hover {
+            background: #1565c0;
+        }
+        .btn-pdf {
+            background: #d32f2f;
+        }
+        .btn-pdf:hover {
+            background: #c62828;
+        }
 
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .content-wrapper {
+                padding: 20px;
+            }
+            .report-title {
+                font-size: 1.5rem;
+                margin-bottom: 25px;
+            }
+            .section-title {
+                font-size: 1rem;
+                margin: 25px 0 12px 0;
+            }
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+            .action-buttons {
+                bottom: 15px;
+                right: 15px;
+            }
+            .btn {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .content-wrapper {
+                padding: 15px;
+            }
+            .report-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            .section-title {
+                font-size: 0.95rem;
+                margin: 20px 0 10px 0;
+            }
+            th, td {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+            .action-buttons {
+                bottom: 10px;
+                right: 10px;
+            }
+            .btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+
+        /* CSS cho in */
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .content-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+            th, td {
+                border: 1px solid #000 !important;
+                padding: 8px !important;
+            }
+            .section {
+                page-break-inside: avoid;
+                margin-bottom: 20px !important;
+            }
+            .section-title {
+                font-weight: bold !important;
+                margin-bottom: 10px !important;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="logo"><img src="logo.png" alt="Logo công ty"></div>
+            <div class="report-title">PHIẾU KHẢO SÁT CHI PHÍ SINH HOẠT</div>
+            <!-- 1. Thông tin cá nhân -->
+            <div class="section-title">1. Thông tin cá nhân</div>
+            <table>
+                <tr><td class="label">Họ và tên</td><td id="hoTen"></td><td class="label">Năm sinh</td><td id="nam"></td></tr>
+                <tr><td class="label">Giới tính</td><td id="gioiTinh"></td><td class="label">Điện thoại</td><td id="dienThoai"></td></tr>
+                <tr><td class="label">Email</td><td id="email"></td><td class="label">Địa chỉ</td><td id="diaChi"></td></tr>
+                <tr><td class="label">Phòng ban</td><td id="phongBan"></td><td class="label">Chức vụ</td><td id="chucVu"></td></tr>
+                <tr><td class="label">Vị trí công việc</td><td id="viTri"></td><td class="label">CMND/CCCD</td><td id="cmnd"></td></tr>
+            </table>
+            <!-- 2. Thành viên trong gia đình -->
+            <div class="section-title">2. Thành viên trong gia đình</div>
+            <table>
+                <tr>
+                    <th>Tổng số thành viên</th>
+                    <th>Người lớn</th>
+                    <th>Trẻ em</th>
+                </tr>
+                <tr>
+                    <td id="tongThanhVien" class="center"></td>
+                    <td id="nguoiLon" class="center"></td>
+                    <td id="treEm" class="center"></td>
+                </tr>
+            </table>
+            <!-- 3. Nhà ở -->
+            <div class="section-title">3. Nhà ở</div>
+            <table>
+                <tr><th>Loại nhà</th><th>Chi phí</th><th>Đánh dấu</th></tr>
+                <tr><td>Nhà thuê trọ</td><td id="nhaTro" class="right"></td><td id="checkTro" class="check-x"></td></tr>
+                <tr><td>Thuê nhà nguyên căn</td><td id="nguyenCan" class="right"></td><td id="checkNguyenCan" class="check-x"></td></tr>
+                <tr><td>Nhà riêng</td><td id="nhaRieng" class="right"></td><td id="checkNhaRieng" class="check-x"></td></tr>
+            </table>
+            <!-- 4. Thực phẩm -->
+            <div class="section-title">4. Thực phẩm</div>
+            <table>
+                <tr><th>Mặt hàng</th><th>Chi phí</th><th>Mặt hàng</th><th>Chi phí</th></tr>
+                <tr><td>Gạo</td><td id="gao" class="right"></td><td>Thịt</td><td id="thit" class="right"></td></tr>
+                <tr><td>Cá/hải sản</td><td id="ca" class="right"></td><td>Rau củ</td><td id="rauCu" class="right"></td></tr>
+                <tr><td>Sữa</td><td id="sua" class="right"></td><td>Dầu ăn/Gia vị</td><td id="giaVi" class="right"></td></tr>
+            </table>
+            <!-- 5. Giáo dục -->
+            <div class="section-title">5. Giáo dục</div>
+            <table>
+                <tr><th>Học phí</th><th>Sách vở</th><th>Đồng phục</th><th>Chi phí khác</th></tr>
+                <tr>
+                    <td id="hocPhi" class="right"></td>
+                    <td id="sachVo" class="right"></td>
+                    <td id="dongPhuc" class="right"></td>
+                    <td id="khacGiaoDuc" class="right"></td>
+                </tr>
+            </table>
+            <!-- 6. Y tế -->
+            <div class="section-title">6. Y tế</div>
+            <table>
+                <tr><th>Bảo hiểm y tế</th><th>Chi phí chữa bệnh</th><th>Tổng</th></tr>
+                <tr>
+                    <td id="baoHiemYTe" class="right"></td>
+                    <td id="chuaBenh" class="right"></td>
+                    <td id="tongYTe" class="right"></td>
+                </tr>
+            </table>
+            <!-- 7. Tiện ích -->
+            <div class="section-title">7. Tiện ích</div>
+            <table>
+                <tr><th>Mặt hàng</th><th>Chi phí</th><th>Mặt hàng</th><th>Chi phí</th></tr>
+                <tr><td>Điện</td><td id="dien" class="right"></td><td>Gas</td><td id="gas" class="right"></td></tr>
+                <tr><td>Nước</td><td id="nuoc" class="right"></td><td>Xăng xe</td><td id="xangXe" class="right"></td></tr>
+                <tr><td>Internet</td><td id="internet" class="right"></td><td>Tiện ích khác</td><td id="tienIchKhac" class="right"></td></tr>
+                <tr><td>Rác</td><td id="rac" class="right"></td><td></td><td></td></tr>
+            </table>
+            <!-- 8. Thu nhập -->
+            <div class="section-title">8. Thu nhập</div>
+            <table>
+                <tr><th>Lương chính</th><th>Người thân</th><th>Phụ</th><th>Khác người thân</th></tr>
+                <tr>
+                    <td id="thuNhapChinh" class="right"></td>
+                    <td id="thuNhapNguoiThan" class="right"></td>
+                    <td id="thuNhapPhu" class="right"></td>
+                    <td id="thuNhapKhacNguoiThan" class="right"></td>
+                </tr>
+            </table>
+            <!-- Tổng hợp -->
+            <div class="section-title">Tổng hợp</div>
+            <table>
+                <tr><th>Tổng chi phí</th><th>Tổng thu nhập</th><th>Chênh lệch</th><th>Đề xuất lương</th></tr>
+                <tr>
+                    <td id="tongChiPhi" class="right"></td>
+                    <td id="tongThuNhap" class="right"></td>
+                    <td id="chenhLech" class="right"></td>
+                    <td id="recommendedSalary" class="right"></td>
+                </tr>
+            </table>
+            <!-- 9. Xác nhận -->
+            <div class="section-title">9. Xác nhận</div>
+            <table>
+                <tr>
+                    <td class="label" style="width: 25%">Người khảo sát</td>
+                    <td id="nguoiKhaoSat" style="width: 35%; height: 48px;"></td>
+                    <td class="label" style="width: 20%">Người duyệt</td>
+                    <td style="width: 20%; height: 48px;"></td>
+                </tr>
+                <tr>
+                    <td class="label">Ngày khảo sát</td>
+                    <td id="ngayKhaoSat"></td>
+                    <td class="label">Ghi chú</td>
+                    <td id="ghiChu"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="action-buttons">
+        <button onclick="window.print()" class="btn btn-print" title="In">
+            <i class="fas fa-print"></i>
+        </button>
+        <button onclick="exportToPDF()" class="btn btn-pdf" title="Xuất PDF">
+            <i class="fas fa-file-pdf"></i>
+        </button>
+        <a href="index.html" class="btn btn-home" title="Về trang chủ">
+            <i class="fas fa-home"></i>
+        </a>
+    </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.css">
+    <script>
+    function getDataFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        let data = {};
+        if (params.has('data')) {
+            try { data = JSON.parse(decodeURIComponent(params.get('data'))); } catch (e) {}
+        }
+        return data;
+    }
+    function formatCurrency(val) {
+        if (val == null || val === '') return '';
+        let num = Number(String(val).replace(/[^0-9.-]/g, ''));
+        if (isNaN(num)) return val;
+        return num.toLocaleString('vi-VN');
+    }
+    function fillData(data) {
+        // Nhà ở: logic điền đúng dòng
+        const loai = data.loaiNhaO || data.Loai_Nha_O || '';
+        if (loai === 'Nhà thuê trọ') {
+            document.getElementById('nhaTro').textContent = formatCurrency(data.chiPhiNhaO || '');
+            document.getElementById('nguyenCan').textContent = '';
+            document.getElementById('nhaRieng').textContent = '';
+            document.getElementById('checkTro').textContent = 'X';
+            document.getElementById('checkNguyenCan').textContent = '';
+            document.getElementById('checkNhaRieng').textContent = '';
+        } else if (loai === 'Thuê nhà nguyên căn') {
+            document.getElementById('nhaTro').textContent = '';
+            document.getElementById('nguyenCan').textContent = formatCurrency(data.chiPhiNhaO || '');
+            document.getElementById('nhaRieng').textContent = '';
+            document.getElementById('checkTro').textContent = '';
+            document.getElementById('checkNguyenCan').textContent = 'X';
+            document.getElementById('checkNhaRieng').textContent = '';
+        } else if (loai === 'Nhà riêng') {
+            document.getElementById('nhaTro').textContent = '';
+            document.getElementById('nguyenCan').textContent = '';
+            document.getElementById('nhaRieng').textContent = formatCurrency(data.chiPhiNhaO || '');
+            document.getElementById('checkTro').textContent = '';
+            document.getElementById('checkNguyenCan').textContent = '';
+            document.getElementById('checkNhaRieng').textContent = 'X';
+        } else {
+            document.getElementById('nhaTro').textContent = '';
+            document.getElementById('nguyenCan').textContent = '';
+            document.getElementById('nhaRieng').textContent = '';
+            document.getElementById('checkTro').textContent = '';
+            document.getElementById('checkNguyenCan').textContent = '';
+            document.getElementById('checkNhaRieng').textContent = '';
+        }
+        // Các trường còn lại
+        Object.keys(data).forEach(function(key) {
+            if (["nhaTro","nguyenCan","nhaRieng","loaiNhaO","Loai_Nha_O","chiPhiNhaO","checkTro","checkNguyenCan","checkNhaRieng"].includes(key)) return;
+            var el = document.getElementById(key);
+            if (el) {
+                if (el.classList.contains('right')) {
+                    el.textContent = formatCurrency(data[key]);
+                } else {
+                    el.textContent = data[key];
+                }
+            }
+        });
+    }
+
+    // Hàm xuất PDF
+    async function exportToPDF() {
+        try {
+            // Hiển thị loading
+            const loadingBtn = document.querySelector('.btn-pdf');
+            const originalContent = loadingBtn.innerHTML;
+            loadingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            loadingBtn.disabled = true;
+
+            // Lấy phần tử cần xuất
+            const element = document.querySelector('.content-wrapper');
+            
+            // Tạo bản sao của element
+            const clone = element.cloneNode(true);
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.width = '210mm';
+            container.style.padding = '10mm';
+            container.style.backgroundColor = '#ffffff';
+            container.appendChild(clone);
+            document.body.appendChild(container);
+
+            // Đợi một chút để đảm bảo bản sao đã được render
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            // Tạo canvas từ bản sao
+            const canvas = await html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                onclone: function(clonedDoc) {
+                    const images = clonedDoc.getElementsByTagName('img');
+                    for (let i = 0; i < images.length; i++) {
+                        images[i].crossOrigin = 'anonymous';
+                    }
+                }
+            });
+
+            // Xóa container
+            document.body.removeChild(container);
+
+            // Tạo PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Kích thước trang A4
+            const pageWidth = 210;
+            const pageHeight = 297;
+            const margin = 10;
+
+            // Tính toán kích thước hình ảnh để vừa với trang
+            const imgWidth = pageWidth - (margin * 2);
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            // Tính số trang cần thiết
+            const pageCount = Math.ceil(imgHeight / (pageHeight - (margin * 2)));
+
+            // Thêm hình ảnh vào từng trang
+            for (let i = 0; i < pageCount; i++) {
+                if (i > 0) {
+                    pdf.addPage();
+                }
+
+                const sourceY = i * (pageHeight - (margin * 2)) * (canvas.width / imgWidth);
+                const sourceHeight = (pageHeight - (margin * 2)) * (canvas.width / imgWidth);
+
+                pdf.addImage(
+                    canvas.toDataURL('image/jpeg', 1.0),
+                    'JPEG',
+                    margin,
+                    margin,
+                    imgWidth,
+                    imgHeight,
+                    undefined,
+                    'FAST',
+                    0,
+                    {
+                        sourceX: 0,
+                        sourceY: sourceY,
+                        sourceWidth: canvas.width,
+                        sourceHeight: sourceHeight
+                    }
+                );
+            }
+
+            // Lưu file
+            pdf.save('phieu-khao-sat.pdf');
+
+            // Khôi phục nút
+            loadingBtn.innerHTML = originalContent;
+            loadingBtn.disabled = false;
+
+        } catch (error) {
+            console.error('Lỗi khi xuất PDF:', error);
+            alert('Có lỗi xảy ra khi xuất PDF. Vui lòng thử lại.');
+            
+            // Khôi phục nút trong trường hợp lỗi
+            const loadingBtn = document.querySelector('.btn-pdf');
+            loadingBtn.innerHTML = '<i class="fas fa-file-pdf"></i>';
+            loadingBtn.disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const data = getDataFromQuery();
+        fillData(data);
+    });
+    </script>
+</body>
+</html>
